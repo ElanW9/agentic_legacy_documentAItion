@@ -63,6 +63,20 @@ python -m scripts.export_schemas     # Pydantic models -> schemas/*.schema.json
 
 Re-run the extractor whenever `legacy_code/` changes; the output is deterministic. What the regex parser can and cannot see is described in [docs/extraction-limitations.md](docs/extraction-limitations.md).
 
+## Validate a doc
+
+```bash
+python -m scripts.validate_doc docs/packages/pkg_order.md [more docs ...]
+```
+
+The validator prints `PASS` or `FAIL` per doc, with one line per finding: the doc line, the severity, the check and the message. `ERROR` findings fail the doc; `WARN` findings are for the reviewer. The checks are listed at the top of `scripts/validate_doc.py`. A pass means the doc is well-formed and every id, line range and name it uses exists. It does not mean the claims are true; that is what the `review-doc` skill and the PR review are for.
+
+Known limits:
+- A sentence counts as cited when it contains any valid citation, even one about something else.
+- Line numbers in a table row are checked against the units named in that row, ignoring which file they are in.
+- Names the metadata does not model (locals, cursors, record fields) only need to occur somewhere in the code of `legacy_code/`.
+- Questions and lines ending in `:` are not treated as claims.
+
 ## Git workflow
 
 - Each step is built on its own branch, `feature/step-<number>-<short-name>`, created from `main`. If the previous step hasn't been merged yet, the branch is created from the previous step's branch instead.
