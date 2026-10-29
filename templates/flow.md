@@ -20,7 +20,7 @@ TEMPLATE: one cross-package flow, for example order -> invoice -> payment. Copy 
 
 | Unit | Called from |
 |------|-------------|
-| `{{PACKAGE.UNIT}}` | {{caller in legacy_code/, or "no caller in legacy_code/"}} |
+| `{{PACKAGE.UNIT}}` | {{`CALLER` [CALLER:line], or "no caller in legacy_code/" [PACKAGE.UNIT:start]}} |
 
 ## Steps
 

@@ -101,7 +101,7 @@ TEMPLATE: one package. Copy to docs/packages/<package_lowercase>.md.
 
 | Variable | Visibility | Constant | Written by | Read by |
 |----------|------------|----------|------------|---------|
-| `{{NAME}}` | {{PUBLIC/PRIVATE}} | {{yes/no}} | {{units + lines}} | {{units + lines}} |
+| `{{PACKAGE.NAME}}` | {{PUBLIC/PRIVATE}} | {{yes/no}} | `{{PACKAGE.UNIT}}` [{{PACKAGE.UNIT}}:{{line}}] | `{{PACKAGE.UNIT}}` [{{PACKAGE.UNIT}}:{{line}}] |
 
 ### Dynamic SQL
 
