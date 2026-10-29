@@ -1,0 +1,7 @@
+CREATE OR REPLACE TRIGGER trg_demo_bu
+  BEFORE UPDATE ON demo_items
+  FOR EACH ROW
+BEGIN
+  :NEW.upd_dt := SYSDATE;
+END;
+/
