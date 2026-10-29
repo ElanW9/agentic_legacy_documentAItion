@@ -55,6 +55,7 @@
         "SEQUENCE_USE",
         "VIEW_SOURCE",
         "TRIGGER_ON",
+        "FIRES_TRIGGER",
         "EXTERNAL_CALL"
       ],
       "title": "DependencyKind",

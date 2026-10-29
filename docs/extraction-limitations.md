@@ -25,6 +25,7 @@ python -m scripts.export_schemas     # writes schemas/*.schema.json
    - An overload is resolved by counting arguments against required and total parameters.
    - `seq.NEXTVAL` is a sequence use. `DBMS_*`/`UTL_*` are external calls.
    - View → relation and trigger → table edges are added.
+   - A write to a table adds a `FIRES_TRIGGER` edge to that table's matching triggers.
    - Package cycles are the elementary cycles of the package call graph.
 4. **Table usage.**
    - `INSERT INTO`, `UPDATE`, `DELETE [FROM]` and `MERGE INTO` give write operations, and `FROM`/`JOIN` lists and `MERGE ... USING` give reads.
@@ -40,7 +41,7 @@ python -m scripts.export_schemas     # writes schemas/*.schema.json
 ### Things the parser cannot see
 - **Dynamic SQL targets.** When a table or column name is concatenated at runtime (e.g. `'DELETE FROM ' || v_tab`), the access does **not** appear in `table_usage.json`. Only a `DYNAMIC_SQL` risk flag is raised. A table name written literally inside a dynamic SQL string *is* picked up, marked `via: DYNAMIC_LITERAL`. Literal arguments passed by a caller, such as `archive_rows('AUDIT_LOG', ...)`, are not traced through to the dynamic statement.
 - **Indirect access through views.** Reading a view is recorded as a read of the view, not of its base tables. Use the `VIEW_SOURCE` edges to expand it.
-- **Trigger side effects on callers.** A unit that inserts into `PAYMENTS` is not linked to the `INVOICES`/`ORDERS` updates done by `TRG_PAY_AIR`. Combine `table_usage` with the `TRIGGER_ON` edges to find them.
+- **Trigger side effects on callers.** A unit that writes to a table gets a `FIRES_TRIGGER` edge to every trigger on that table with a matching event. For example, `INV_API.REGISTER_PAYMENT` → `TRG_PAY_AIR`. This is conservative: `UPDATE OF <columns>` lists and `WHEN` conditions are not evaluated, so an edge means "may fire". Triggers fired by dynamic SQL, or by another trigger's own writes further down a chain, have to be followed manually through the trigger's `table_usage`.
 - **Calls from outside the source tree.** These include schedulers, applications, other schemas and database links. `NO_CALLER` on a public unit means "no caller in `legacy_code/`", not "dead".
 - **Runtime facts.** The parser has no visibility into grants, synonyms, invalid objects, actual data values or session settings (NLS, for instance).
 

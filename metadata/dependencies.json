@@ -24,6 +24,16 @@
     {
       "source": "CUST_MGMT.BLOCK_CUSTOMER",
       "source_type": "PROCEDURE",
+      "target": "TRG_CUST_BIU",
+      "target_type": "TRIGGER",
+      "kind": "FIRES_TRIGGER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 101,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.BLOCK_CUSTOMER",
+      "source_type": "PROCEDURE",
       "target": "UTIL_LOG.LOG_MSG",
       "target_type": "PROCEDURE",
       "kind": "CALL",
@@ -84,6 +94,16 @@
     {
       "source": "CUST_MGMT.CREATE_CUSTOMER",
       "source_type": "PROCEDURE",
+      "target": "TRG_CUST_BIU",
+      "target_type": "TRIGGER",
+      "kind": "FIRES_TRIGGER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 70,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.CREATE_CUSTOMER",
+      "source_type": "PROCEDURE",
       "target": "UTIL_LOG.LOG_MSG",
       "target_type": "PROCEDURE",
       "kind": "CALL",
@@ -102,6 +122,26 @@
       "resolved": true
     },
     {
+      "source": "CUST_MGMT.MERGE_CUST",
+      "source_type": "PROCEDURE",
+      "target": "TRG_CUST_BIU",
+      "target_type": "TRIGGER",
+      "kind": "FIRES_TRIGGER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 30,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.UNBLOCK_CUSTOMER",
+      "source_type": "PROCEDURE",
+      "target": "TRG_CUST_BIU",
+      "target_type": "TRIGGER",
+      "kind": "FIRES_TRIGGER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 120,
+      "resolved": true
+    },
+    {
       "source": "CUST_MGMT.UNBLOCK_CUSTOMER",
       "source_type": "PROCEDURE",
       "target": "UTIL_LOG.LOG_MSG",
@@ -109,6 +149,16 @@
       "kind": "CALL",
       "file": "legacy_code/packages/cust_mgmt.pkb",
       "line": 126,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.UPD_CREDIT_LIMIT",
+      "source_type": "PROCEDURE",
+      "target": "TRG_CUST_BIU",
+      "target_type": "TRIGGER",
+      "kind": "FIRES_TRIGGER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 86,
       "resolved": true
     },
     {
@@ -324,6 +374,16 @@
     {
       "source": "INV_API.REGISTER_PAYMENT",
       "source_type": "PROCEDURE",
+      "target": "TRG_PAY_AIR",
+      "target_type": "TRIGGER",
+      "kind": "FIRES_TRIGGER",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 181,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.REGISTER_PAYMENT",
+      "source_type": "PROCEDURE",
       "target": "PAY_ID_SEQ",
       "target_type": "SEQUENCE",
       "kind": "SEQUENCE_USE",
@@ -429,6 +489,16 @@
       "kind": "CALL",
       "file": "legacy_code/packages/pkg_order.pkb",
       "line": 72,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.ADD_LINE#2",
+      "source_type": "PROCEDURE",
+      "target": "TRG_ORDL_AIUD",
+      "target_type": "TRIGGER",
+      "kind": "FIRES_TRIGGER",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 91,
       "resolved": true
     },
     {
