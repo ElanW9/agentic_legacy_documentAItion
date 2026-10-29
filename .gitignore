@@ -1,0 +1,39 @@
+# --- Secrets and environment files (never commit) ---
+.env
+.env.*
+!.env.example
+
+# --- Oracle wallets and credential files ---
+wallet/
+**/wallet/
+*.sso
+*.p12
+*.jks
+*.pem
+*.key
+cwallet.*
+ewallet.*
+tnsnames.ora
+sqlnet.ora
+
+# --- Python ---
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# --- IDE ---
+.idea/
+.vscode/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
