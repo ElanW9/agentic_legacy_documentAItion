@@ -1,0 +1,685 @@
+{
+  "parser_version": "0.1.0",
+  "accesses": [
+    {
+      "unit_id": "CUST_BALANCE_V",
+      "unit_type": "VIEW",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/views/cust_balance_v.sql",
+      "line": 8,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_BALANCE_V",
+      "unit_type": "VIEW",
+      "relation": "V_OPEN_INVOICES",
+      "relation_type": "VIEW",
+      "operation": "SELECT",
+      "file": "legacy_code/views/cust_balance_v.sql",
+      "line": 9,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.BLOCK_CUSTOMER",
+      "unit_type": "PROCEDURE",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 101,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.BLOCK_CUSTOMER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 107,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.CHK_CREDIT",
+      "unit_type": "FUNCTION",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 156,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.CHK_OVERDUE_CUSTOMERS",
+      "unit_type": "PROCEDURE",
+      "relation": "V_OPEN_INVOICES",
+      "relation_type": "VIEW",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 233,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+      "unit_type": "PROCEDURE",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 51,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+      "unit_type": "PROCEDURE",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "INSERT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 70,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_BALANCE#2",
+      "unit_type": "FUNCTION",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 195,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_BALANCE#2",
+      "unit_type": "FUNCTION",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 202,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_BALANCE#2",
+      "unit_type": "FUNCTION",
+      "relation": "PAYMENTS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 202,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_CUST_ATTR",
+      "unit_type": "FUNCTION",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 216,
+      "via": "DYNAMIC_LITERAL"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_CUST_TYPE",
+      "unit_type": "FUNCTION",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 136,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.MERGE_CUST",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 22,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.MERGE_CUST",
+      "unit_type": "PROCEDURE",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 26,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.MERGE_CUST",
+      "unit_type": "PROCEDURE",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 30,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.UNBLOCK_CUSTOMER",
+      "unit_type": "PROCEDURE",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 120,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "CUST_MGMT.UPD_CREDIT_LIMIT",
+      "unit_type": "PROCEDURE",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 86,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.CANCEL_INVOICE",
+      "unit_type": "PROCEDURE",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 136,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.CANCEL_INVOICE",
+      "unit_type": "PROCEDURE",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 144,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.CANCEL_INVOICE_FOR_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 156,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.CREATE_INVOICE#1",
+      "unit_type": "FUNCTION",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 78,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.CREATE_INVOICE#2",
+      "unit_type": "FUNCTION",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 92,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.CREATE_INVOICE#2",
+      "unit_type": "FUNCTION",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 101,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.CREATE_INVOICE#2",
+      "unit_type": "FUNCTION",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "INSERT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 113,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.GET_OPEN_AMT",
+      "unit_type": "FUNCTION",
+      "relation": "V_OPEN_INVOICES",
+      "relation_type": "VIEW",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 210,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.GET_OPEN_AMT",
+      "unit_type": "FUNCTION",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 216,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.RECALC_PAID",
+      "unit_type": "PROCEDURE",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 27,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.RECALC_PAID",
+      "unit_type": "PROCEDURE",
+      "relation": "PAYMENTS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 29,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "unit_type": "PROCEDURE",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 172,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "unit_type": "PROCEDURE",
+      "relation": "PAYMENTS",
+      "relation_type": "TABLE",
+      "operation": "INSERT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 181,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "unit_type": "PROCEDURE",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 185,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.SEND_REMINDERS",
+      "unit_type": "PROCEDURE",
+      "relation": "V_OPEN_INVOICES",
+      "relation_type": "VIEW",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 228,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "INV_API.SEND_REMINDERS",
+      "unit_type": "PROCEDURE",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 237,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "ORD_SUMMARY_V",
+      "unit_type": "VIEW",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/views/ord_summary_v.sql",
+      "line": 10,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "ORD_SUMMARY_V",
+      "unit_type": "VIEW",
+      "relation": "ORDER_LINES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/views/ord_summary_v.sql",
+      "line": 10,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#1",
+      "unit_type": "PROCEDURE",
+      "relation": "PRODUCTS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 63,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#2",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 80,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#2",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDER_LINES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 89,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#2",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDER_LINES",
+      "relation_type": "TABLE",
+      "operation": "INSERT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 91,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.CANCEL_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 261,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.CANCEL_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 271,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.GET_ORDER_TOTAL",
+      "unit_type": "FUNCTION",
+      "relation": "ORDER_LINES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 110,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.NEW_ORDER",
+      "unit_type": "FUNCTION",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 41,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.NEW_ORDER",
+      "unit_type": "FUNCTION",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "INSERT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 48,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 124,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 124,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDER_LINES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 152,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 158,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDER_LINES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 166,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "PRODUCTS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 166,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 194,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 202,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 208,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 227,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "PKG_ORDER.SET_STATUS",
+      "unit_type": "PROCEDURE",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 100,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "TRG_CUST_BIU",
+      "unit_type": "TRIGGER",
+      "relation": "CUST_HIST",
+      "relation_type": "TABLE",
+      "operation": "INSERT",
+      "file": "legacy_code/triggers/trg_cust_biu.sql",
+      "line": 18,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "TRG_ORDL_AIUD",
+      "unit_type": "TRIGGER",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/triggers/trg_ordl_aiud.sql",
+      "line": 6,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "TRG_ORDL_AIUD",
+      "unit_type": "TRIGGER",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/triggers/trg_ordl_aiud.sql",
+      "line": 8,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "TRG_ORDL_AIUD",
+      "unit_type": "TRIGGER",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/triggers/trg_ordl_aiud.sql",
+      "line": 10,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "unit_type": "TRIGGER",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 9,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "unit_type": "TRIGGER",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 15,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "unit_type": "TRIGGER",
+      "relation": "ORDERS",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 17,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "unit_type": "TRIGGER",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "UPDATE",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 19,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "UTIL_LOG.GET_PARAM",
+      "unit_type": "FUNCTION",
+      "relation": "APP_PARAMS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 40,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "unit_type": "PROCEDURE",
+      "relation": "AUDIT_LOG",
+      "relation_type": "TABLE",
+      "operation": "INSERT",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 72,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "V_OPEN_INVOICES",
+      "unit_type": "VIEW",
+      "relation": "CUSTOMERS",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/views/v_open_invoices.sql",
+      "line": 12,
+      "via": "STATIC"
+    },
+    {
+      "unit_id": "V_OPEN_INVOICES",
+      "unit_type": "VIEW",
+      "relation": "INVOICES",
+      "relation_type": "TABLE",
+      "operation": "SELECT",
+      "file": "legacy_code/views/v_open_invoices.sql",
+      "line": 12,
+      "via": "STATIC"
+    }
+  ]
+}

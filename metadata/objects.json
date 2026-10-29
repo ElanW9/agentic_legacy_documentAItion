@@ -1,0 +1,2852 @@
+{
+  "parser_version": "0.1.0",
+  "source_root": "legacy_code",
+  "files": [
+    {
+      "path": "legacy_code/install_order.sql",
+      "sha256": "366ca455b4c6c0dc4b62611f1fc0fd319f934064649a07ebaea14b1d2e42888c",
+      "line_count": 48
+    },
+    {
+      "path": "legacy_code/packages/cust_mgmt.pkb",
+      "sha256": "486f7356f658e1608cb67eb1ac9a03ff47c42e5c0dcabc64278e4fc817750487",
+      "line_count": 246
+    },
+    {
+      "path": "legacy_code/packages/cust_mgmt.pks",
+      "sha256": "96c194be2996f1c9f06ef38ca96f8a9f70107f2e5ae1b55220923eb343aa715d",
+      "line_count": 33
+    },
+    {
+      "path": "legacy_code/packages/inv_api.pkb",
+      "sha256": "0a4e4593a2126a8e6c19aeeeee0d373b69b5dfa53dec7613ae56839624198053",
+      "line_count": 250
+    },
+    {
+      "path": "legacy_code/packages/inv_api.pks",
+      "sha256": "bdcb8118c84e9d665996c22be2428787249a3e947c019bb7cf4643107a0ab3e1",
+      "line_count": 26
+    },
+    {
+      "path": "legacy_code/packages/pkg_order.pkb",
+      "sha256": "e840cfbd2d36f22639f2961216b2e8d8f157d58037ebf87585428b7a85f4d8b9",
+      "line_count": 281
+    },
+    {
+      "path": "legacy_code/packages/pkg_order.pks",
+      "sha256": "a30f4261e44b6376edf03705e09d1f884d3c4f958f240687eac70544bb92fed1",
+      "line_count": 29
+    },
+    {
+      "path": "legacy_code/packages/util_log.pkb",
+      "sha256": "1851823a6259b7ae4677a9baf5818aae16e5084b484c7e98f2768880d3c33956",
+      "line_count": 170
+    },
+    {
+      "path": "legacy_code/packages/util_log.pks",
+      "sha256": "b27386e2a3ee7d4aa2da842b83ff26c21620229a623108d5aaa058b668f55638",
+      "line_count": 37
+    },
+    {
+      "path": "legacy_code/sequences/audit_log_seq.sql",
+      "sha256": "c21bfb908dbd848d631c997c0055fd45bc8191b25e30c89300e3035d17e7b2b9",
+      "line_count": 3
+    },
+    {
+      "path": "legacy_code/sequences/inv_seq.sql",
+      "sha256": "c35f34b8594159a02d04be6a85b261d70572ce0310432ce4601b0752a10e0fbc",
+      "line_count": 6
+    },
+    {
+      "path": "legacy_code/sequences/ord_seq.sql",
+      "sha256": "f11209c974bcf7d97ec0bfada193ef4fd6c1324aba410832a5a15ae21d893f63",
+      "line_count": 2
+    },
+    {
+      "path": "legacy_code/sequences/pay_id_seq.sql",
+      "sha256": "9a094d30bb27c840a179d6e061522d620ef5a070e6beb4b0b8ef0e4606aa917c",
+      "line_count": 2
+    },
+    {
+      "path": "legacy_code/sequences/seq_customers.sql",
+      "sha256": "23ccbe1e1e671b95e50a8fcaa576fd6bf1fdd4d35509c337f8c3605971fe718a",
+      "line_count": 5
+    },
+    {
+      "path": "legacy_code/tables/app_params.sql",
+      "sha256": "181a3ee1624493253c9781364ebb71372745e7a8cf74968324bf20deb800911f",
+      "line_count": 12
+    },
+    {
+      "path": "legacy_code/tables/audit_log.sql",
+      "sha256": "0ec49225e09434536af8f7821c5862250050b1edf4866aa264447172137b4eb7",
+      "line_count": 12
+    },
+    {
+      "path": "legacy_code/tables/audit_log_arch.sql",
+      "sha256": "fafe46a6585280c229f157ce616ffdf5f64abffdf02b6ae7895964ab649d6e15",
+      "line_count": 13
+    },
+    {
+      "path": "legacy_code/tables/cust_hist.sql",
+      "sha256": "ab685a2e44c55b4db12c3f50805a6c642b1e486278467eabbe08ea1e5e4f88a6",
+      "line_count": 9
+    },
+    {
+      "path": "legacy_code/tables/customers.sql",
+      "sha256": "acc365ac6ca8710936e65c4603de6599650888b69b8afe71824bdf58188235c9",
+      "line_count": 21
+    },
+    {
+      "path": "legacy_code/tables/invoices.sql",
+      "sha256": "dab6f8ac8179709c4472b54de09ba17ed4720995645cca8c29c6a5faebb0dafe",
+      "line_count": 20
+    },
+    {
+      "path": "legacy_code/tables/order_lines.sql",
+      "sha256": "fb218b518ca6b7baaa2a7275bd2ecea70b72ce1daf084785f24ae099658af646",
+      "line_count": 12
+    },
+    {
+      "path": "legacy_code/tables/orders.sql",
+      "sha256": "8d38eabd5089a109a176d6e7a197d2b488e317d595f42889403a7b41ce3d1607",
+      "line_count": 18
+    },
+    {
+      "path": "legacy_code/tables/payments.sql",
+      "sha256": "b1c47df3381c126db5506a33594288c17b3613c2b198dd5ae783a5dd78fc919f",
+      "line_count": 14
+    },
+    {
+      "path": "legacy_code/tables/products.sql",
+      "sha256": "c8e2186f18d913bff3a1559a070d6ccc6843f2ed372c193380fbc057c6658426",
+      "line_count": 9
+    },
+    {
+      "path": "legacy_code/triggers/trg_cust_biu.sql",
+      "sha256": "b1af09820809bf25f7b3e909d2457e534a4e83ced190a9e55cc3b78b455a401e",
+      "line_count": 27
+    },
+    {
+      "path": "legacy_code/triggers/trg_ordl_aiud.sql",
+      "sha256": "913264e41b48a855c732404685a4f1bd5deb37467700620de9531d22f024c220",
+      "line_count": 14
+    },
+    {
+      "path": "legacy_code/triggers/trg_pay_air.sql",
+      "sha256": "b88aed89ffff342efcaf96a6024c3d3942863c930e171cdf5efcc4d7d329a53c",
+      "line_count": 23
+    },
+    {
+      "path": "legacy_code/views/cust_balance_v.sql",
+      "sha256": "cedb204c1a30ad800a984605dc1f6ccad4a061675626ac2370b6caef7d4df167",
+      "line_count": 11
+    },
+    {
+      "path": "legacy_code/views/ord_summary_v.sql",
+      "sha256": "7edb6344ac90350ca400d1b32f6eca078fee195b8ab954955608e776d2e1c01c",
+      "line_count": 13
+    },
+    {
+      "path": "legacy_code/views/v_open_invoices.sql",
+      "sha256": "7bdfd0986f622e13036d0f95c589a27ed9932237f21c415f460e448a7de7fcd9",
+      "line_count": 15
+    }
+  ],
+  "packages": [
+    {
+      "name": "CUST_MGMT",
+      "spec_ref": {
+        "file": "legacy_code/packages/cust_mgmt.pks",
+        "start_line": 1,
+        "end_line": 31
+      },
+      "body_ref": {
+        "file": "legacy_code/packages/cust_mgmt.pkb",
+        "start_line": 1,
+        "end_line": 244
+      },
+      "subprograms": [
+        {
+          "unit_id": "CUST_MGMT.MERGE_CUST",
+          "package": "CUST_MGMT",
+          "name": "MERGE_CUST",
+          "kind": "PROCEDURE",
+          "visibility": "PRIVATE",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_FROM",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_TO",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE MERGE_CUST(P_FROM IN NUMBER, P_TO IN NUMBER)",
+          "spec_ref": null,
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 19,
+            "end_line": 33
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+          "package": "CUST_MGMT",
+          "name": "CREATE_CUSTOMER",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_NAME",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_TYPE",
+              "mode": "IN",
+              "datatype": "CHAR",
+              "default": null
+            },
+            {
+              "name": "P_VAT",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_EMAIL",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_CTRY",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_CUST_ID",
+              "mode": "OUT",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE CREATE_CUSTOMER(P_NAME IN VARCHAR2, P_TYPE IN CHAR, P_VAT IN VARCHAR2, P_EMAIL IN VARCHAR2, P_CTRY IN VARCHAR2, P_CUST_ID OUT NUMBER)",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 5,
+            "end_line": 10
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 36,
+            "end_line": 76
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.UPD_CREDIT_LIMIT",
+          "package": "CUST_MGMT",
+          "name": "UPD_CREDIT_LIMIT",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_LIMIT",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE UPD_CREDIT_LIMIT(P_CUST_ID IN NUMBER, P_LIMIT IN NUMBER)",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 12,
+            "end_line": 12
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 79,
+            "end_line": 95
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.BLOCK_CUSTOMER",
+          "package": "CUST_MGMT",
+          "name": "BLOCK_CUSTOMER",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_REASON",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE BLOCK_CUSTOMER(P_CUST_ID IN NUMBER, P_REASON IN VARCHAR2)",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 14,
+            "end_line": 14
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 98,
+            "end_line": 114
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.UNBLOCK_CUSTOMER",
+          "package": "CUST_MGMT",
+          "name": "UNBLOCK_CUSTOMER",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE UNBLOCK_CUSTOMER(P_CUST_ID IN NUMBER)",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 16,
+            "end_line": 16
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 117,
+            "end_line": 127
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.GET_CUST_TYPE",
+          "package": "CUST_MGMT",
+          "name": "GET_CUST_TYPE",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "CHAR",
+          "signature": "FUNCTION GET_CUST_TYPE(P_CUST_ID IN NUMBER) RETURN CHAR",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 18,
+            "end_line": 18
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 130,
+            "end_line": 143
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.CHK_CREDIT",
+          "package": "CUST_MGMT",
+          "name": "CHK_CREDIT",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_AMT",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION CHK_CREDIT(P_CUST_ID IN NUMBER, P_AMT IN NUMBER) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 21,
+            "end_line": 21
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 147,
+            "end_line": 177
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.GET_BALANCE#1",
+          "package": "CUST_MGMT",
+          "name": "GET_BALANCE",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": 1,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION GET_BALANCE(P_CUST_ID IN NUMBER) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 23,
+            "end_line": 23
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 180,
+            "end_line": 184
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.GET_BALANCE#2",
+          "package": "CUST_MGMT",
+          "name": "GET_BALANCE",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": 2,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_AS_OF",
+              "mode": "IN",
+              "datatype": "DATE",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION GET_BALANCE(P_CUST_ID IN NUMBER, P_AS_OF IN DATE) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 25,
+            "end_line": 25
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 188,
+            "end_line": 208
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.GET_CUST_ATTR",
+          "package": "CUST_MGMT",
+          "name": "GET_CUST_ATTR",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_COL",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            }
+          ],
+          "return_type": "VARCHAR2",
+          "signature": "FUNCTION GET_CUST_ATTR(P_CUST_ID IN NUMBER, P_COL IN VARCHAR2) RETURN VARCHAR2",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 27,
+            "end_line": 27
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 212,
+            "end_line": 224
+          }
+        },
+        {
+          "unit_id": "CUST_MGMT.CHK_OVERDUE_CUSTOMERS",
+          "package": "CUST_MGMT",
+          "name": "CHK_OVERDUE_CUSTOMERS",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [],
+          "return_type": null,
+          "signature": "PROCEDURE CHK_OVERDUE_CUSTOMERS",
+          "spec_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pks",
+            "start_line": 29,
+            "end_line": 29
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 228,
+            "end_line": 242
+          }
+        }
+      ],
+      "variables": [
+        {
+          "name": "V_MAX_LIMIT",
+          "datatype": "NUMBER",
+          "is_constant": true,
+          "default": "250000",
+          "visibility": "PRIVATE",
+          "ref": {
+            "file": "legacy_code/packages/cust_mgmt.pkb",
+            "start_line": 16,
+            "end_line": 16
+          }
+        }
+      ]
+    },
+    {
+      "name": "INV_API",
+      "spec_ref": {
+        "file": "legacy_code/packages/inv_api.pks",
+        "start_line": 1,
+        "end_line": 24
+      },
+      "body_ref": {
+        "file": "legacy_code/packages/inv_api.pkb",
+        "start_line": 1,
+        "end_line": 248
+      },
+      "subprograms": [
+        {
+          "unit_id": "INV_API.NEXT_INV_NO",
+          "package": "INV_API",
+          "name": "NEXT_INV_NO",
+          "kind": "FUNCTION",
+          "visibility": "PRIVATE",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "VARCHAR2",
+          "signature": "FUNCTION NEXT_INV_NO(P_ID IN NUMBER) RETURN VARCHAR2",
+          "spec_ref": null,
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 18,
+            "end_line": 21
+          }
+        },
+        {
+          "unit_id": "INV_API.RECALC_PAID",
+          "package": "INV_API",
+          "name": "RECALC_PAID",
+          "kind": "PROCEDURE",
+          "visibility": "PRIVATE",
+          "overload": null,
+          "params": [],
+          "return_type": null,
+          "signature": "PROCEDURE RECALC_PAID",
+          "spec_ref": null,
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 25,
+            "end_line": 32
+          }
+        },
+        {
+          "unit_id": "INV_API.GET_DUE_DT",
+          "package": "INV_API",
+          "name": "GET_DUE_DT",
+          "kind": "FUNCTION",
+          "visibility": "PRIVATE",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_INV_DT",
+              "mode": "IN",
+              "datatype": "DATE",
+              "default": null
+            }
+          ],
+          "return_type": "DATE",
+          "signature": "FUNCTION GET_DUE_DT(P_CUST_ID IN NUMBER, P_INV_DT IN DATE) RETURN DATE",
+          "spec_ref": null,
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 35,
+            "end_line": 47
+          }
+        },
+        {
+          "unit_id": "INV_API.CALC_VAT",
+          "package": "INV_API",
+          "name": "CALC_VAT",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_NET",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION CALC_VAT(P_CUST_ID IN NUMBER, P_NET IN NUMBER) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/inv_api.pks",
+            "start_line": 20,
+            "end_line": 20
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 51,
+            "end_line": 72
+          }
+        },
+        {
+          "unit_id": "INV_API.CREATE_INVOICE#1",
+          "package": "INV_API",
+          "name": "CREATE_INVOICE",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": 1,
+          "params": [
+            {
+              "name": "P_ORD_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION CREATE_INVOICE(P_ORD_ID IN NUMBER) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/inv_api.pks",
+            "start_line": 7,
+            "end_line": 7
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 75,
+            "end_line": 83
+          }
+        },
+        {
+          "unit_id": "INV_API.CREATE_INVOICE#2",
+          "package": "INV_API",
+          "name": "CREATE_INVOICE",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": 2,
+          "params": [
+            {
+              "name": "P_ORD_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_INV_DT",
+              "mode": "IN",
+              "datatype": "DATE",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION CREATE_INVOICE(P_ORD_ID IN NUMBER, P_INV_DT IN DATE) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/inv_api.pks",
+            "start_line": 8,
+            "end_line": 8
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 86,
+            "end_line": 127
+          }
+        },
+        {
+          "unit_id": "INV_API.CANCEL_INVOICE",
+          "package": "INV_API",
+          "name": "CANCEL_INVOICE",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_INV_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE CANCEL_INVOICE(P_INV_ID IN NUMBER)",
+          "spec_ref": {
+            "file": "legacy_code/packages/inv_api.pks",
+            "start_line": 10,
+            "end_line": 10
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 130,
+            "end_line": 150
+          }
+        },
+        {
+          "unit_id": "INV_API.CANCEL_INVOICE_FOR_ORDER",
+          "package": "INV_API",
+          "name": "CANCEL_INVOICE_FOR_ORDER",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_ORD_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE CANCEL_INVOICE_FOR_ORDER(P_ORD_ID IN NUMBER)",
+          "spec_ref": {
+            "file": "legacy_code/packages/inv_api.pks",
+            "start_line": 11,
+            "end_line": 11
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 153,
+            "end_line": 161
+          }
+        },
+        {
+          "unit_id": "INV_API.REGISTER_PAYMENT",
+          "package": "INV_API",
+          "name": "REGISTER_PAYMENT",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_INV_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_AMT",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_METHOD",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": "'BT'"
+            },
+            {
+              "name": "P_REF",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": "NULL"
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE REGISTER_PAYMENT(P_INV_ID IN NUMBER, P_AMT IN NUMBER, P_METHOD IN VARCHAR2 DEFAULT 'BT', P_REF IN VARCHAR2 DEFAULT NULL)",
+          "spec_ref": {
+            "file": "legacy_code/packages/inv_api.pks",
+            "start_line": 13,
+            "end_line": 16
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 164,
+            "end_line": 202
+          }
+        },
+        {
+          "unit_id": "INV_API.GET_OPEN_AMT",
+          "package": "INV_API",
+          "name": "GET_OPEN_AMT",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION GET_OPEN_AMT(P_CUST_ID IN NUMBER) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/inv_api.pks",
+            "start_line": 18,
+            "end_line": 18
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 205,
+            "end_line": 221
+          }
+        },
+        {
+          "unit_id": "INV_API.SEND_REMINDERS",
+          "package": "INV_API",
+          "name": "SEND_REMINDERS",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [],
+          "return_type": null,
+          "signature": "PROCEDURE SEND_REMINDERS",
+          "spec_ref": {
+            "file": "legacy_code/packages/inv_api.pks",
+            "start_line": 22,
+            "end_line": 22
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 224,
+            "end_line": 246
+          }
+        }
+      ],
+      "variables": [
+        {
+          "name": "G_VAT_RATE",
+          "datatype": "NUMBER",
+          "is_constant": false,
+          "default": null,
+          "visibility": "PRIVATE",
+          "ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 12,
+            "end_line": 12
+          }
+        },
+        {
+          "name": "G_INV_PREFIX",
+          "datatype": "VARCHAR2(10)",
+          "is_constant": false,
+          "default": "'INV'",
+          "visibility": "PRIVATE",
+          "ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 13,
+            "end_line": 13
+          }
+        },
+        {
+          "name": "C_TOLERANCE",
+          "datatype": "NUMBER",
+          "is_constant": true,
+          "default": "0.05",
+          "visibility": "PRIVATE",
+          "ref": {
+            "file": "legacy_code/packages/inv_api.pkb",
+            "start_line": 15,
+            "end_line": 15
+          }
+        }
+      ]
+    },
+    {
+      "name": "PKG_ORDER",
+      "spec_ref": {
+        "file": "legacy_code/packages/pkg_order.pks",
+        "start_line": 1,
+        "end_line": 27
+      },
+      "body_ref": {
+        "file": "legacy_code/packages/pkg_order.pkb",
+        "start_line": 1,
+        "end_line": 279
+      },
+      "subprograms": [
+        {
+          "unit_id": "PKG_ORDER.WLOG",
+          "package": "PKG_ORDER",
+          "name": "WLOG",
+          "kind": "PROCEDURE",
+          "visibility": "PRIVATE",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_ACT",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_MSG",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_SEV",
+              "mode": "IN",
+              "datatype": "CHAR",
+              "default": "'I'"
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE WLOG(P_ACT IN VARCHAR2, P_ID IN NUMBER, P_MSG IN VARCHAR2, P_SEV IN CHAR DEFAULT 'I')",
+          "spec_ref": null,
+          "body_ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 11,
+            "end_line": 14
+          }
+        },
+        {
+          "unit_id": "PKG_ORDER.CALC_DISC",
+          "package": "PKG_ORDER",
+          "name": "CALC_DISC",
+          "kind": "FUNCTION",
+          "visibility": "PRIVATE",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_TYPE",
+              "mode": "IN",
+              "datatype": "CHAR",
+              "default": null
+            },
+            {
+              "name": "P_AMT",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION CALC_DISC(P_CUST_TYPE IN CHAR, P_AMT IN NUMBER) RETURN NUMBER",
+          "spec_ref": null,
+          "body_ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 18,
+            "end_line": 32
+          }
+        },
+        {
+          "unit_id": "PKG_ORDER.NEW_ORDER",
+          "package": "PKG_ORDER",
+          "name": "NEW_ORDER",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_CUST_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_REMARKS",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": "null"
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION NEW_ORDER(P_CUST_ID IN NUMBER, P_REMARKS IN VARCHAR2 DEFAULT null) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 14,
+            "end_line": 14
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 35,
+            "end_line": 54
+          }
+        },
+        {
+          "unit_id": "PKG_ORDER.ADD_LINE#1",
+          "package": "PKG_ORDER",
+          "name": "ADD_LINE",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": 1,
+          "params": [
+            {
+              "name": "P_ORD_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_PROD_CD",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_QTY",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE ADD_LINE(P_ORD_ID IN NUMBER, P_PROD_CD IN VARCHAR2, P_QTY IN NUMBER)",
+          "spec_ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 16,
+            "end_line": 16
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 58,
+            "end_line": 73
+          }
+        },
+        {
+          "unit_id": "PKG_ORDER.ADD_LINE#2",
+          "package": "PKG_ORDER",
+          "name": "ADD_LINE",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": 2,
+          "params": [
+            {
+              "name": "P_ORD_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_PROD_CD",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_QTY",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_PRICE",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE ADD_LINE(P_ORD_ID IN NUMBER, P_PROD_CD IN VARCHAR2, P_QTY IN NUMBER, P_PRICE IN NUMBER)",
+          "spec_ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 17,
+            "end_line": 17
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 76,
+            "end_line": 95
+          }
+        },
+        {
+          "unit_id": "PKG_ORDER.SET_STATUS",
+          "package": "PKG_ORDER",
+          "name": "SET_STATUS",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_ORD_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_STATUS",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE SET_STATUS(P_ORD_ID IN NUMBER, P_STATUS IN NUMBER)",
+          "spec_ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 21,
+            "end_line": 21
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 98,
+            "end_line": 104
+          }
+        },
+        {
+          "unit_id": "PKG_ORDER.GET_ORDER_TOTAL",
+          "package": "PKG_ORDER",
+          "name": "GET_ORDER_TOTAL",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_ORD_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION GET_ORDER_TOTAL(P_ORD_ID IN NUMBER) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 25,
+            "end_line": 25
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 107,
+            "end_line": 112
+          }
+        },
+        {
+          "unit_id": "PKG_ORDER.PROCESS_ORDER",
+          "package": "PKG_ORDER",
+          "name": "PROCESS_ORDER",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_ORD_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": "null"
+            },
+            {
+              "name": "P_SHIP",
+              "mode": "IN",
+              "datatype": "BOOLEAN",
+              "default": "false"
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE PROCESS_ORDER(P_ORD_ID IN NUMBER DEFAULT null, P_SHIP IN BOOLEAN DEFAULT false)",
+          "spec_ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 19,
+            "end_line": 19
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 120,
+            "end_line": 255
+          }
+        },
+        {
+          "unit_id": "PKG_ORDER.CANCEL_ORDER",
+          "package": "PKG_ORDER",
+          "name": "CANCEL_ORDER",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_ORD_ID",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            },
+            {
+              "name": "P_REASON",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE CANCEL_ORDER(P_ORD_ID IN NUMBER, P_REASON IN VARCHAR2)",
+          "spec_ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 23,
+            "end_line": 23
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 258,
+            "end_line": 277
+          }
+        }
+      ],
+      "variables": [
+        {
+          "name": "ST_NEW",
+          "datatype": "NUMBER",
+          "is_constant": true,
+          "default": "10",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 4,
+            "end_line": 4
+          }
+        },
+        {
+          "name": "ST_HOLD",
+          "datatype": "NUMBER",
+          "is_constant": true,
+          "default": "15",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 5,
+            "end_line": 5
+          }
+        },
+        {
+          "name": "ST_CONFIRMED",
+          "datatype": "NUMBER",
+          "is_constant": true,
+          "default": "20",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 6,
+            "end_line": 6
+          }
+        },
+        {
+          "name": "ST_SHIPPED",
+          "datatype": "NUMBER",
+          "is_constant": true,
+          "default": "30",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 7,
+            "end_line": 7
+          }
+        },
+        {
+          "name": "ST_INVOICED",
+          "datatype": "NUMBER",
+          "is_constant": true,
+          "default": "40",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 8,
+            "end_line": 8
+          }
+        },
+        {
+          "name": "ST_CANCELLED",
+          "datatype": "NUMBER",
+          "is_constant": true,
+          "default": "90",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 9,
+            "end_line": 9
+          }
+        },
+        {
+          "name": "G_LAST_ORD_ID",
+          "datatype": "NUMBER",
+          "is_constant": false,
+          "default": null,
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/pkg_order.pks",
+            "start_line": 12,
+            "end_line": 12
+          }
+        },
+        {
+          "name": "G_LINE_CNT",
+          "datatype": "PLS_INTEGER",
+          "is_constant": false,
+          "default": "0",
+          "visibility": "PRIVATE",
+          "ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 7,
+            "end_line": 7
+          }
+        },
+        {
+          "name": "G_DISC_CACHE",
+          "datatype": "NUMBER",
+          "is_constant": false,
+          "default": null,
+          "visibility": "PRIVATE",
+          "ref": {
+            "file": "legacy_code/packages/pkg_order.pkb",
+            "start_line": 8,
+            "end_line": 8
+          }
+        }
+      ]
+    },
+    {
+      "name": "UTIL_LOG",
+      "spec_ref": {
+        "file": "legacy_code/packages/util_log.pks",
+        "start_line": 1,
+        "end_line": 35
+      },
+      "body_ref": {
+        "file": "legacy_code/packages/util_log.pkb",
+        "start_line": 1,
+        "end_line": 168
+      },
+      "subprograms": [
+        {
+          "unit_id": "UTIL_LOG.LVL",
+          "package": "UTIL_LOG",
+          "name": "LVL",
+          "kind": "FUNCTION",
+          "visibility": "PRIVATE",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_SEV",
+              "mode": "IN",
+              "datatype": "CHAR",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION LVL(P_SEV IN CHAR) RETURN NUMBER",
+          "spec_ref": null,
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 16,
+            "end_line": 23
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.SET_CTX",
+          "package": "UTIL_LOG",
+          "name": "SET_CTX",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_MODULE",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_USER",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": "NULL"
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE SET_CTX(P_MODULE IN VARCHAR2, P_USER IN VARCHAR2 DEFAULT NULL)",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 12,
+            "end_line": 12
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 26,
+            "end_line": 32
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.GET_PARAM",
+          "package": "UTIL_LOG",
+          "name": "GET_PARAM",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_NAME",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            }
+          ],
+          "return_type": "VARCHAR2",
+          "signature": "FUNCTION GET_PARAM(P_NAME IN VARCHAR2) RETURN VARCHAR2",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 23,
+            "end_line": 23
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 35,
+            "end_line": 46
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.GET_PARAM_NUM",
+          "package": "UTIL_LOG",
+          "name": "GET_PARAM_NUM",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_NAME",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_DEFAULT",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "NUMBER",
+          "signature": "FUNCTION GET_PARAM_NUM(P_NAME IN VARCHAR2, P_DEFAULT IN NUMBER) RETURN NUMBER",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 24,
+            "end_line": 24
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 49,
+            "end_line": 55
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.LOG_MSG",
+          "package": "UTIL_LOG",
+          "name": "LOG_MSG",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_ACTION",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_OBJ_ID",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_MSG",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_SEV",
+              "mode": "IN",
+              "datatype": "CHAR",
+              "default": "'I'"
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE LOG_MSG(P_ACTION IN VARCHAR2, P_OBJ_ID IN VARCHAR2, P_MSG IN VARCHAR2, P_SEV IN CHAR DEFAULT 'I')",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 14,
+            "end_line": 17
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 59,
+            "end_line": 86
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.LOG_ERR",
+          "package": "UTIL_LOG",
+          "name": "LOG_ERR",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_ACTION",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_OBJ_ID",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE LOG_ERR(P_ACTION IN VARCHAR2, P_OBJ_ID IN VARCHAR2)",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 19,
+            "end_line": 19
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 89,
+            "end_line": 92
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.DBG",
+          "package": "UTIL_LOG",
+          "name": "DBG",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_MSG",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE DBG(P_MSG IN VARCHAR2)",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 21,
+            "end_line": 21
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 95,
+            "end_line": 100
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.IS_WORKDAY",
+          "package": "UTIL_LOG",
+          "name": "IS_WORKDAY",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_DT",
+              "mode": "IN",
+              "datatype": "DATE",
+              "default": null
+            }
+          ],
+          "return_type": "BOOLEAN",
+          "signature": "FUNCTION IS_WORKDAY(P_DT IN DATE) RETURN BOOLEAN",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 26,
+            "end_line": 26
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 103,
+            "end_line": 106
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.ADD_WORKDAYS",
+          "package": "UTIL_LOG",
+          "name": "ADD_WORKDAYS",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_DT",
+              "mode": "IN",
+              "datatype": "DATE",
+              "default": null
+            },
+            {
+              "name": "P_DAYS",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "DATE",
+          "signature": "FUNCTION ADD_WORKDAYS(P_DT IN DATE, P_DAYS IN NUMBER) RETURN DATE",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 27,
+            "end_line": 27
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 109,
+            "end_line": 120
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.FMT_AMT",
+          "package": "UTIL_LOG",
+          "name": "FMT_AMT",
+          "kind": "FUNCTION",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_AMT",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": "VARCHAR2",
+          "signature": "FUNCTION FMT_AMT(P_AMT IN NUMBER) RETURN VARCHAR2",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 29,
+            "end_line": 29
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 123,
+            "end_line": 126
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.ARCHIVE_ROWS",
+          "package": "UTIL_LOG",
+          "name": "ARCHIVE_ROWS",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [
+            {
+              "name": "P_TAB",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_DATE_COL",
+              "mode": "IN",
+              "datatype": "VARCHAR2",
+              "default": null
+            },
+            {
+              "name": "P_DAYS",
+              "mode": "IN",
+              "datatype": "NUMBER",
+              "default": null
+            }
+          ],
+          "return_type": null,
+          "signature": "PROCEDURE ARCHIVE_ROWS(P_TAB IN VARCHAR2, P_DATE_COL IN VARCHAR2, P_DAYS IN NUMBER)",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 32,
+            "end_line": 32
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 130,
+            "end_line": 155
+          }
+        },
+        {
+          "unit_id": "UTIL_LOG.HOUSEKEEPING",
+          "package": "UTIL_LOG",
+          "name": "HOUSEKEEPING",
+          "kind": "PROCEDURE",
+          "visibility": "PUBLIC",
+          "overload": null,
+          "params": [],
+          "return_type": null,
+          "signature": "PROCEDURE HOUSEKEEPING",
+          "spec_ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 33,
+            "end_line": 33
+          },
+          "body_ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 159,
+            "end_line": 166
+          }
+        }
+      ],
+      "variables": [
+        {
+          "name": "G_MODULE",
+          "datatype": "VARCHAR2(30)",
+          "is_constant": false,
+          "default": "'UNKNOWN'",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 4,
+            "end_line": 4
+          }
+        },
+        {
+          "name": "G_USER",
+          "datatype": "VARCHAR2(30)",
+          "is_constant": false,
+          "default": null,
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 5,
+            "end_line": 5
+          }
+        },
+        {
+          "name": "G_DEBUG",
+          "datatype": "BOOLEAN",
+          "is_constant": false,
+          "default": "FALSE",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 6,
+            "end_line": 6
+          }
+        },
+        {
+          "name": "C_SEV_INFO",
+          "datatype": "CHAR(1)",
+          "is_constant": true,
+          "default": "'I'",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 8,
+            "end_line": 8
+          }
+        },
+        {
+          "name": "C_SEV_WARN",
+          "datatype": "CHAR(1)",
+          "is_constant": true,
+          "default": "'W'",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 9,
+            "end_line": 9
+          }
+        },
+        {
+          "name": "C_SEV_ERR",
+          "datatype": "CHAR(1)",
+          "is_constant": true,
+          "default": "'E'",
+          "visibility": "PUBLIC",
+          "ref": {
+            "file": "legacy_code/packages/util_log.pks",
+            "start_line": 10,
+            "end_line": 10
+          }
+        },
+        {
+          "name": "G_LOG_LEVEL",
+          "datatype": "NUMBER",
+          "is_constant": false,
+          "default": "NULL",
+          "visibility": "PRIVATE",
+          "ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 12,
+            "end_line": 12
+          }
+        },
+        {
+          "name": "G_CALL_CNT",
+          "datatype": "PLS_INTEGER",
+          "is_constant": false,
+          "default": "0",
+          "visibility": "PRIVATE",
+          "ref": {
+            "file": "legacy_code/packages/util_log.pkb",
+            "start_line": 13,
+            "end_line": 13
+          }
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "name": "APP_PARAMS",
+      "ref": {
+        "file": "legacy_code/tables/app_params.sql",
+        "start_line": 1,
+        "end_line": 5
+      },
+      "columns": [
+        {
+          "name": "PARAM_NAME",
+          "datatype": "VARCHAR2(30)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "PARAM_VAL",
+          "datatype": "VARCHAR2(200)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "APP_PARAMS_PK",
+          "kind": "PRIMARY KEY",
+          "columns": [
+            "PARAM_NAME"
+          ],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": null
+        }
+      ],
+      "comment": null
+    },
+    {
+      "name": "AUDIT_LOG",
+      "ref": {
+        "file": "legacy_code/tables/audit_log.sql",
+        "start_line": 1,
+        "end_line": 11
+      },
+      "columns": [
+        {
+          "name": "LOG_ID",
+          "datatype": "NUMBER(15)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "LOG_TS",
+          "datatype": "TIMESTAMP",
+          "nullable": true,
+          "default": "SYSTIMESTAMP",
+          "comment": null
+        },
+        {
+          "name": "MODULE",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "ACTION",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "OBJ_ID",
+          "datatype": "VARCHAR2(50)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "MSG",
+          "datatype": "VARCHAR2(4000)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "USR",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "SEV",
+          "datatype": "CHAR(1)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "AUDIT_LOG_PK",
+          "kind": "PRIMARY KEY",
+          "columns": [
+            "LOG_ID"
+          ],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": null
+        }
+      ],
+      "comment": null
+    },
+    {
+      "name": "AUDIT_LOG_ARCH",
+      "ref": {
+        "file": "legacy_code/tables/audit_log_arch.sql",
+        "start_line": 2,
+        "end_line": 12
+      },
+      "columns": [
+        {
+          "name": "LOG_ID",
+          "datatype": "NUMBER(15)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "LOG_TS",
+          "datatype": "TIMESTAMP",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "MODULE",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "ACTION",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "OBJ_ID",
+          "datatype": "VARCHAR2(50)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "MSG",
+          "datatype": "VARCHAR2(4000)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "USR",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "SEV",
+          "datatype": "CHAR(1)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "ARCH_DT",
+          "datatype": "DATE",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        }
+      ],
+      "constraints": [],
+      "comment": null
+    },
+    {
+      "name": "CUSTOMERS",
+      "ref": {
+        "file": "legacy_code/tables/customers.sql",
+        "start_line": 1,
+        "end_line": 17
+      },
+      "columns": [
+        {
+          "name": "CUST_ID",
+          "datatype": "NUMBER(10)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CUST_NAME",
+          "datatype": "VARCHAR2(100)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CUST_TYPE",
+          "datatype": "CHAR(1)",
+          "nullable": false,
+          "default": "'R'",
+          "comment": "R=retail W=wholesale"
+        },
+        {
+          "name": "VAT_NO",
+          "datatype": "VARCHAR2(20)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "EMAIL",
+          "datatype": "VARCHAR2(200)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "COUNTRY_CD",
+          "datatype": "VARCHAR2(2)",
+          "nullable": true,
+          "default": "'BE'",
+          "comment": null
+        },
+        {
+          "name": "CREDIT_LIMIT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": true,
+          "default": "5000",
+          "comment": null
+        },
+        {
+          "name": "STATUS",
+          "datatype": "CHAR(1)",
+          "nullable": false,
+          "default": "'A'",
+          "comment": "A/B"
+        },
+        {
+          "name": "BLOCKED_REASON",
+          "datatype": "VARCHAR2(200)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CREATED_DT",
+          "datatype": "DATE",
+          "nullable": true,
+          "default": "SYSDATE",
+          "comment": null
+        },
+        {
+          "name": "UPD_DT",
+          "datatype": "DATE",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "UPD_BY",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "CUSTOMERS_PK",
+          "kind": "PRIMARY KEY",
+          "columns": [
+            "CUST_ID"
+          ],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": null
+        },
+        {
+          "name": "CUST_TYPE_CK",
+          "kind": "CHECK",
+          "columns": [],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": "cust_type IN ('R','W','G')"
+        },
+        {
+          "name": "CUST_STATUS_CK",
+          "kind": "CHECK",
+          "columns": [],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": "status IN ('A','B','C')"
+        }
+      ],
+      "comment": null
+    },
+    {
+      "name": "CUST_HIST",
+      "ref": {
+        "file": "legacy_code/tables/cust_hist.sql",
+        "start_line": 2,
+        "end_line": 8
+      },
+      "columns": [
+        {
+          "name": "CUST_ID",
+          "datatype": "NUMBER(10)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CHG_DT",
+          "datatype": "DATE",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "OLD_LIMIT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "NEW_LIMIT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CHG_BY",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        }
+      ],
+      "constraints": [],
+      "comment": null
+    },
+    {
+      "name": "INVOICES",
+      "ref": {
+        "file": "legacy_code/tables/invoices.sql",
+        "start_line": 1,
+        "end_line": 19
+      },
+      "columns": [
+        {
+          "name": "INV_ID",
+          "datatype": "NUMBER(12)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "INV_NO",
+          "datatype": "VARCHAR2(20)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "ORD_ID",
+          "datatype": "NUMBER(12)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CUST_ID",
+          "datatype": "NUMBER(10)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "INV_DT",
+          "datatype": "DATE",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "DUE_DT",
+          "datatype": "DATE",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "NET_AMT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "VAT_AMT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "GROSS_AMT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "PAID_AMT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": true,
+          "default": "0",
+          "comment": null
+        },
+        {
+          "name": "INV_STATUS",
+          "datatype": "VARCHAR2(4)",
+          "nullable": false,
+          "default": "'OPEN'",
+          "comment": null
+        },
+        {
+          "name": "REMINDER_CNT",
+          "datatype": "NUMBER(2)",
+          "nullable": true,
+          "default": "0",
+          "comment": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "INVOICES_PK",
+          "kind": "PRIMARY KEY",
+          "columns": [
+            "INV_ID"
+          ],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": null
+        },
+        {
+          "name": "INVOICES_NO_UK",
+          "kind": "UNIQUE",
+          "columns": [
+            "INV_NO"
+          ],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": null
+        },
+        {
+          "name": "INV_ORD_FK",
+          "kind": "FOREIGN KEY",
+          "columns": [
+            "ORD_ID"
+          ],
+          "ref_table": "ORDERS",
+          "ref_columns": [
+            "ORD_ID"
+          ],
+          "condition": null
+        },
+        {
+          "name": "INV_CUST_FK",
+          "kind": "FOREIGN KEY",
+          "columns": [
+            "CUST_ID"
+          ],
+          "ref_table": "CUSTOMERS",
+          "ref_columns": [
+            "CUST_ID"
+          ],
+          "condition": null
+        },
+        {
+          "name": "INV_STATUS_CK",
+          "kind": "CHECK",
+          "columns": [],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": "inv_status IN ('OPEN','PART','PAID','CANC')"
+        }
+      ],
+      "comment": null
+    },
+    {
+      "name": "ORDERS",
+      "ref": {
+        "file": "legacy_code/tables/orders.sql",
+        "start_line": 1,
+        "end_line": 14
+      },
+      "columns": [
+        {
+          "name": "ORD_ID",
+          "datatype": "NUMBER(12)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CUST_ID",
+          "datatype": "NUMBER(10)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "ORD_DT",
+          "datatype": "DATE",
+          "nullable": true,
+          "default": "sysdate",
+          "comment": null
+        },
+        {
+          "name": "ORD_STATUS",
+          "datatype": "NUMBER(2)",
+          "nullable": false,
+          "default": "10",
+          "comment": "10=new 20=confirmed 30=shipped 40=invoiced 90=cancelled"
+        },
+        {
+          "name": "TOTAL_AMT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "DISC_PCT",
+          "datatype": "NUMBER(5,2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CURR_CD",
+          "datatype": "VARCHAR2(3)",
+          "nullable": true,
+          "default": "'EUR'",
+          "comment": "only EUR supported"
+        },
+        {
+          "name": "SHIP_DT",
+          "datatype": "DATE",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "REMARKS",
+          "datatype": "VARCHAR2(4000)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CREATED_BY",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "ORDERS_PK",
+          "kind": "PRIMARY KEY",
+          "columns": [
+            "ORD_ID"
+          ],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": null
+        },
+        {
+          "name": "ORDERS_CUST_FK",
+          "kind": "FOREIGN KEY",
+          "columns": [
+            "CUST_ID"
+          ],
+          "ref_table": "CUSTOMERS",
+          "ref_columns": [
+            "CUST_ID"
+          ],
+          "condition": null
+        }
+      ],
+      "comment": null
+    },
+    {
+      "name": "ORDER_LINES",
+      "ref": {
+        "file": "legacy_code/tables/order_lines.sql",
+        "start_line": 1,
+        "end_line": 11
+      },
+      "columns": [
+        {
+          "name": "ORD_ID",
+          "datatype": "NUMBER(12)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "LINE_NO",
+          "datatype": "NUMBER(5)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "PROD_CD",
+          "datatype": "VARCHAR2(20)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "QTY",
+          "datatype": "NUMBER(10,2)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "UNIT_PRICE",
+          "datatype": "NUMBER(10,2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "LINE_AMT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "ORDER_LINES_PK",
+          "kind": "PRIMARY KEY",
+          "columns": [
+            "ORD_ID",
+            "LINE_NO"
+          ],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": null
+        },
+        {
+          "name": "ORDL_ORD_FK",
+          "kind": "FOREIGN KEY",
+          "columns": [
+            "ORD_ID"
+          ],
+          "ref_table": "ORDERS",
+          "ref_columns": [
+            "ORD_ID"
+          ],
+          "condition": null
+        },
+        {
+          "name": "ORDL_PROD_FK",
+          "kind": "FOREIGN KEY",
+          "columns": [
+            "PROD_CD"
+          ],
+          "ref_table": "PRODUCTS",
+          "ref_columns": [
+            "PROD_CD"
+          ],
+          "condition": null
+        }
+      ],
+      "comment": null
+    },
+    {
+      "name": "PAYMENTS",
+      "ref": {
+        "file": "legacy_code/tables/payments.sql",
+        "start_line": 1,
+        "end_line": 11
+      },
+      "columns": [
+        {
+          "name": "PAY_ID",
+          "datatype": "NUMBER(12)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "INV_ID",
+          "datatype": "NUMBER(12)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "PAY_DT",
+          "datatype": "DATE",
+          "nullable": true,
+          "default": "SYSDATE",
+          "comment": null
+        },
+        {
+          "name": "PAY_AMT",
+          "datatype": "NUMBER(12,2)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "PAY_METHOD",
+          "datatype": "VARCHAR2(2)",
+          "nullable": true,
+          "default": null,
+          "comment": "BT=bank transfer, CC=credit card"
+        },
+        {
+          "name": "REF_TXT",
+          "datatype": "VARCHAR2(100)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "CREATED_BY",
+          "datatype": "VARCHAR2(30)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "PAYMENTS_PK",
+          "kind": "PRIMARY KEY",
+          "columns": [
+            "PAY_ID"
+          ],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": null
+        },
+        {
+          "name": "PAY_INV_FK",
+          "kind": "FOREIGN KEY",
+          "columns": [
+            "INV_ID"
+          ],
+          "ref_table": "INVOICES",
+          "ref_columns": [
+            "INV_ID"
+          ],
+          "condition": null
+        }
+      ],
+      "comment": null
+    },
+    {
+      "name": "PRODUCTS",
+      "ref": {
+        "file": "legacy_code/tables/products.sql",
+        "start_line": 1,
+        "end_line": 8
+      },
+      "columns": [
+        {
+          "name": "PROD_CD",
+          "datatype": "VARCHAR2(20)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "DESCR",
+          "datatype": "VARCHAR2(200)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "LIST_PRICE",
+          "datatype": "NUMBER(10,2)",
+          "nullable": false,
+          "default": null,
+          "comment": null
+        },
+        {
+          "name": "ACTIVE_YN",
+          "datatype": "CHAR(1)",
+          "nullable": true,
+          "default": "'Y'",
+          "comment": null
+        },
+        {
+          "name": "VAT_CAT",
+          "datatype": "VARCHAR2(2)",
+          "nullable": true,
+          "default": null,
+          "comment": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "PRODUCTS_PK",
+          "kind": "PRIMARY KEY",
+          "columns": [
+            "PROD_CD"
+          ],
+          "ref_table": null,
+          "ref_columns": [],
+          "condition": null
+        }
+      ],
+      "comment": null
+    }
+  ],
+  "views": [
+    {
+      "name": "CUST_BALANCE_V",
+      "ref": {
+        "file": "legacy_code/views/cust_balance_v.sql",
+        "start_line": 2,
+        "end_line": 10
+      },
+      "columns": [
+        "CUST_ID",
+        "CUST_NAME",
+        "CREDIT_LIMIT",
+        "OPEN_AMT",
+        "AVAIL_CREDIT"
+      ]
+    },
+    {
+      "name": "ORD_SUMMARY_V",
+      "ref": {
+        "file": "legacy_code/views/ord_summary_v.sql",
+        "start_line": 1,
+        "end_line": 12
+      },
+      "columns": [
+        "ORD_ID",
+        "CUST_ID",
+        "ORD_DT",
+        "STATUS_TXT",
+        "LINE_CNT",
+        "TOTAL_AMT",
+        "LINES_AMT"
+      ]
+    },
+    {
+      "name": "V_OPEN_INVOICES",
+      "ref": {
+        "file": "legacy_code/views/v_open_invoices.sql",
+        "start_line": 1,
+        "end_line": 14
+      },
+      "columns": [
+        "INV_ID",
+        "INV_NO",
+        "CUST_ID",
+        "CUST_NAME",
+        "INV_DT",
+        "DUE_DT",
+        "GROSS_AMT",
+        "PAID_AMT",
+        "OPEN_AMT",
+        "DAYS_OVERDUE"
+      ]
+    }
+  ],
+  "triggers": [
+    {
+      "name": "TRG_CUST_BIU",
+      "table": "CUSTOMERS",
+      "timing": "BEFORE",
+      "events": [
+        "INSERT",
+        "UPDATE"
+      ],
+      "row_level": true,
+      "ref": {
+        "file": "legacy_code/triggers/trg_cust_biu.sql",
+        "start_line": 1,
+        "end_line": 25
+      }
+    },
+    {
+      "name": "TRG_ORDL_AIUD",
+      "table": "ORDER_LINES",
+      "timing": "AFTER",
+      "events": [
+        "INSERT",
+        "UPDATE",
+        "DELETE"
+      ],
+      "row_level": true,
+      "ref": {
+        "file": "legacy_code/triggers/trg_ordl_aiud.sql",
+        "start_line": 1,
+        "end_line": 12
+      }
+    },
+    {
+      "name": "TRG_PAY_AIR",
+      "table": "PAYMENTS",
+      "timing": "AFTER",
+      "events": [
+        "INSERT"
+      ],
+      "row_level": true,
+      "ref": {
+        "file": "legacy_code/triggers/trg_pay_air.sql",
+        "start_line": 1,
+        "end_line": 21
+      }
+    }
+  ],
+  "sequences": [
+    {
+      "name": "AUDIT_LOG_SEQ",
+      "ref": {
+        "file": "legacy_code/sequences/audit_log_seq.sql",
+        "start_line": 2,
+        "end_line": 2
+      }
+    },
+    {
+      "name": "INV_SEQ",
+      "ref": {
+        "file": "legacy_code/sequences/inv_seq.sql",
+        "start_line": 1,
+        "end_line": 5
+      }
+    },
+    {
+      "name": "ORD_SEQ",
+      "ref": {
+        "file": "legacy_code/sequences/ord_seq.sql",
+        "start_line": 1,
+        "end_line": 1
+      }
+    },
+    {
+      "name": "PAY_ID_SEQ",
+      "ref": {
+        "file": "legacy_code/sequences/pay_id_seq.sql",
+        "start_line": 1,
+        "end_line": 1
+      }
+    },
+    {
+      "name": "SEQ_CUSTOMERS",
+      "ref": {
+        "file": "legacy_code/sequences/seq_customers.sql",
+        "start_line": 1,
+        "end_line": 4
+      }
+    }
+  ]
+}
