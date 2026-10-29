@@ -821,6 +821,30 @@ def find_risk_flags(u: Unit, ctx: Context, accesses: list[TableAccess],
     return flags
 
 
+FIRING_EVENTS = {
+    Operation.INSERT: {"INSERT"},
+    Operation.UPDATE: {"UPDATE"},
+    Operation.DELETE: {"DELETE"},
+    Operation.MERGE: {"INSERT", "UPDATE"},
+}
+
+
+def find_fired_triggers(accesses: list[TableAccess], triggers: list[Trigger]) -> list[Dependency]:
+    """A write to a table fires every trigger on that table with a matching event.
+
+    Conservative: UPDATE OF <columns> and WHEN conditions are not evaluated.
+    """
+    out = []
+    for acc in accesses:
+        events = FIRING_EVENTS.get(acc.operation, set())
+        for t in triggers:
+            if t.table == acc.relation and events & set(t.events):
+                out.append(Dependency(source=acc.unit_id, source_type=acc.unit_type, target=t.name,
+                                      target_type=ObjectType.TRIGGER, kind=DependencyKind.FIRES_TRIGGER,
+                                      file=acc.file, line=acc.line))
+    return out
+
+
 def find_package_cycles(edges: list[Dependency]) -> list[list[str]]:
     graph: dict[str, set[str]] = {}
     for e in edges:
@@ -955,6 +979,7 @@ def extract(source_root: Path):
         edges.append(Dependency(source=t.name, source_type=ObjectType.TRIGGER, target=t.table,
                                 target_type=relation_type(t.table, ctx) or ObjectType.TABLE,
                                 kind=DependencyKind.TRIGGER_ON, file=s.path, line=t.ref.start_line))
+    edges += find_fired_triggers(accesses, [t for t, *_ in triggers])
 
     graph = DependencyGraph(parser_version=PARSER_VERSION, edges=dedupe(edges, key=lambda e: (
         e.source, e.target, e.kind, e.line)), package_cycles=find_package_cycles(edges))

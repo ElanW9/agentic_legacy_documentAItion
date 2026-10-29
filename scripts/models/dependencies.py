@@ -13,6 +13,7 @@ class DependencyKind(StrEnum):
     SEQUENCE_USE = "SEQUENCE_USE"    # seq.NEXTVAL / CURRVAL
     VIEW_SOURCE = "VIEW_SOURCE"      # view selects from table/view
     TRIGGER_ON = "TRIGGER_ON"        # trigger fires on table
+    FIRES_TRIGGER = "FIRES_TRIGGER"  # unit's DML on a table fires that table's trigger
     EXTERNAL_CALL = "EXTERNAL_CALL"  # Oracle-supplied package (DBMS_*, UTL_*)
 
 
