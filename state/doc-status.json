@@ -1,0 +1,52 @@
+{
+  "entries": {
+    "CUST_MGMT": {
+      "package": "CUST_MGMT",
+      "doc_path": "docs/packages/cust_mgmt.md",
+      "source_files": [
+        "legacy_code/packages/cust_mgmt.pks",
+        "legacy_code/packages/cust_mgmt.pkb"
+      ],
+      "source_hash": "1157cbb9f7dc25b98a2882f7eca548d971f7a1c97445caf0c33ebe6554cf4776",
+      "status": "draft",
+      "updated_at": "2026-10-29T16:47:41.251770Z",
+      "validation_passed": true
+    },
+    "INV_API": {
+      "package": "INV_API",
+      "doc_path": "docs/packages/inv_api.md",
+      "source_files": [
+        "legacy_code/packages/inv_api.pks",
+        "legacy_code/packages/inv_api.pkb"
+      ],
+      "source_hash": "af29cc787e6fe6d3d728cbb3fb2d41fafc8f38fc7868291e09b784baa60cdbbf",
+      "status": "draft",
+      "updated_at": "2026-10-29T16:56:04.988966Z",
+      "validation_passed": true
+    },
+    "UTIL_LOG": {
+      "package": "UTIL_LOG",
+      "doc_path": "docs/packages/util_log.md",
+      "source_files": [
+        "legacy_code/packages/util_log.pks",
+        "legacy_code/packages/util_log.pkb"
+      ],
+      "source_hash": "d44fc2f3d3ec73c27bbf4349e0f6b47af262ee799294ce2582dc78d57a8a48e6",
+      "status": "draft",
+      "updated_at": "2026-10-29T16:57:22.808172Z",
+      "validation_passed": true
+    },
+    "PKG_ORDER": {
+      "package": "PKG_ORDER",
+      "doc_path": "docs/packages/pkg_order.md",
+      "source_files": [
+        "legacy_code/packages/pkg_order.pks",
+        "legacy_code/packages/pkg_order.pkb"
+      ],
+      "source_hash": "f33eac6142f77100f7d8d926f9ee89daef2d7ca9d0c39b64453b72a154b8c615",
+      "status": "draft",
+      "updated_at": "2026-10-29T16:57:59.537151Z",
+      "validation_passed": true
+    }
+  }
+}
