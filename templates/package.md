@@ -55,7 +55,7 @@ TEMPLATE: one package. Copy to docs/packages/<package_lowercase>.md.
 
 | From unit | To | Kind | Line |
 |-----------|----|------|------|
-| `{{PACKAGE.UNIT}}` | `{{TARGET}}` | {{CALL/USES_SEQUENCE/VARIABLE_REF/...}} | {{line}} |
+| `{{PACKAGE.UNIT}}` | `{{TARGET}}` | {{CALL/EXTERNAL_CALL/SEQUENCE_USE/VARIABLE_REF/...}} | {{line}} |
 
 ### Called by
 
