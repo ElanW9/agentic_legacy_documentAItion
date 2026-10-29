@@ -1,0 +1,107 @@
+{
+  "$defs": {
+    "AccessVia": {
+      "enum": [
+        "STATIC",
+        "DYNAMIC_LITERAL"
+      ],
+      "title": "AccessVia",
+      "type": "string"
+    },
+    "ObjectType": {
+      "enum": [
+        "PACKAGE",
+        "PROCEDURE",
+        "FUNCTION",
+        "TABLE",
+        "VIEW",
+        "TRIGGER",
+        "SEQUENCE",
+        "EXTERNAL"
+      ],
+      "title": "ObjectType",
+      "type": "string"
+    },
+    "Operation": {
+      "enum": [
+        "SELECT",
+        "INSERT",
+        "UPDATE",
+        "DELETE",
+        "MERGE"
+      ],
+      "title": "Operation",
+      "type": "string"
+    },
+    "TableAccess": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "unit_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "relation": {
+          "title": "Relation",
+          "type": "string"
+        },
+        "relation_type": {
+          "enum": [
+            "TABLE",
+            "VIEW"
+          ],
+          "title": "Relation Type",
+          "type": "string"
+        },
+        "operation": {
+          "$ref": "#/$defs/Operation"
+        },
+        "file": {
+          "title": "File",
+          "type": "string"
+        },
+        "line": {
+          "title": "Line",
+          "type": "integer"
+        },
+        "via": {
+          "$ref": "#/$defs/AccessVia",
+          "default": "STATIC"
+        }
+      },
+      "required": [
+        "unit_id",
+        "unit_type",
+        "relation",
+        "relation_type",
+        "operation",
+        "file",
+        "line"
+      ],
+      "title": "TableAccess",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "parser_version": {
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "accesses": {
+      "items": {
+        "$ref": "#/$defs/TableAccess"
+      },
+      "title": "Accesses",
+      "type": "array"
+    }
+  },
+  "required": [
+    "parser_version",
+    "accesses"
+  ],
+  "title": "TableUsage",
+  "type": "object"
+}

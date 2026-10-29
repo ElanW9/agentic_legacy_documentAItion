@@ -1,0 +1,1205 @@
+{
+  "parser_version": "0.1.0",
+  "flags": [
+    {
+      "unit_id": "CUST_MGMT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 16,
+      "snippet": "V_MAX_LIMIT   CONSTANT NUMBER := 250000;",
+      "detail": "package constant V_MAX_LIMIT = 250000"
+    },
+    {
+      "unit_id": "CUST_MGMT.BLOCK_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 102,
+      "snippet": "SET STATUS = 'B',",
+      "detail": "literals: 'B'"
+    },
+    {
+      "unit_id": "CUST_MGMT.BLOCK_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 108,
+      "snippet": "SET ORD_STATUS = 15",
+      "detail": "literals: 15"
+    },
+    {
+      "unit_id": "CUST_MGMT.BLOCK_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 110,
+      "snippet": "AND ORD_STATUS IN (10, 20);",
+      "detail": "literals: 10, 20"
+    },
+    {
+      "unit_id": "CUST_MGMT.BLOCK_CUSTOMER",
+      "kind": "COMMIT",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 113,
+      "snippet": "COMMIT;",
+      "detail": "commits the caller's transaction"
+    },
+    {
+      "unit_id": "CUST_MGMT.CHK_CREDIT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 159,
+      "snippet": "IF V_STATUS <> 'A' THEN",
+      "detail": "literals: 'A'"
+    },
+    {
+      "unit_id": "CUST_MGMT.CHK_CREDIT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 163,
+      "snippet": "IF V_TYPE = 'G' THEN",
+      "detail": "literals: 'G'"
+    },
+    {
+      "unit_id": "CUST_MGMT.CHK_CREDIT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 169,
+      "snippet": "IF V_LIMIT IS NULL OR V_OPEN + P_AMT <= V_LIMIT * 1.1 THEN",
+      "detail": "literals: 1.1"
+    },
+    {
+      "unit_id": "CUST_MGMT.CHK_OVERDUE_CUSTOMERS",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 234,
+      "snippet": "WHERE DAYS_OVERDUE > 90;",
+      "detail": "literals: 90"
+    },
+    {
+      "unit_id": "CUST_MGMT.CHK_OVERDUE_CUSTOMERS",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 238,
+      "snippet": "IF GET_CUST_TYPE(R.CUST_ID) <> 'G' THEN",
+      "detail": "literals: 'G'"
+    },
+    {
+      "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 36,
+      "snippet": "PROCEDURE CREATE_CUSTOMER (P_NAME    IN  VARCHAR2,",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 60,
+      "snippet": "IF P_TYPE = 'W' THEN",
+      "detail": "literals: 'W'"
+    },
+    {
+      "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 61,
+      "snippet": "V_LIMIT := 20000;",
+      "detail": "literals: 20000"
+    },
+    {
+      "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 62,
+      "snippet": "ELSIF P_TYPE = 'G' THEN",
+      "detail": "literals: 'G'"
+    },
+    {
+      "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 65,
+      "snippet": "V_LIMIT := 2500;",
+      "detail": "literals: 2500"
+    },
+    {
+      "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 72,
+      "snippet": "VALUES (P_CUST_ID, P_NAME, NVL(P_TYPE, 'R'), REPLACE(UPPER(P_VAT), ' ', ''),",
+      "detail": "literals: 'R'"
+    },
+    {
+      "unit_id": "CUST_MGMT.CREATE_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 73,
+      "snippet": "LOWER(P_EMAIL), NVL(P_CTRY, 'BE'), V_LIMIT, 'A');",
+      "detail": "literals: 'BE', 'A'"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_BALANCE#1",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 180,
+      "snippet": "FUNCTION GET_BALANCE (P_CUST_ID IN NUMBER) RETURN NUMBER",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_BALANCE#2",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 198,
+      "snippet": "AND INV_STATUS <> 'CANC';",
+      "detail": "literals: 'CANC'"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_CUST_ATTR",
+      "kind": "DYNAMIC_SQL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 216,
+      "snippet": "EXECUTE IMMEDIATE 'SELECT TO_CHAR(' || P_COL || ') FROM CUSTOMERS WHERE CUST_ID = :1'",
+      "detail": "SQL text concatenated at runtime"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_CUST_ATTR",
+      "kind": "WHEN_OTHERS_SWALLOW",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 222,
+      "snippet": "WHEN OTHERS THEN",
+      "detail": "returns a value instead of raising; error is not propagated"
+    },
+    {
+      "unit_id": "CUST_MGMT.GET_CUST_TYPE",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 142,
+      "snippet": "RETURN 'R';",
+      "detail": "literals: 'R'"
+    },
+    {
+      "unit_id": "CUST_MGMT.MERGE_CUST",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 19,
+      "snippet": "PROCEDURE MERGE_CUST (P_FROM IN NUMBER, P_TO IN NUMBER)",
+      "detail": "private unit with no caller: unreachable"
+    },
+    {
+      "unit_id": "CUST_MGMT.MERGE_CUST",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 31,
+      "snippet": "SET STATUS = 'C'",
+      "detail": "literals: 'C'"
+    },
+    {
+      "unit_id": "CUST_MGMT.UNBLOCK_CUSTOMER",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 117,
+      "snippet": "PROCEDURE UNBLOCK_CUSTOMER (P_CUST_ID IN NUMBER)",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "CUST_MGMT.UNBLOCK_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 121,
+      "snippet": "SET STATUS = 'A',",
+      "detail": "literals: 'A'"
+    },
+    {
+      "unit_id": "CUST_MGMT.UNBLOCK_CUSTOMER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 124,
+      "snippet": "AND STATUS = 'B';",
+      "detail": "literals: 'B'"
+    },
+    {
+      "unit_id": "CUST_MGMT.UPD_CREDIT_LIMIT",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 79,
+      "snippet": "PROCEDURE UPD_CREDIT_LIMIT (P_CUST_ID IN NUMBER, P_LIMIT IN NUMBER)",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "CUST_MGMT.UPD_CREDIT_LIMIT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 89,
+      "snippet": "AND STATUS <> 'C';",
+      "detail": "literals: 'C'"
+    },
+    {
+      "unit_id": "CUST_MGMT.UPD_CREDIT_LIMIT",
+      "kind": "WHEN_OTHERS_SWALLOW",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 93,
+      "snippet": "WHEN OTHERS THEN",
+      "detail": "handler body is NULL; error is not propagated"
+    },
+    {
+      "unit_id": "INV_API",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 12,
+      "snippet": "g_vat_rate    NUMBER;",
+      "detail": "private package variable G_VAT_RATE; persists for the database session"
+    },
+    {
+      "unit_id": "INV_API",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 13,
+      "snippet": "g_inv_prefix  VARCHAR2(10) := 'INV';",
+      "detail": "private package variable G_INV_PREFIX; persists for the database session"
+    },
+    {
+      "unit_id": "INV_API",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 15,
+      "snippet": "c_tolerance   CONSTANT NUMBER := 0.05;",
+      "detail": "package constant C_TOLERANCE = 0.05"
+    },
+    {
+      "unit_id": "INV_API.CALC_VAT",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 55,
+      "snippet": "IF g_vat_rate IS NULL THEN",
+      "detail": "reads package variable INV_API.G_VAT_RATE"
+    },
+    {
+      "unit_id": "INV_API.CALC_VAT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 56,
+      "snippet": "g_vat_rate := util_log.get_param_num('VAT_RATE', 21);",
+      "detail": "literals: 21"
+    },
+    {
+      "unit_id": "INV_API.CALC_VAT",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 56,
+      "snippet": "g_vat_rate := util_log.get_param_num('VAT_RATE', 21);",
+      "detail": "writes package variable INV_API.G_VAT_RATE"
+    },
+    {
+      "unit_id": "INV_API.CALC_VAT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 62,
+      "snippet": "IF NVL(v_ctry, 'BE') = 'BE' THEN",
+      "detail": "literals: 'BE'"
+    },
+    {
+      "unit_id": "INV_API.CALC_VAT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 64,
+      "snippet": "ELSIF v_ctry IN ('NL', 'FR', 'DE', 'LU') AND v_vat IS NOT NULL THEN",
+      "detail": "literals: 'NL', 'FR', 'DE', 'LU'"
+    },
+    {
+      "unit_id": "INV_API.CALC_VAT",
+      "kind": "WHEN_OTHERS_SWALLOW",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 70,
+      "snippet": "WHEN OTHERS THEN",
+      "detail": "returns a value instead of raising; error is not propagated"
+    },
+    {
+      "unit_id": "INV_API.CANCEL_INVOICE",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 144,
+      "snippet": "UPDATE invoices SET inv_status = 'CANC' WHERE inv_id = p_inv_id;",
+      "detail": "literals: 'CANC'"
+    },
+    {
+      "unit_id": "INV_API.CANCEL_INVOICE_FOR_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 158,
+      "snippet": "AND inv_status IN ('OPEN', 'PART')) LOOP",
+      "detail": "literals: 'OPEN', 'PART'"
+    },
+    {
+      "unit_id": "INV_API.CREATE_INVOICE#2",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 94,
+      "snippet": "IF v_ord.ord_status NOT IN (20, 30) THEN",
+      "detail": "literals: 20, 30"
+    },
+    {
+      "unit_id": "INV_API.CREATE_INVOICE#2",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 103,
+      "snippet": "AND inv_status <> 'CANC';",
+      "detail": "literals: 'CANC'"
+    },
+    {
+      "unit_id": "INV_API.CREATE_INVOICE#2",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 117,
+      "snippet": "v_ord.total_amt, v_vat, v_ord.total_amt + v_vat, 0, 'OPEN', 0);",
+      "detail": "literals: 'OPEN'"
+    },
+    {
+      "unit_id": "INV_API.GET_DUE_DT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 40,
+      "snippet": "IF v_type = 'G' THEN",
+      "detail": "literals: 'G'"
+    },
+    {
+      "unit_id": "INV_API.GET_DUE_DT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 41,
+      "snippet": "RETURN util_log.add_workdays(p_inv_dt, 60);",
+      "detail": "literals: 60"
+    },
+    {
+      "unit_id": "INV_API.GET_DUE_DT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 42,
+      "snippet": "ELSIF v_type = 'W' THEN",
+      "detail": "literals: 'W'"
+    },
+    {
+      "unit_id": "INV_API.GET_DUE_DT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 43,
+      "snippet": "RETURN p_inv_dt + 45;",
+      "detail": "literals: 45"
+    },
+    {
+      "unit_id": "INV_API.GET_DUE_DT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 45,
+      "snippet": "RETURN p_inv_dt + 30;",
+      "detail": "literals: 30"
+    },
+    {
+      "unit_id": "INV_API.GET_OPEN_AMT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 218,
+      "snippet": "AND ord_status IN (20, 30);",
+      "detail": "literals: 20, 30"
+    },
+    {
+      "unit_id": "INV_API.NEXT_INV_NO",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 20,
+      "snippet": "RETURN g_inv_prefix || TO_CHAR(SYSDATE, 'YYYY') || '-' || LPAD(p_id, 6, '0');",
+      "detail": "reads package variable INV_API.G_INV_PREFIX"
+    },
+    {
+      "unit_id": "INV_API.RECALC_PAID",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 25,
+      "snippet": "PROCEDURE recalc_paid IS",
+      "detail": "private unit with no caller: unreachable"
+    },
+    {
+      "unit_id": "INV_API.RECALC_PAID",
+      "kind": "COMMIT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 31,
+      "snippet": "COMMIT;",
+      "detail": "commits the caller's transaction"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 164,
+      "snippet": "PROCEDURE register_payment(p_inv_id IN NUMBER,",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 174,
+      "snippet": "IF v_inv.inv_status = 'CANC' THEN",
+      "detail": "literals: 'CANC'"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 177,
+      "snippet": "IF p_method NOT IN ('BT', 'CC', 'CA') THEN",
+      "detail": "literals: 'BT', 'CC', 'CA'"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 182,
+      "snippet": "VALUES (pay_id_seq.NEXTVAL, p_inv_id, SYSDATE, p_amt, p_method, p_ref, NVL(util_log.g_user, USER));",
+      "detail": "uses package variable UTIL_LOG.G_USER"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 193,
+      "snippet": "IF p_method = 'CA' AND p_amt > 3000 THEN",
+      "detail": "literals: 3000, 'CA'"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "kind": "ROLLBACK",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 194,
+      "snippet": "ROLLBACK;",
+      "detail": "rolls back the caller's whole transaction"
+    },
+    {
+      "unit_id": "INV_API.REGISTER_PAYMENT",
+      "kind": "COMMIT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 198,
+      "snippet": "COMMIT;",
+      "detail": "commits the caller's transaction"
+    },
+    {
+      "unit_id": "INV_API.SEND_REMINDERS",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 229,
+      "snippet": "WHERE days_overdue > 14) LOOP",
+      "detail": "literals: 14"
+    },
+    {
+      "unit_id": "INV_API.SEND_REMINDERS",
+      "kind": "COMMIT",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 243,
+      "snippet": "COMMIT;",
+      "detail": "commits the caller's transaction"
+    },
+    {
+      "unit_id": "PKG_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pks",
+      "line": 4,
+      "snippet": "st_new        constant number := 10;",
+      "detail": "package constant ST_NEW = 10"
+    },
+    {
+      "unit_id": "PKG_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pks",
+      "line": 5,
+      "snippet": "st_hold       constant number := 15;",
+      "detail": "package constant ST_HOLD = 15"
+    },
+    {
+      "unit_id": "PKG_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pks",
+      "line": 6,
+      "snippet": "st_confirmed  constant number := 20;",
+      "detail": "package constant ST_CONFIRMED = 20"
+    },
+    {
+      "unit_id": "PKG_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pks",
+      "line": 7,
+      "snippet": "st_shipped    constant number := 30;",
+      "detail": "package constant ST_SHIPPED = 30"
+    },
+    {
+      "unit_id": "PKG_ORDER",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 7,
+      "snippet": "g_line_cnt    pls_integer := 0;",
+      "detail": "private package variable G_LINE_CNT; persists for the database session"
+    },
+    {
+      "unit_id": "PKG_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pks",
+      "line": 8,
+      "snippet": "st_invoiced   constant number := 40;",
+      "detail": "package constant ST_INVOICED = 40"
+    },
+    {
+      "unit_id": "PKG_ORDER",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 8,
+      "snippet": "g_disc_cache  number;",
+      "detail": "private package variable G_DISC_CACHE; persists for the database session"
+    },
+    {
+      "unit_id": "PKG_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pks",
+      "line": 9,
+      "snippet": "st_cancelled  constant number := 90;",
+      "detail": "package constant ST_CANCELLED = 90"
+    },
+    {
+      "unit_id": "PKG_ORDER",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/pkg_order.pks",
+      "line": 12,
+      "snippet": "g_last_ord_id number;",
+      "detail": "public package variable G_LAST_ORD_ID; persists for the database session"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#1",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 58,
+      "snippet": "procedure add_line(p_ord_id in number, p_prod_cd in varchar2, p_qty in number) is",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#1",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 65,
+      "snippet": "and active_yn = 'Y';",
+      "detail": "literals: 'Y'"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#1",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 68,
+      "snippet": "if p_qty >= 100 then",
+      "detail": "literals: 100"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#1",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 69,
+      "snippet": "l_price := round(l_price * 0.97, 2);",
+      "detail": "literals: 0.97"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#2",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 89,
+      "snippet": "select nvl(max(line_no), 0) + 10 into l_line from order_lines where ord_id = p_ord_id;",
+      "detail": "literals: 10"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#2",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 94,
+      "snippet": "g_line_cnt := g_line_cnt + 1;",
+      "detail": "writes package variable PKG_ORDER.G_LINE_CNT"
+    },
+    {
+      "unit_id": "PKG_ORDER.ADD_LINE#2",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 94,
+      "snippet": "g_line_cnt := g_line_cnt + 1;",
+      "detail": "reads package variable PKG_ORDER.G_LINE_CNT"
+    },
+    {
+      "unit_id": "PKG_ORDER.CALC_DISC",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 21,
+      "snippet": "if p_amt > 25000 then",
+      "detail": "literals: 25000"
+    },
+    {
+      "unit_id": "PKG_ORDER.CALC_DISC",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 22,
+      "snippet": "l_pct := 7.5;",
+      "detail": "literals: 7.5"
+    },
+    {
+      "unit_id": "PKG_ORDER.CALC_DISC",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 23,
+      "snippet": "elsif p_amt > 10000 then",
+      "detail": "literals: 10000"
+    },
+    {
+      "unit_id": "PKG_ORDER.CALC_DISC",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 24,
+      "snippet": "l_pct := 5;",
+      "detail": "literals: 5"
+    },
+    {
+      "unit_id": "PKG_ORDER.CALC_DISC",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 27,
+      "snippet": "if p_cust_type = 'W' then",
+      "detail": "literals: 'W'"
+    },
+    {
+      "unit_id": "PKG_ORDER.CALC_DISC",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 28,
+      "snippet": "l_pct := l_pct + 2;",
+      "detail": "literals: 2"
+    },
+    {
+      "unit_id": "PKG_ORDER.CANCEL_ORDER",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 258,
+      "snippet": "procedure cancel_order(p_ord_id in number, p_reason in varchar2) is",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "PKG_ORDER.GET_ORDER_TOTAL",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 107,
+      "snippet": "function get_order_total(p_ord_id in number) return number is",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "PKG_ORDER.NEW_ORDER",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 35,
+      "snippet": "function new_order(p_cust_id in number, p_remarks in varchar2 default null) return number is",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "PKG_ORDER.NEW_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 42,
+      "snippet": "if l_st = 'C' then",
+      "detail": "literals: 'C'"
+    },
+    {
+      "unit_id": "PKG_ORDER.NEW_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 49,
+      "snippet": "values (l_id, p_cust_id, sysdate, st_new, 0, 0, 'EUR', p_remarks, nvl(util_log.g_user, user));",
+      "detail": "literals: 'EUR'"
+    },
+    {
+      "unit_id": "PKG_ORDER.NEW_ORDER",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 49,
+      "snippet": "values (l_id, p_cust_id, sysdate, st_new, 0, 0, 'EUR', p_remarks, nvl(util_log.g_user, user));",
+      "detail": "uses package variable UTIL_LOG.G_USER"
+    },
+    {
+      "unit_id": "PKG_ORDER.NEW_ORDER",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 51,
+      "snippet": "g_last_ord_id := l_id;",
+      "detail": "writes package variable PKG_ORDER.G_LAST_ORD_ID"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 120,
+      "snippet": "procedure process_order(p_ord_id in number default null, p_ship in boolean default false) is",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 138,
+      "snippet": "l_min_amt   number := 25;",
+      "detail": "literals: 25"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "SAVEPOINT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 145,
+      "snippet": "savepoint sp_ord;",
+      "detail": "savepoint SP_ORD"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 169,
+      "snippet": "and p.active_yn = 'N';",
+      "detail": "literals: 'N'"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 174,
+      "snippet": "elsif r.cust_status = 'B' then",
+      "detail": "literals: 'B'"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 180,
+      "snippet": "l_disc := least(l_disc, 15);",
+      "detail": "literals: 15"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 182,
+      "snippet": "if l_disc > 50 then",
+      "detail": "literals: 50"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 201,
+      "snippet": "if r.country_cd = 'BE' or r.country_cd is null then",
+      "detail": "literals: 'BE'"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "SAVEPOINT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 217,
+      "snippet": "rollback to sp_ord;",
+      "detail": "rollback to savepoint"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 225,
+      "snippet": "if r.cust_type = 'G' then",
+      "detail": "literals: 'G'"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 242,
+      "snippet": "if mod(l_done_cnt, 50) = 0 then",
+      "detail": "literals: 50"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "COMMIT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 243,
+      "snippet": "commit;",
+      "detail": "commits the caller's transaction"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "WHEN_OTHERS_SWALLOW",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 246,
+      "snippet": "when others then",
+      "detail": "rolls back; logs the error; error is not propagated"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "SAVEPOINT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 247,
+      "snippet": "rollback to sp_ord;",
+      "detail": "rollback to savepoint"
+    },
+    {
+      "unit_id": "PKG_ORDER.PROCESS_ORDER",
+      "kind": "COMMIT",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 253,
+      "snippet": "commit;",
+      "detail": "commits the caller's transaction"
+    },
+    {
+      "unit_id": "TRG_CUST_BIU",
+      "kind": "TRIGGER_DML",
+      "file": "legacy_code/triggers/trg_cust_biu.sql",
+      "line": 18,
+      "snippet": "INSERT INTO cust_hist (cust_id, chg_dt, old_limit, new_limit, chg_by)",
+      "detail": "INSERT CUST_HIST as a trigger side effect"
+    },
+    {
+      "unit_id": "TRG_CUST_BIU",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/triggers/trg_cust_biu.sql",
+      "line": 22,
+      "snippet": "IF :NEW.status = 'B' THEN",
+      "detail": "literals: 'B'"
+    },
+    {
+      "unit_id": "TRG_ORDL_AIUD",
+      "kind": "TRIGGER_DML",
+      "file": "legacy_code/triggers/trg_ordl_aiud.sql",
+      "line": 6,
+      "snippet": "update orders set total_amt = nvl(total_amt, 0) + :new.line_amt where ord_id = :new.ord_id;",
+      "detail": "UPDATE ORDERS as a trigger side effect"
+    },
+    {
+      "unit_id": "TRG_ORDL_AIUD",
+      "kind": "TRIGGER_DML",
+      "file": "legacy_code/triggers/trg_ordl_aiud.sql",
+      "line": 8,
+      "snippet": "update orders set total_amt = nvl(total_amt, 0) - :old.line_amt + :new.line_amt where ord_id = :new.ord_id;",
+      "detail": "UPDATE ORDERS as a trigger side effect"
+    },
+    {
+      "unit_id": "TRG_ORDL_AIUD",
+      "kind": "TRIGGER_DML",
+      "file": "legacy_code/triggers/trg_ordl_aiud.sql",
+      "line": 10,
+      "snippet": "update orders set total_amt = nvl(total_amt, 0) - :old.line_amt where ord_id = :old.ord_id;",
+      "detail": "UPDATE ORDERS as a trigger side effect"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "kind": "TRIGGER_DML",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 9,
+      "snippet": "UPDATE invoices",
+      "detail": "UPDATE INVOICES as a trigger side effect"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 14,
+      "snippet": "IF l_paid >= l_gross - 0.05 THEN",
+      "detail": "literals: 0.05"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 15,
+      "snippet": "UPDATE invoices SET inv_status = 'PAID' WHERE inv_id = :NEW.inv_id;",
+      "detail": "literals: 'PAID'"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "kind": "TRIGGER_DML",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 15,
+      "snippet": "UPDATE invoices SET inv_status = 'PAID' WHERE inv_id = :NEW.inv_id;",
+      "detail": "UPDATE INVOICES as a trigger side effect"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 17,
+      "snippet": "UPDATE orders SET ord_status = 50 WHERE ord_id = l_ord;",
+      "detail": "literals: 50"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "kind": "TRIGGER_DML",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 17,
+      "snippet": "UPDATE orders SET ord_status = 50 WHERE ord_id = l_ord;",
+      "detail": "UPDATE ORDERS as a trigger side effect"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 19,
+      "snippet": "UPDATE invoices SET inv_status = 'PART' WHERE inv_id = :NEW.inv_id;",
+      "detail": "literals: 'PART'"
+    },
+    {
+      "unit_id": "TRG_PAY_AIR",
+      "kind": "TRIGGER_DML",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 19,
+      "snippet": "UPDATE invoices SET inv_status = 'PART' WHERE inv_id = :NEW.inv_id;",
+      "detail": "UPDATE INVOICES as a trigger side effect"
+    },
+    {
+      "unit_id": "UTIL_LOG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pks",
+      "line": 4,
+      "snippet": "g_module   VARCHAR2(30) := 'UNKNOWN';",
+      "detail": "public package variable G_MODULE; persists for the database session"
+    },
+    {
+      "unit_id": "UTIL_LOG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pks",
+      "line": 5,
+      "snippet": "g_user     VARCHAR2(30);",
+      "detail": "public package variable G_USER; persists for the database session"
+    },
+    {
+      "unit_id": "UTIL_LOG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pks",
+      "line": 6,
+      "snippet": "g_debug    BOOLEAN := FALSE;",
+      "detail": "public package variable G_DEBUG; persists for the database session"
+    },
+    {
+      "unit_id": "UTIL_LOG",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/util_log.pks",
+      "line": 8,
+      "snippet": "c_sev_info  CONSTANT CHAR(1) := 'I';",
+      "detail": "package constant C_SEV_INFO = 'I'"
+    },
+    {
+      "unit_id": "UTIL_LOG",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/util_log.pks",
+      "line": 9,
+      "snippet": "c_sev_warn  CONSTANT CHAR(1) := 'W';",
+      "detail": "package constant C_SEV_WARN = 'W'"
+    },
+    {
+      "unit_id": "UTIL_LOG",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/util_log.pks",
+      "line": 10,
+      "snippet": "c_sev_err   CONSTANT CHAR(1) := 'E';",
+      "detail": "package constant C_SEV_ERR = 'E'"
+    },
+    {
+      "unit_id": "UTIL_LOG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 12,
+      "snippet": "g_log_level  NUMBER := NULL;",
+      "detail": "private package variable G_LOG_LEVEL; persists for the database session"
+    },
+    {
+      "unit_id": "UTIL_LOG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 13,
+      "snippet": "g_call_cnt   PLS_INTEGER := 0;",
+      "detail": "private package variable G_CALL_CNT; persists for the database session"
+    },
+    {
+      "unit_id": "UTIL_LOG.ARCHIVE_ROWS",
+      "kind": "DYNAMIC_SQL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 140,
+      "snippet": "EXECUTE IMMEDIATE v_sql USING p_days;",
+      "detail": "SQL text taken from variable V_SQL (built by concatenation)"
+    },
+    {
+      "unit_id": "UTIL_LOG.ARCHIVE_ROWS",
+      "kind": "DYNAMIC_SQL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 144,
+      "snippet": "EXECUTE IMMEDIATE v_sql USING p_days;",
+      "detail": "SQL text taken from variable V_SQL (built by concatenation)"
+    },
+    {
+      "unit_id": "UTIL_LOG.ARCHIVE_ROWS",
+      "kind": "ROLLBACK",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 148,
+      "snippet": "ROLLBACK;",
+      "detail": "rolls back the caller's whole transaction"
+    },
+    {
+      "unit_id": "UTIL_LOG.ARCHIVE_ROWS",
+      "kind": "COMMIT",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 153,
+      "snippet": "COMMIT;",
+      "detail": "commits the caller's transaction"
+    },
+    {
+      "unit_id": "UTIL_LOG.DBG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 97,
+      "snippet": "IF g_debug THEN",
+      "detail": "reads package variable UTIL_LOG.G_DEBUG"
+    },
+    {
+      "unit_id": "UTIL_LOG.DBG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 98,
+      "snippet": "DBMS_OUTPUT.PUT_LINE(TO_CHAR(SYSTIMESTAMP, 'HH24:MI:SS.FF3') || ' ' || g_module || ' ' || p_msg);",
+      "detail": "reads package variable UTIL_LOG.G_MODULE"
+    },
+    {
+      "unit_id": "UTIL_LOG.HOUSEKEEPING",
+      "kind": "NO_CALLER",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 159,
+      "snippet": "PROCEDURE housekeeping IS",
+      "detail": "no caller inside the source tree (may be called externally)"
+    },
+    {
+      "unit_id": "UTIL_LOG.HOUSEKEEPING",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 162,
+      "snippet": "archive_rows('AUDIT_LOG', 'LOG_TS', get_param_num('AUDIT_KEEP_DAYS', 90));",
+      "detail": "literals: 90"
+    },
+    {
+      "unit_id": "UTIL_LOG.IS_WORKDAY",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 105,
+      "snippet": "RETURN TO_CHAR(p_dt, 'DY') NOT IN ('SAT', 'SUN');",
+      "detail": "literals: 'SAT', 'SUN'"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "AUTONOMOUS_TRANSACTION",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 63,
+      "snippet": "PRAGMA AUTONOMOUS_TRANSACTION;",
+      "detail": "Runs in its own transaction; its COMMIT/ROLLBACK does not affect the caller."
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 65,
+      "snippet": "IF g_log_level IS NULL THEN",
+      "detail": "reads package variable UTIL_LOG.G_LOG_LEVEL"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 66,
+      "snippet": "g_log_level := get_param_num('LOG_LEVEL', 1);",
+      "detail": "writes package variable UTIL_LOG.G_LOG_LEVEL"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 69,
+      "snippet": "g_call_cnt := g_call_cnt + 1;",
+      "detail": "writes package variable UTIL_LOG.G_CALL_CNT"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 69,
+      "snippet": "g_call_cnt := g_call_cnt + 1;",
+      "detail": "reads package variable UTIL_LOG.G_CALL_CNT"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 75,
+      "snippet": "g_module,",
+      "detail": "reads package variable UTIL_LOG.G_MODULE"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 79,
+      "snippet": "NVL(g_user, USER),",
+      "detail": "reads package variable UTIL_LOG.G_USER"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "COMMIT",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 82,
+      "snippet": "COMMIT;",
+      "detail": "inside autonomous transaction"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "WHEN_OTHERS_SWALLOW",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 84,
+      "snippet": "WHEN OTHERS THEN",
+      "detail": "rolls back; error is not propagated"
+    },
+    {
+      "unit_id": "UTIL_LOG.LOG_MSG",
+      "kind": "ROLLBACK",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 85,
+      "snippet": "ROLLBACK;",
+      "detail": "inside autonomous transaction"
+    },
+    {
+      "unit_id": "UTIL_LOG.LVL",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 19,
+      "snippet": "WHEN 'E' THEN 3",
+      "detail": "literals: 3, 'E'"
+    },
+    {
+      "unit_id": "UTIL_LOG.LVL",
+      "kind": "HARDCODED_VALUE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 20,
+      "snippet": "WHEN 'W' THEN 2",
+      "detail": "literals: 2, 'W'"
+    },
+    {
+      "unit_id": "UTIL_LOG.SET_CTX",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 28,
+      "snippet": "g_module := SUBSTR(UPPER(p_module), 1, 30);",
+      "detail": "writes package variable UTIL_LOG.G_MODULE"
+    },
+    {
+      "unit_id": "UTIL_LOG.SET_CTX",
+      "kind": "PACKAGE_STATE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 30,
+      "snippet": "g_user := SUBSTR(p_user, 1, 30);",
+      "detail": "writes package variable UTIL_LOG.G_USER"
+    }
+  ]
+}

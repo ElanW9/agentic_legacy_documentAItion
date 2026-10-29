@@ -1,0 +1,624 @@
+{
+  "$defs": {
+    "Column": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "datatype": {
+          "title": "Datatype",
+          "type": "string"
+        },
+        "nullable": {
+          "default": true,
+          "title": "Nullable",
+          "type": "boolean"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "comment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Comment"
+        }
+      },
+      "required": [
+        "name",
+        "datatype"
+      ],
+      "title": "Column",
+      "type": "object"
+    },
+    "Constraint": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "kind": {
+          "$ref": "#/$defs/ConstraintKind"
+        },
+        "columns": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Columns",
+          "type": "array"
+        },
+        "ref_table": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ref Table"
+        },
+        "ref_columns": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ref Columns",
+          "type": "array"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Condition"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Constraint",
+      "type": "object"
+    },
+    "ConstraintKind": {
+      "enum": [
+        "PRIMARY KEY",
+        "FOREIGN KEY",
+        "UNIQUE",
+        "CHECK"
+      ],
+      "title": "ConstraintKind",
+      "type": "string"
+    },
+    "Package": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "spec_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "body_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "subprograms": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Subprogram"
+          },
+          "title": "Subprograms",
+          "type": "array"
+        },
+        "variables": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/PackageVariable"
+          },
+          "title": "Variables",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Package",
+      "type": "object"
+    },
+    "PackageVariable": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "datatype": {
+          "title": "Datatype",
+          "type": "string"
+        },
+        "is_constant": {
+          "title": "Is Constant",
+          "type": "boolean"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "visibility": {
+          "$ref": "#/$defs/Visibility"
+        },
+        "ref": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "name",
+        "datatype",
+        "is_constant",
+        "visibility",
+        "ref"
+      ],
+      "title": "PackageVariable",
+      "type": "object"
+    },
+    "ParamMode": {
+      "enum": [
+        "IN",
+        "OUT",
+        "IN OUT"
+      ],
+      "title": "ParamMode",
+      "type": "string"
+    },
+    "Parameter": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "mode": {
+          "$ref": "#/$defs/ParamMode",
+          "default": "IN"
+        },
+        "datatype": {
+          "title": "Datatype",
+          "type": "string"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        }
+      },
+      "required": [
+        "name",
+        "datatype"
+      ],
+      "title": "Parameter",
+      "type": "object"
+    },
+    "Sequence": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "ref": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "name",
+        "ref"
+      ],
+      "title": "Sequence",
+      "type": "object"
+    },
+    "SourceFile": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        },
+        "line_count": {
+          "title": "Line Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "line_count"
+      ],
+      "title": "SourceFile",
+      "type": "object"
+    },
+    "SourceRef": {
+      "additionalProperties": false,
+      "description": "A line range in a source file. Lines are 1-based and inclusive.",
+      "properties": {
+        "file": {
+          "description": "Path relative to the repo root, forward slashes.",
+          "title": "File",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file",
+        "start_line",
+        "end_line"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    },
+    "Subprogram": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "description": "PACKAGE.NAME, with #n suffix for overloads (body order).",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "package": {
+          "title": "Package",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "PROCEDURE",
+            "FUNCTION"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "visibility": {
+          "$ref": "#/$defs/Visibility"
+        },
+        "overload": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "1-based position among same-named units.",
+          "title": "Overload"
+        },
+        "params": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Parameter"
+          },
+          "title": "Params",
+          "type": "array"
+        },
+        "return_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Return Type"
+        },
+        "signature": {
+          "title": "Signature",
+          "type": "string"
+        },
+        "spec_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "body_ref": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "unit_id",
+        "package",
+        "name",
+        "kind",
+        "visibility",
+        "signature",
+        "body_ref"
+      ],
+      "title": "Subprogram",
+      "type": "object"
+    },
+    "Table": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "ref": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "columns": {
+          "items": {
+            "$ref": "#/$defs/Column"
+          },
+          "title": "Columns",
+          "type": "array"
+        },
+        "constraints": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Constraint"
+          },
+          "title": "Constraints",
+          "type": "array"
+        },
+        "comment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Comment"
+        }
+      },
+      "required": [
+        "name",
+        "ref",
+        "columns"
+      ],
+      "title": "Table",
+      "type": "object"
+    },
+    "Trigger": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "table": {
+          "title": "Table",
+          "type": "string"
+        },
+        "timing": {
+          "enum": [
+            "BEFORE",
+            "AFTER",
+            "INSTEAD OF"
+          ],
+          "title": "Timing",
+          "type": "string"
+        },
+        "events": {
+          "items": {
+            "enum": [
+              "INSERT",
+              "UPDATE",
+              "DELETE"
+            ],
+            "type": "string"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "row_level": {
+          "title": "Row Level",
+          "type": "boolean"
+        },
+        "ref": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "name",
+        "table",
+        "timing",
+        "events",
+        "row_level",
+        "ref"
+      ],
+      "title": "Trigger",
+      "type": "object"
+    },
+    "View": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "ref": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "columns": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Columns",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "ref"
+      ],
+      "title": "View",
+      "type": "object"
+    },
+    "Visibility": {
+      "enum": [
+        "PUBLIC",
+        "PRIVATE"
+      ],
+      "title": "Visibility",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "parser_version": {
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "source_root": {
+      "title": "Source Root",
+      "type": "string"
+    },
+    "files": {
+      "items": {
+        "$ref": "#/$defs/SourceFile"
+      },
+      "title": "Files",
+      "type": "array"
+    },
+    "packages": {
+      "items": {
+        "$ref": "#/$defs/Package"
+      },
+      "title": "Packages",
+      "type": "array"
+    },
+    "tables": {
+      "items": {
+        "$ref": "#/$defs/Table"
+      },
+      "title": "Tables",
+      "type": "array"
+    },
+    "views": {
+      "items": {
+        "$ref": "#/$defs/View"
+      },
+      "title": "Views",
+      "type": "array"
+    },
+    "triggers": {
+      "items": {
+        "$ref": "#/$defs/Trigger"
+      },
+      "title": "Triggers",
+      "type": "array"
+    },
+    "sequences": {
+      "items": {
+        "$ref": "#/$defs/Sequence"
+      },
+      "title": "Sequences",
+      "type": "array"
+    }
+  },
+  "required": [
+    "parser_version",
+    "source_root",
+    "files",
+    "packages",
+    "tables",
+    "views",
+    "triggers",
+    "sequences"
+  ],
+  "title": "ObjectCatalog",
+  "type": "object"
+}

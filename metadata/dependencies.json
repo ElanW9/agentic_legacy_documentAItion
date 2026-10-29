@@ -1,0 +1,950 @@
+{
+  "parser_version": "0.1.0",
+  "edges": [
+    {
+      "source": "CUST_BALANCE_V",
+      "source_type": "VIEW",
+      "target": "CUSTOMERS",
+      "target_type": "TABLE",
+      "kind": "VIEW_SOURCE",
+      "file": "legacy_code/views/cust_balance_v.sql",
+      "line": 8,
+      "resolved": true
+    },
+    {
+      "source": "CUST_BALANCE_V",
+      "source_type": "VIEW",
+      "target": "V_OPEN_INVOICES",
+      "target_type": "VIEW",
+      "kind": "VIEW_SOURCE",
+      "file": "legacy_code/views/cust_balance_v.sql",
+      "line": 9,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.BLOCK_CUSTOMER",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 112,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.CHK_CREDIT",
+      "source_type": "FUNCTION",
+      "target": "INV_API.GET_OPEN_AMT",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 167,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.CHK_OVERDUE_CUSTOMERS",
+      "source_type": "PROCEDURE",
+      "target": "CUST_MGMT.GET_CUST_TYPE",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 238,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.CHK_OVERDUE_CUSTOMERS",
+      "source_type": "PROCEDURE",
+      "target": "CUST_MGMT.BLOCK_CUSTOMER",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 239,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.CREATE_CUSTOMER",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.SET_CTX",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 46,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.CREATE_CUSTOMER",
+      "source_type": "PROCEDURE",
+      "target": "SEQ_CUSTOMERS",
+      "target_type": "SEQUENCE",
+      "kind": "SEQUENCE_USE",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 68,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.CREATE_CUSTOMER",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 75,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.GET_BALANCE#1",
+      "source_type": "FUNCTION",
+      "target": "CUST_MGMT.GET_BALANCE#2",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 183,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.UNBLOCK_CUSTOMER",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 126,
+      "resolved": true
+    },
+    {
+      "source": "CUST_MGMT.UPD_CREDIT_LIMIT",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/cust_mgmt.pkb",
+      "line": 91,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CALC_VAT",
+      "source_type": "FUNCTION",
+      "target": "UTIL_LOG.GET_PARAM_NUM",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 56,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CALC_VAT",
+      "source_type": "FUNCTION",
+      "target": "CUST_MGMT.GET_CUST_ATTR",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 59,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CALC_VAT",
+      "source_type": "FUNCTION",
+      "target": "CUST_MGMT.GET_CUST_ATTR",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 60,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CANCEL_INVOICE",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.SET_STATUS",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 147,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CANCEL_INVOICE",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.ST_CONFIRMED",
+      "target_type": "PACKAGE",
+      "kind": "VARIABLE_REF",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 147,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CANCEL_INVOICE",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 149,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CANCEL_INVOICE_FOR_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "INV_API.CANCEL_INVOICE",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 159,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#1",
+      "source_type": "FUNCTION",
+      "target": "INV_API.CREATE_INVOICE#2",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 79,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#2",
+      "source_type": "FUNCTION",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 95,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#2",
+      "source_type": "FUNCTION",
+      "target": "INV_SEQ",
+      "target_type": "SEQUENCE",
+      "kind": "SEQUENCE_USE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 109,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#2",
+      "source_type": "FUNCTION",
+      "target": "INV_API.CALC_VAT",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 111,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#2",
+      "source_type": "FUNCTION",
+      "target": "INV_API.NEXT_INV_NO",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 115,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#2",
+      "source_type": "FUNCTION",
+      "target": "INV_API.GET_DUE_DT",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 116,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#2",
+      "source_type": "FUNCTION",
+      "target": "PKG_ORDER.SET_STATUS",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 119,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#2",
+      "source_type": "FUNCTION",
+      "target": "PKG_ORDER.ST_INVOICED",
+      "target_type": "PACKAGE",
+      "kind": "VARIABLE_REF",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 119,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#2",
+      "source_type": "FUNCTION",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 121,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.CREATE_INVOICE#2",
+      "source_type": "FUNCTION",
+      "target": "UTIL_LOG.FMT_AMT",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 122,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.GET_DUE_DT",
+      "source_type": "FUNCTION",
+      "target": "CUST_MGMT.GET_CUST_TYPE",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 38,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.GET_DUE_DT",
+      "source_type": "FUNCTION",
+      "target": "UTIL_LOG.ADD_WORKDAYS",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 41,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.REGISTER_PAYMENT",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.SET_CTX",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 170,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.REGISTER_PAYMENT",
+      "source_type": "PROCEDURE",
+      "target": "PAY_ID_SEQ",
+      "target_type": "SEQUENCE",
+      "kind": "SEQUENCE_USE",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 182,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.REGISTER_PAYMENT",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.G_USER",
+      "target_type": "PACKAGE",
+      "kind": "VARIABLE_REF",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 182,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.REGISTER_PAYMENT",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 188,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.REGISTER_PAYMENT",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.FMT_AMT",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 189,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.SEND_REMINDERS",
+      "source_type": "PROCEDURE",
+      "target": "CUST_MGMT.GET_CUST_ATTR",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 230,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.SEND_REMINDERS",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 234,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.SEND_REMINDERS",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.FMT_AMT",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 235,
+      "resolved": true
+    },
+    {
+      "source": "INV_API.SEND_REMINDERS",
+      "source_type": "PROCEDURE",
+      "target": "CUST_MGMT.CHK_OVERDUE_CUSTOMERS",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/inv_api.pkb",
+      "line": 245,
+      "resolved": true
+    },
+    {
+      "source": "ORD_SUMMARY_V",
+      "source_type": "VIEW",
+      "target": "ORDERS",
+      "target_type": "TABLE",
+      "kind": "VIEW_SOURCE",
+      "file": "legacy_code/views/ord_summary_v.sql",
+      "line": 10,
+      "resolved": true
+    },
+    {
+      "source": "ORD_SUMMARY_V",
+      "source_type": "VIEW",
+      "target": "ORDER_LINES",
+      "target_type": "TABLE",
+      "kind": "VIEW_SOURCE",
+      "file": "legacy_code/views/ord_summary_v.sql",
+      "line": 10,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.ADD_LINE#1",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.ADD_LINE#2",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 72,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.CANCEL_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "INV_API.CANCEL_INVOICE_FOR_ORDER",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 265,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.CANCEL_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 276,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.NEW_ORDER",
+      "source_type": "FUNCTION",
+      "target": "UTIL_LOG.SET_CTX",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 39,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.NEW_ORDER",
+      "source_type": "FUNCTION",
+      "target": "ORD_SEQ",
+      "target_type": "SEQUENCE",
+      "kind": "SEQUENCE_USE",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 46,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.NEW_ORDER",
+      "source_type": "FUNCTION",
+      "target": "UTIL_LOG.G_USER",
+      "target_type": "PACKAGE",
+      "kind": "VARIABLE_REF",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 49,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.NEW_ORDER",
+      "source_type": "FUNCTION",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 52,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.SET_CTX",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 140,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 141,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 148,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 156,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.SET_STATUS",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 172,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 173,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.SET_STATUS",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 175,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.CALC_DISC",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 177,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.SET_STATUS",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 185,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 186,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "CUST_MGMT.CHK_CREDIT",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 191,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.ADD_WORKDAYS",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 210,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "INV_API.CREATE_INVOICE#1",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 214,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 219,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 221,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.SET_STATUS",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 233,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 234,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_ERR",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 249,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.PROCESS_ORDER",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 254,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.SET_STATUS",
+      "source_type": "PROCEDURE",
+      "target": "PKG_ORDER.WLOG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 102,
+      "resolved": true
+    },
+    {
+      "source": "PKG_ORDER.WLOG",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/pkg_order.pkb",
+      "line": 13,
+      "resolved": true
+    },
+    {
+      "source": "TRG_CUST_BIU",
+      "source_type": "TRIGGER",
+      "target": "CUSTOMERS",
+      "target_type": "TABLE",
+      "kind": "TRIGGER_ON",
+      "file": "legacy_code/triggers/trg_cust_biu.sql",
+      "line": 1,
+      "resolved": true
+    },
+    {
+      "source": "TRG_CUST_BIU",
+      "source_type": "TRIGGER",
+      "target": "SEQ_CUSTOMERS",
+      "target_type": "SEQUENCE",
+      "kind": "SEQUENCE_USE",
+      "file": "legacy_code/triggers/trg_cust_biu.sql",
+      "line": 7,
+      "resolved": true
+    },
+    {
+      "source": "TRG_ORDL_AIUD",
+      "source_type": "TRIGGER",
+      "target": "ORDER_LINES",
+      "target_type": "TABLE",
+      "kind": "TRIGGER_ON",
+      "file": "legacy_code/triggers/trg_ordl_aiud.sql",
+      "line": 1,
+      "resolved": true
+    },
+    {
+      "source": "TRG_PAY_AIR",
+      "source_type": "TRIGGER",
+      "target": "PAYMENTS",
+      "target_type": "TABLE",
+      "kind": "TRIGGER_ON",
+      "file": "legacy_code/triggers/trg_pay_air.sql",
+      "line": 1,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.ADD_WORKDAYS",
+      "source_type": "FUNCTION",
+      "target": "UTIL_LOG.IS_WORKDAY",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 115,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.ARCHIVE_ROWS",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.DBG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 136,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.ARCHIVE_ROWS",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 149,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.ARCHIVE_ROWS",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 154,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.DBG",
+      "source_type": "PROCEDURE",
+      "target": "DBMS_OUTPUT.PUT_LINE",
+      "target_type": "EXTERNAL",
+      "kind": "EXTERNAL_CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 98,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.GET_PARAM_NUM",
+      "source_type": "FUNCTION",
+      "target": "UTIL_LOG.GET_PARAM",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 51,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.HOUSEKEEPING",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.SET_CTX",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 161,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.HOUSEKEEPING",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.ARCHIVE_ROWS",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 162,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.HOUSEKEEPING",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.GET_PARAM_NUM",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 162,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.HOUSEKEEPING",
+      "source_type": "PROCEDURE",
+      "target": "INV_API.SEND_REMINDERS",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 165,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.LOG_ERR",
+      "source_type": "PROCEDURE",
+      "target": "DBMS_UTILITY.FORMAT_ERROR_BACKTRACE",
+      "target_type": "EXTERNAL",
+      "kind": "EXTERNAL_CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 91,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.LOG_ERR",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LOG_MSG",
+      "target_type": "PROCEDURE",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 91,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.LOG_MSG",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.GET_PARAM_NUM",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 66,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.LOG_MSG",
+      "source_type": "PROCEDURE",
+      "target": "UTIL_LOG.LVL",
+      "target_type": "FUNCTION",
+      "kind": "CALL",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 71,
+      "resolved": true
+    },
+    {
+      "source": "UTIL_LOG.LOG_MSG",
+      "source_type": "PROCEDURE",
+      "target": "AUDIT_LOG_SEQ",
+      "target_type": "SEQUENCE",
+      "kind": "SEQUENCE_USE",
+      "file": "legacy_code/packages/util_log.pkb",
+      "line": 73,
+      "resolved": true
+    },
+    {
+      "source": "V_OPEN_INVOICES",
+      "source_type": "VIEW",
+      "target": "CUSTOMERS",
+      "target_type": "TABLE",
+      "kind": "VIEW_SOURCE",
+      "file": "legacy_code/views/v_open_invoices.sql",
+      "line": 12,
+      "resolved": true
+    },
+    {
+      "source": "V_OPEN_INVOICES",
+      "source_type": "VIEW",
+      "target": "INVOICES",
+      "target_type": "TABLE",
+      "kind": "VIEW_SOURCE",
+      "file": "legacy_code/views/v_open_invoices.sql",
+      "line": 12,
+      "resolved": true
+    }
+  ],
+  "package_cycles": [
+    [
+      "CUST_MGMT",
+      "INV_API"
+    ],
+    [
+      "INV_API",
+      "PKG_ORDER"
+    ],
+    [
+      "INV_API",
+      "UTIL_LOG"
+    ],
+    [
+      "CUST_MGMT",
+      "INV_API",
+      "PKG_ORDER"
+    ],
+    [
+      "CUST_MGMT",
+      "UTIL_LOG",
+      "INV_API"
+    ],
+    [
+      "INV_API",
+      "PKG_ORDER",
+      "UTIL_LOG"
+    ],
+    [
+      "CUST_MGMT",
+      "UTIL_LOG",
+      "INV_API",
+      "PKG_ORDER"
+    ]
+  ]
+}

@@ -54,6 +54,15 @@ Then fill in the values in `.env`. Every variable is described in `.env.example`
 - The database variables are for possible future use only. This PoC has no database access.
 - When code starts using a new variable, add it to `.env.example` in the same commit.
 
+## Extract metadata
+
+```bash
+python -m scripts.extract_metadata   # legacy_code/ -> metadata/*.json
+python -m scripts.export_schemas     # Pydantic models -> schemas/*.schema.json
+```
+
+Re-run the extractor whenever `legacy_code/` changes; the output is deterministic. What the regex parser can and cannot see is described in [docs/extraction-limitations.md](docs/extraction-limitations.md).
+
 ## Git workflow
 
 - Each step is built on its own branch, `feature/step-<number>-<short-name>`, created from `main`. If the previous step hasn't been merged yet, the branch is created from the previous step's branch instead.

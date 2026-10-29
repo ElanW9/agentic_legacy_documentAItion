@@ -1,0 +1,158 @@
+{
+  "$defs": {
+    "Citation": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "file": {
+          "title": "File",
+          "type": "string"
+        },
+        "start_line": {
+          "minimum": 1,
+          "title": "Start Line",
+          "type": "integer"
+        },
+        "end_line": {
+          "minimum": 1,
+          "title": "End Line",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "unit_id",
+        "file",
+        "start_line",
+        "end_line"
+      ],
+      "title": "Citation",
+      "type": "object"
+    },
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "minItems": 1,
+          "title": "Citations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text",
+        "citations"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "UnitSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "purpose": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Claim"
+            },
+            {
+              "const": "Unknown: needs human input",
+              "type": "string"
+            }
+          ],
+          "title": "Purpose"
+        },
+        "side_effects": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Side Effects",
+          "type": "array"
+        },
+        "tables_touched": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Tables Touched",
+          "type": "array"
+        },
+        "risks": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Risks",
+          "type": "array"
+        },
+        "open_questions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Open Questions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "unit_id",
+        "purpose"
+      ],
+      "title": "UnitSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "package": {
+      "title": "Package",
+      "type": "string"
+    },
+    "purpose": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Claim"
+        },
+        {
+          "const": "Unknown: needs human input",
+          "type": "string"
+        }
+      ],
+      "title": "Purpose"
+    },
+    "units": {
+      "items": {
+        "$ref": "#/$defs/UnitSummary"
+      },
+      "title": "Units",
+      "type": "array"
+    },
+    "open_questions": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Open Questions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "package",
+    "purpose",
+    "units"
+  ],
+  "title": "PackageSummary",
+  "type": "object"
+}
