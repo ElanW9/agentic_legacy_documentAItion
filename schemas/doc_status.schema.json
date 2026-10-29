@@ -1,0 +1,83 @@
+{
+  "$defs": {
+    "DocState": {
+      "enum": [
+        "todo",
+        "draft",
+        "reviewed",
+        "approved",
+        "stale"
+      ],
+      "title": "DocState",
+      "type": "string"
+    },
+    "DocStatusEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "package": {
+          "title": "Package",
+          "type": "string"
+        },
+        "doc_path": {
+          "title": "Doc Path",
+          "type": "string"
+        },
+        "source_files": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Files",
+          "type": "array"
+        },
+        "source_hash": {
+          "description": "sha256 over the source files, in listed order.",
+          "title": "Source Hash",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/DocState"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "validation_passed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Validation Passed"
+        }
+      },
+      "required": [
+        "package",
+        "doc_path",
+        "source_files",
+        "source_hash",
+        "status",
+        "updated_at"
+      ],
+      "title": "DocStatusEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "entries": {
+      "additionalProperties": {
+        "$ref": "#/$defs/DocStatusEntry"
+      },
+      "default": {},
+      "title": "Entries",
+      "type": "object"
+    }
+  },
+  "title": "DocStatusFile",
+  "type": "object"
+}

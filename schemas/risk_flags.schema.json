@@ -1,0 +1,86 @@
+{
+  "$defs": {
+    "RiskFlag": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/RiskKind"
+        },
+        "file": {
+          "title": "File",
+          "type": "string"
+        },
+        "line": {
+          "title": "Line",
+          "type": "integer"
+        },
+        "snippet": {
+          "title": "Snippet",
+          "type": "string"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        }
+      },
+      "required": [
+        "unit_id",
+        "kind",
+        "file",
+        "line",
+        "snippet"
+      ],
+      "title": "RiskFlag",
+      "type": "object"
+    },
+    "RiskKind": {
+      "enum": [
+        "DYNAMIC_SQL",
+        "COMMIT",
+        "ROLLBACK",
+        "SAVEPOINT",
+        "AUTONOMOUS_TRANSACTION",
+        "WHEN_OTHERS_SWALLOW",
+        "WHEN_OTHERS_HANDLED",
+        "HARDCODED_VALUE",
+        "PACKAGE_STATE",
+        "TRIGGER_DML",
+        "NO_CALLER"
+      ],
+      "title": "RiskKind",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "parser_version": {
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "flags": {
+      "items": {
+        "$ref": "#/$defs/RiskFlag"
+      },
+      "title": "Flags",
+      "type": "array"
+    }
+  },
+  "required": [
+    "parser_version",
+    "flags"
+  ],
+  "title": "RiskFlags",
+  "type": "object"
+}

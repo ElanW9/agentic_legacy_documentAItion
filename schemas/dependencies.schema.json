@@ -1,0 +1,110 @@
+{
+  "$defs": {
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "target": {
+          "description": "Unit id; base name without #n when the overload is unresolved.",
+          "title": "Target",
+          "type": "string"
+        },
+        "target_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "kind": {
+          "$ref": "#/$defs/DependencyKind"
+        },
+        "file": {
+          "title": "File",
+          "type": "string"
+        },
+        "line": {
+          "title": "Line",
+          "type": "integer"
+        },
+        "resolved": {
+          "default": true,
+          "description": "False when an overloaded call could not be matched.",
+          "title": "Resolved",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "source",
+        "source_type",
+        "target",
+        "target_type",
+        "kind",
+        "file",
+        "line"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "DependencyKind": {
+      "enum": [
+        "CALL",
+        "VARIABLE_REF",
+        "SEQUENCE_USE",
+        "VIEW_SOURCE",
+        "TRIGGER_ON",
+        "EXTERNAL_CALL"
+      ],
+      "title": "DependencyKind",
+      "type": "string"
+    },
+    "ObjectType": {
+      "enum": [
+        "PACKAGE",
+        "PROCEDURE",
+        "FUNCTION",
+        "TABLE",
+        "VIEW",
+        "TRIGGER",
+        "SEQUENCE",
+        "EXTERNAL"
+      ],
+      "title": "ObjectType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "parser_version": {
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/Dependency"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "package_cycles": {
+      "default": [],
+      "description": "Elementary cycles in the package-level call graph.",
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Package Cycles",
+      "type": "array"
+    }
+  },
+  "required": [
+    "parser_version",
+    "edges"
+  ],
+  "title": "DependencyGraph",
+  "type": "object"
+}
