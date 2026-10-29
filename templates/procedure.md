@@ -45,7 +45,7 @@ link it from the package doc.
 
 | Direction | Unit / object | Kind | Line |
 |-----------|---------------|------|------|
-| calls | `{{TARGET}}` | {{CALL/USES_SEQUENCE/VARIABLE_REF}} | {{line}} |
+| calls | `{{TARGET}}` | {{CALL/EXTERNAL_CALL/SEQUENCE_USE/VARIABLE_REF}} | {{line}} |
 | called by | `{{CALLER}}` | CALL | {{line}} |
 
 ## Tables touched
