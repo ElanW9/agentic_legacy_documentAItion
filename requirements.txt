@@ -1,4 +1,4 @@
-# Python 3.11+ (tested on 3.14). Install with: pip install -r requirements.txt
+# Python 3.14. Install with: pip install -r requirements.txt
 pydantic==2.14.1
 python-dotenv==1.2.4
 pytest==9.2.0

@@ -30,7 +30,7 @@ An AI agent documents undocumented legacy Oracle PL/SQL. All code in `legacy_cod
 
 ## Setup
 
-Requires Python 3.11 or newer.
+Requires Python 3.14. CI tests only that version.
 
 ```bash
 python -m venv .venv
@@ -129,7 +129,7 @@ Not handled yet: pages for docs that are no longer published are not deleted, an
 
 `.github/workflows/ci.yml` runs on every pull request and on every push to `main`. It needs no secrets and calls no external service. It has two jobs:
 
-- **tests:** `python -m pytest`, on Python 3.11 (the oldest supported version) and 3.14.
+- **tests:** `python -m pytest`, on Python 3.14 (the version used locally).
 - **documentation drift:** `python -m scripts.check_drift`. It re-runs the extractor in memory and compares the result with `metadata/` and `state/doc-status.json`.
 
 | Finding | Meaning | Effect |
