@@ -8,7 +8,7 @@ An AI agent documents undocumented legacy Oracle PL/SQL. All code in `legacy_cod
 2. **Draft docs.** The agent fills `templates/` for one package at a time, reading the metadata and the source. Every claim cites a unit and line range. Anything it can't establish from the code becomes "Unknown: needs human input".
 3. **Validate.** `scripts/validate_doc.py` checks each doc against the metadata: referenced units, parameters and tables must exist, claims need citations, and required sections must be present.
 4. **Review.** Docs are reviewed through pull requests. `state/doc-status.json` tracks the status of each package and the hash of its source.
-5. **Publish** (later, out of scope). Approved markdown goes to Confluence.
+5. **Publish.** `scripts/publish_confluence.py` converts approved docs to Confluence pages. Confluence is a read-only copy; changes go through git.
 
 ## Repository layout
 
@@ -77,6 +77,34 @@ Known limits:
 - Names the metadata does not model (locals, cursors, record fields) only need to occur somewhere in the code of `legacy_code/`.
 - Questions and lines ending in `:` are not treated as claims.
 
+## Publish to Confluence
+
+```bash
+python -m scripts.publish_confluence                    # dry run -> build/confluence/
+python -m scripts.publish_confluence --include-drafts   # dry run that also renders unapproved docs
+python -m scripts.publish_confluence --live             # create or update the pages
+```
+
+Git stays the source of truth. The script, not an LLM, converts the markdown, so the result is deterministic and tested.
+
+- **What is published:** packages whose entry in `state/doc-status.json` has status `approved` or `stale`, with their unit docs; the glossary; and a root page that lists the packages. An approved entry whose source hash no longer matches `legacy_code/` is published as stale, with a warning banner. Draft and reviewed docs are never published live.
+- **Pages:** the root page "Legacy PL/SQL documentation", one child page per package, and one grandchild per unit doc. The title of each page is the doc's `#` heading.
+- **Conversion:**
+  - Every page starts with a banner naming the source file and commit.
+  - Citations link to the cited lines at that commit (`SOURCE_BASE_URL`).
+  - Links between docs become page links.
+  - "Open questions" becomes a Confluence task list.
+- **Live mode:**
+  - Needs `CONFLUENCE_SITE`, `CONFLUENCE_SPACE`, `ATLASSIAN_EMAIL` and `ATLASSIAN_TOKEN` in `.env`, and no uncommitted changes in `docs/`, `glossary/`, `state/` or `legacy_code/`.
+  - Publishes through the REST API; `PUBLISH_MODE` must be empty or `rest` (the `mcp` mode is not implemented).
+  - The root page goes under `CONFLUENCE_PARENT_ID` when set, otherwise at the top of the space.
+  - Pages are found by title in the space.
+  - A page whose fingerprint (doc text, status, source hash) is unchanged is skipped.
+  - A page that the script did not generate is never overwritten; the run stops before writing anything.
+- **Status:** to approve a package, the reviewer changes its status to `approved` in `state/doc-status.json` in a pull request.
+
+Not handled yet: pages for docs that are no longer published are not deleted, answers that experts tick off in Confluence tasks are not read back, and `docs/flows/` is not published (it is empty).
+
 ## Git workflow
 
 - Each step is built on its own branch, `feature/step-<number>-<short-name>`, created from `main`. If the previous step hasn't been merged yet, the branch is created from the previous step's branch instead.
@@ -98,3 +126,4 @@ Known limits:
 | 6 | `feature/step-6-validation` | `validate_doc.py` and tests |
 | 7 | `feature/step-7-pilot` | Documentation for the 4 packages |
 | 8 | `feature/step-8-retrospective` | `docs/pilot-report.md` |
+| 9 | `feature/publishing-to-confluence` | `scripts/publish_confluence.py` and tests |
