@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Rules for the agent that documents the legacy PL/SQL in `legacy_code/`. This is a proof of concept: the code is fictional and there is no database access. Documentation is markdown in this repo, in English, reviewed through pull requests. Publishing to Confluence is out of scope.
+Rules for the agent that documents the legacy PL/SQL in `legacy_code/`. This is a proof of concept: the code is fictional and there is no database access. Documentation is markdown in this repo, in English, reviewed through pull requests. `scripts/publish_confluence.py` copies approved docs to Confluence; the repo owner runs it.
 
 ## Principles
 
@@ -13,7 +13,8 @@ Rules for the agent that documents the legacy PL/SQL in `legacy_code/`. This is 
 ## Constraints
 
 - `legacy_code/` is **read-only**. Never modify the legacy code, not even to make documenting it easier.
-- Do not call any external service. Do not set up Confluence or MCP.
+- Do not call any external service. Never run `publish_confluence --live` and never edit Confluence pages: the owner publishes. Do not set up MCP.
+- Never set a status to `reviewed` or `approved` in `state/doc-status.json`; only the reviewer does. Approved docs are published.
 - **Never read anything in `evaluation/`** during documentation work. It holds the answer key and is used only in the retrospective (step 8).
 - If something is ambiguous, ask one focused question instead of assuming.
 
@@ -52,6 +53,7 @@ When the metadata and the source disagree, do not pick one silently: document wh
 python -m scripts.extract_metadata              # legacy_code/ -> metadata/*.json
 python -m scripts.export_schemas                # models -> schemas/*.schema.json
 python -m scripts.validate_doc <doc.md>         # doc vs. metadata (step 6)
+python -m scripts.publish_confluence            # dry run -> build/confluence/ (--live: owner only)
 python -m pytest
 ```
 
