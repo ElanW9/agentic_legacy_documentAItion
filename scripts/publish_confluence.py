@@ -9,6 +9,9 @@ Git stays the source of truth; Confluence gets a read-only copy.
                unit docs, plus the glossary and a generated root page. An approved entry whose
                source hash no longer matches legacy_code/ is published as stale. --include-drafts
                also renders draft and reviewed docs, in a dry run only
+    previous   a package that was approved before but is now draft or reviewed (for example
+               after update-package) keeps its last approved version, read from git history,
+               with a banner saying a newer version is in review; stale if its source changed
     conversion markdown -> Confluence storage format, without an LLM: citations become links to
                the source at the current commit (SOURCE_BASE_URL), "Open questions" becomes a
                task list, and every page starts with a "generated, do not edit" banner
@@ -33,6 +36,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -42,7 +46,11 @@ from pathlib import Path, PurePosixPath
 
 from dotenv import load_dotenv
 
+from pydantic import ValidationError
+
 from scripts.extract_metadata import REPO_ROOT
+from scripts.gitutil import checkout
+from scripts.gitutil import git as git_at
 from scripts.models import DocState, DocStatusEntry, DocStatusFile
 from scripts.validate_doc import CITATION_RE, Metadata, inside, load_metadata
 
@@ -58,6 +66,9 @@ STATUS_LABELS = {str(s) for s in PREVIEW}  # the script removes these when the s
 BADGE_COLOURS = {AI_LABEL: "Purple", DocState.APPROVED: "Green", DocState.STALE: "Yellow",
                  DocState.REVIEWED: "Blue", DocState.DRAFT: "Grey"}
 FORMAT = "2"  # part of every fingerprint: bump it when the rendering changes, so all pages are updated
+PREVIOUS_NOTE = ("A newer version of this doc is being reviewed. Until it is approved, this page shows "
+                 "the last approved version. ")
+CHECKOUT_PATHS = ["state", "docs", "metadata", "legacy_code"]  # what a previous version is rendered from
 
 ITEM_RE = re.compile(r"\s*([-*+]|\d+\.)\s+(.*)")
 TOKEN_RE = re.compile(r"(?P<cit>\[[A-Za-z0-9_$#.()/\-]+:\d+(?:-\d+)?\])"
@@ -77,6 +88,7 @@ class Page:
     status: str
     fingerprint: str
     body: str           # storage format, banner included
+    previous: str = ""  # commit of the last approved version shown instead of a newer, unapproved doc
 
     @property
     def labels(self) -> list[str]:
@@ -248,51 +260,89 @@ def badges(status: str) -> str:
         for name in names) + "</p>"
 
 
-def banner(source: str, status: str, commit: str, fp: str) -> str:
+def banner(source: str, status: str, commit: str, fp: str, previous: bool = False) -> str:
     generated = (f"Generated from {source} at commit {commit[:12]}. Do not edit this page: change the "
                  f"markdown in git through a pull request. Status: {status}. Fingerprint: {fp}.")
+    lead = PREVIOUS_NOTE if previous else ""
     if status == DocState.STALE:
-        kind, lead = "warning", ("The PL/SQL source changed after this doc was reviewed (the source hash "
-                                 "no longer matches). Treat the content as outdated until it is reviewed again. ")
+        kind = "warning"
+        lead += ("The PL/SQL source changed after this doc was reviewed (the source hash no longer "
+                 "matches). Treat the content as outdated until it is reviewed again. ")
     elif status in (DocState.DRAFT, DocState.REVIEWED):
         kind, lead = "note", "Preview of a doc that is not approved. It is never published with --live. "
     else:
-        kind, lead = "info", ""
+        kind = "note" if previous else "info"
     return (f'<ac:structured-macro ac:name="{kind}"><ac:rich-text-body><p>{escape(lead + generated)}</p>'
             "</ac:rich-text-body></ac:structured-macro>")
 
 
 def effective_status(entry: DocStatusEntry, root: Path) -> DocState:
-    if entry.status == DocState.APPROVED and source_hash(entry.source_files, root) != entry.source_hash:
-        return DocState.STALE
+    if entry.status == DocState.APPROVED:
+        try:
+            changed = source_hash(entry.source_files, root) != entry.source_hash
+        except FileNotFoundError:  # the source moved or was removed
+            changed = True
+        return DocState.STALE if changed else DocState.APPROVED
     return entry.status
+
+
+@dataclass
+class Version:
+    """The files, metadata and state of one commit: the current one, or the last approved one of a package."""
+    root: Path
+    meta: Metadata
+    commit: str
+    state: DocStatusFile | None = None
+
+
+def last_approved(package: str, root: Path = REPO_ROOT) -> str | None:
+    """The newest commit at which state/doc-status.json had the package approved."""
+    for commit in git_at(root, "log", "--format=%H", "--", ROOT_SOURCE).decode().split():
+        try:
+            state = DocStatusFile.model_validate_json(git_at(root, "show", f"{commit}:{ROOT_SOURCE}"))
+        except (subprocess.CalledProcessError, ValidationError):
+            continue
+        entry = state.entries.get(package)
+        if entry and entry.status == DocState.APPROVED:
+            return commit
+    return None
 
 
 def collect_pages(state: DocStatusFile, meta: Metadata, commit: str, source_base: str,
                   include_drafts: bool = False, glossary: list[str] | None = None,
-                  root: Path = REPO_ROOT) -> tuple[list[Page], list[str]]:
-    """Pages in publish order (parents first), and one line per skipped package."""
-    allowed = PREVIEW if include_drafts else PUBLISHED
-    docs, skipped, rows = [], [], []  # docs: (repo path, parent title, status, source hash)
-    for name, entry in sorted(state.entries.items()):
-        status = effective_status(entry, root)
-        if status not in allowed:
-            skipped.append(f"{name}: status {status}, publishing needs approved")
-            continue
-        package_title = title_of((root / entry.doc_path).read_text(encoding="utf-8"))
-        docs.append((entry.doc_path, ROOT_TITLE, status, entry.source_hash))
-        unit_dir = root / entry.doc_path[:-len(".md")]
-        for unit in sorted(unit_dir.glob("*.md")) if unit_dir.is_dir() else []:
-            docs.append((unit.relative_to(root).as_posix(), package_title, status, entry.source_hash))
-        rows.append(f"<tr><td>{escape(name)}</td><td>{status}</td><td><code>{entry.source_hash[:12]}</code></td></tr>")
-    for path in glossary or []:
-        docs.append((path, ROOT_TITLE, "committed", ""))
+                  root: Path = REPO_ROOT, previous=None) -> tuple[list[Page], list[str]]:
+    """Pages in publish order (parents first), and one line per skipped package.
 
-    texts = {path: (root / path).read_text(encoding="utf-8") for path, *_ in docs}
+    previous(package) returns the Version of the package's last approved commit, or None. It is
+    used for a package that is not publishable now, so its pages keep the last approved content.
+    """
+    allowed = PREVIEW if include_drafts else PUBLISHED
+    current = Version(root, meta, commit)
+    docs, skipped, rows = [], [], []  # docs: (repo path, parent title, status, source hash, version)
+    for name, entry in sorted(state.entries.items()):
+        status, version = effective_status(entry, root), current
+        if status not in allowed:
+            version = previous(name) if previous else None
+            if version is None:
+                skipped.append(f"{name}: status {status}, publishing needs approved")
+                continue
+            entry = version.state.entries[name]
+            status = effective_status(entry, root)  # the old approval against today's source
+        package_title = title_of((version.root / entry.doc_path).read_text(encoding="utf-8"))
+        docs.append((entry.doc_path, ROOT_TITLE, status, entry.source_hash, version))
+        unit_dir = version.root / entry.doc_path[:-len(".md")]
+        for unit in sorted(unit_dir.glob("*.md")) if unit_dir.is_dir() else []:
+            docs.append((unit.relative_to(version.root).as_posix(), package_title, status, entry.source_hash, version))
+        shown = f"{status}, last approved version" if version is not current else str(status)
+        rows.append(f"<tr><td>{escape(name)}</td><td>{shown}</td><td><code>{entry.source_hash[:12]}</code></td></tr>")
+    for path in glossary or []:
+        docs.append((path, ROOT_TITLE, "committed", "", current))
+
+    texts = {path: (version.root / path).read_text(encoding="utf-8") for path, _, _, _, version in docs}
     titles = {path: title_of(text) for path, text in texts.items()}
     if len(set(titles.values())) != len(titles):
         raise PublishError("two docs have the same title; Confluence titles must be unique in a space")
-    conv = Converter(meta, titles, commit, source_base)
+    converters = {}  # one per version: citations link to the source at that version's commit
 
     index = ('<p>Generated from git. Each page links its claims to the cited source lines.</p>'
              "<table><tbody><tr><th>Package</th><th>Status</th><th>Source hash</th></tr>"
@@ -301,10 +351,13 @@ def collect_pages(state: DocStatusFile, meta: Metadata, commit: str, source_base
     fp = fingerprint(ROOT_SOURCE, index)
     pages = [Page(ROOT_TITLE, None, ROOT_SOURCE, "generated", fp,
                   badges("generated") + banner(ROOT_SOURCE, "generated", commit, fp) + index)]
-    for path, parent, status, src_hash in docs:
-        fp = fingerprint(path, status, src_hash, texts[path])
-        body = badges(status) + banner(path, status, commit, fp) + conv.convert(texts[path], path)
-        pages.append(Page(titles[path], parent, path, status, fp, body))
+    for path, parent, status, src_hash, version in docs:
+        conv = converters.setdefault(id(version), Converter(version.meta, titles, version.commit, source_base))
+        is_previous = version is not current
+        fp = fingerprint(path, status, src_hash, texts[path], *([version.commit] if is_previous else []))
+        body = (badges(status) + banner(path, status, version.commit, fp, is_previous)
+                + conv.convert(texts[path], path))
+        pages.append(Page(titles[path], parent, path, status, fp, body, version.commit if is_previous else ""))
     return pages, skipped
 
 
@@ -426,6 +479,23 @@ def git(*args: str) -> str:
     return subprocess.run(["git", *args], cwd=REPO_ROOT, check=True, capture_output=True, text=True).stdout.strip()
 
 
+def previous_versions(tmp: Path, metadata: str):
+    """previous(package) for collect_pages: checks out the package's last approved commit under tmp."""
+    cache: dict[str, Version] = {}
+
+    def previous(package: str) -> Version | None:
+        commit = last_approved(package)
+        if commit is None:
+            return None
+        if commit not in cache:
+            dest = tmp / commit
+            checkout(REPO_ROOT, commit, CHECKOUT_PATHS, dest)
+            state = DocStatusFile.model_validate_json((dest / ROOT_SOURCE).read_text(encoding="utf-8"))
+            cache[commit] = Version(dest, load_metadata(dest / metadata, root=dest), commit, state)
+        return cache[commit]
+    return previous
+
+
 def main(argv: list[str] | None = None) -> int:
     load_dotenv(REPO_ROOT / ".env")
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
@@ -449,10 +519,16 @@ def main(argv: list[str] | None = None) -> int:
         state = DocStatusFile.model_validate_json((REPO_ROOT / ROOT_SOURCE).read_text(encoding="utf-8"))
         meta = load_metadata((REPO_ROOT / args.metadata).resolve())
         glossary = sorted(p.relative_to(REPO_ROOT).as_posix() for p in (REPO_ROOT / "glossary").glob("*.md"))
-        pages, skipped = collect_pages(state, meta, git("rev-parse", "HEAD"), os.getenv("SOURCE_BASE_URL", ""),
-                                       args.include_drafts, glossary)
+        with tempfile.TemporaryDirectory() as tmp:  # the previous versions are read while rendering
+            pages, skipped = collect_pages(state, meta, git("rev-parse", "HEAD"), os.getenv("SOURCE_BASE_URL", ""),
+                                           args.include_drafts, glossary,
+                                           previous=previous_versions(Path(tmp), args.metadata))
         for line in skipped:
             print(f"skipped    {line}")
+        for page in pages:
+            if page.previous and page.parent == ROOT_TITLE:
+                print(f"previous   {page.title}: not approved now; showing the version approved at "
+                      f"{page.previous[:12]} ({page.status})")
         if args.live:
             client = Confluence(*(os.environ[name] for name in LIVE_ENV))
             for action, title in publish(pages, client, os.getenv("CONFLUENCE_PARENT_ID") or None):

@@ -87,9 +87,9 @@ ENUM_VALUES = {
 # Metadata with lookup indexes
 # ---------------------------------------------------------------------------
 
-def source_path(path: str) -> Path:
+def source_path(path: str, root: Path = REPO_ROOT) -> Path:
     p = Path(path)
-    return p if p.is_absolute() else REPO_ROOT / p
+    return p if p.is_absolute() else root / p
 
 
 @dataclass
@@ -109,6 +109,7 @@ class Metadata:
     known_names: set[str] = field(default_factory=set)             # bare names a doc may use
     code_words: set[str] = field(default_factory=set)              # identifiers in code
     comment_words: set[str] = field(default_factory=set)           # identifiers only in comments
+    root: Path = REPO_ROOT  # where the source files are; an older checkout for publish_confluence
 
     def __post_init__(self) -> None:
         c = self.catalog
@@ -137,7 +138,7 @@ class Metadata:
         self.known_names |= {e.split(".")[0] for e in self.externals}
         for f in c.files:
             self.files[f.path] = f.line_count
-            raw = source_path(f.path).read_text(encoding="utf-8").replace("\r\n", "\n")
+            raw = source_path(f.path, self.root).read_text(encoding="utf-8").replace("\r\n", "\n")
             code, _ = mask_source(raw)
             self.code_words |= {w.upper() for w in WORD_RE.findall(code)}
             self.comment_words |= {w.upper() for w in WORD_RE.findall(raw)}
@@ -178,12 +179,12 @@ class Metadata:
         return {p.name for s in units for p in s.params}
 
 
-def load_metadata(meta_dir: Path) -> Metadata:
+def load_metadata(meta_dir: Path, root: Path = REPO_ROOT) -> Metadata:
     def read(model, name):
         return model.model_validate_json((meta_dir / name).read_text(encoding="utf-8"))
 
     return Metadata(read(ObjectCatalog, "objects.json"), read(DependencyGraph, "dependencies.json"),
-                    read(TableUsage, "table_usage.json"), read(RiskFlags, "risk_flags.json"))
+                    read(TableUsage, "table_usage.json"), read(RiskFlags, "risk_flags.json"), root=root)
 
 
 # ---------------------------------------------------------------------------

@@ -36,6 +36,7 @@ from dotenv import load_dotenv
 
 from scripts.check_drift import stale_metadata
 from scripts.extract_metadata import REPO_ROOT, extract
+from scripts.gitutil import checkout, git
 from scripts.models import DocStatusEntry, DocStatusFile
 from scripts.publish_confluence import source_hash
 from scripts.validate_doc import (CHANGED_MARK, CITATION_RE, CODE_SPAN_RE, LINE_COLUMNS, NUMBER_RANGE_RE,
@@ -46,10 +47,6 @@ HASH_RE = re.compile(r"\b[0-9a-f]{64}\b")
 
 class UpdateError(Exception):
     pass
-
-
-def git(root: Path, *args: str) -> bytes:
-    return subprocess.run(["git", *args], cwd=root, check=True, capture_output=True).stdout
 
 
 def find_base(entry: DocStatusEntry, root: Path) -> str | None:
@@ -63,13 +60,6 @@ def find_base(entry: DocStatusEntry, root: Path) -> str | None:
         if entry.source_hash in {hashlib.sha256(b"".join(v)).hexdigest() for v in (blobs, crlf)}:
             return commit
     return None
-
-
-def checkout(root: Path, commit: str, source: str, dest: Path) -> None:
-    """Write the files under source/ as they were at commit to dest/source/."""
-    for path in git(root, "ls-tree", "-r", "--name-only", commit, "--", source).decode().splitlines():
-        (dest / path).parent.mkdir(parents=True, exist_ok=True)
-        (dest / path).write_bytes(git(root, "show", f"{commit}:{path}"))
 
 
 def lines_of(path: Path) -> list[str]:
@@ -263,7 +253,7 @@ def update(package: str, write: bool, root: Path = REPO_ROOT, source: str = "leg
                                      for p in (root / entry.doc_path[:-len(".md")]).glob("*.md"))
     with tempfile.TemporaryDirectory() as tmp:
         old_base = Path(tmp)
-        checkout(root, base, source, old_base)
+        checkout(root, base, [source], old_base)
         old = Metadata(*extract(old_base / source))
         changed_files = git(root, "diff", "--name-only", base, "--", source).decode().split()
         maps = {f: line_map(lines_of(old_base / f), lines_of(root / f)) for f in changed_files}

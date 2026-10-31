@@ -33,16 +33,7 @@ def extract_to(root):
 
 
 @pytest.fixture
-def repo(tmp_path, monkeypatch):
-    # an isolated git: no user or system config, so signing or hooks set up elsewhere don't apply
-    (tmp_path / "gitconfig").write_text("", encoding="utf-8")
-    monkeypatch.setenv("GIT_CONFIG_GLOBAL", str(tmp_path / "gitconfig"))
-    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
-    for var in ("GIT_AUTHOR_NAME", "GIT_COMMITTER_NAME"):
-        monkeypatch.setenv(var, "Test")
-    for var in ("GIT_AUTHOR_EMAIL", "GIT_COMMITTER_EMAIL"):
-        monkeypatch.setenv(var, "test@example.com")
-
+def repo(tmp_path, git_env):
     root = tmp_path / "repo"
     shutil.copytree(FIXTURES / "legacy", root / "legacy_code")
     extract_to(root)

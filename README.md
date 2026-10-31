@@ -106,6 +106,7 @@ python -m scripts.publish_confluence --live             # create or update the p
 Git stays the source of truth. The script, not an LLM, converts the markdown, so the result is deterministic and tested.
 
 - **What is published:** packages whose entry in `state/doc-status.json` has status `approved` or `stale`, with their unit docs; the glossary; and a root page that lists the packages. An approved entry whose source hash no longer matches `legacy_code/` is published as stale, with a warning banner. Draft and reviewed docs are never published live.
+- **A package that was approved before** but is now `draft` or `reviewed` (for example after `update-package`) keeps its last approved version. The script finds the newest commit where the state file had the package approved, and renders the docs, metadata and source of that commit. The banner says a newer version is in review. If the source changed since that approval, the page is also marked stale. Citations link to the code at that commit, so they match the old text. A package that was never approved is skipped.
 - **Pages:** the root page "Legacy PL/SQL documentation", one child page per package, and one grandchild per unit doc. The title of each page is the doc's `#` heading.
 - **Conversion:**
   - Every page starts with coloured status lozenges: `AI GENERATED` (purple) and, on package and unit pages, the doc status (`APPROVED` green, `STALE` yellow). Below them, a banner names the source file and commit.
