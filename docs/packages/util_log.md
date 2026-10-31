@@ -222,7 +222,7 @@ The table names and the column name are built at runtime; only `P_DAYS` is passe
 | default level 1 for `'LOG_LEVEL'` | `UTIL_LOG.LOG_MSG` [UTIL_LOG.LOG_MSG:66] | Unknown: needs human input |
 | `'SAT'`, `'SUN'` | `UTIL_LOG.IS_WORKDAY` [UTIL_LOG.IS_WORKDAY:105] | non-workdays, as the code compares; whether this fits the business calendar: Unknown: needs human input |
 | mask `'FM999G999G990D00'`, separators `',.'` | `UTIL_LOG.FMT_AMT` [UTIL_LOG.FMT_AMT:125] | Unknown: needs human input |
-| default 90 days for `'AUDIT_KEEP_DAYS'` | `UTIL_LOG.HOUSEKEEPING` [UTIL_LOG.HOUSEKEEPING:162] | Unknown: needs human input |
+| default 90 days for `'AUDIT_KEEP_DAYS'` | `UTIL_LOG.HOUSEKEEPING` [UTIL_LOG.HOUSEKEEPING:162] | retention period according to Elan (Confluence comment, 2026-10-31), unconfirmed; reason for 90: Unknown: needs human input (see Open questions) |
 | lengths 30, 50, 4000 | `UTIL_LOG.LOG_MSG` [UTIL_LOG.LOG_MSG:76-78] | match the column sizes of `AUDIT_LOG.ACTION`, `AUDIT_LOG.OBJ_ID`, `AUDIT_LOG.MSG` [AUDIT_LOG:5-7] |
 
 ### Other
@@ -252,7 +252,7 @@ If `UTIL_LOG.LOG_MSG` fails while loading the log level, `UTIL_LOG.G_LOG_LEVEL` 
 2. Meaning of the severity codes `'I'`/`'W'`/`'E'` and of the levels 1/2/3 that `UTIL_LOG.LVL` maps them to, and of the `'LOG_LEVEL'` parameter values: Unknown: needs human input [UTIL_LOG.LVL:18-22] [UTIL_LOG.LOG_MSG:66-71].
 3. The comment at [UTIL_LOG(body):9] names LOG_TABLE as the log destination, but the code writes to `AUDIT_LOG` [UTIL_LOG.LOG_MSG:72]. Is the comment outdated?
 4. The comment at [UTIL_LOG(body):58] says "never fails"; rows below the log level are not written and every error is swallowed, so a failed log write is invisible [UTIL_LOG.LOG_MSG:71] [UTIL_LOG.LOG_MSG:83-85]. Is silent loss of log rows accepted?
-5. `UTIL_LOG.HOUSEKEEPING` has no caller in legacy_code/; the comment at [UTIL_LOG(body):158] says "nightly job". Which scheduler or external caller runs it [UTIL_LOG.HOUSEKEEPING:159]?
+5. `UTIL_LOG.HOUSEKEEPING` has no caller in legacy_code/; the comment at [UTIL_LOG(body):158] says "nightly job". Which scheduler or external caller runs it [UTIL_LOG.HOUSEKEEPING:159]? Elan (Confluence comment, 2026-10-31) says it runs every night at 02:00 as scheduler job HK_NIGHTLY [UTIL_LOG.HOUSEKEEPING:159]; no scheduler job is in legacy_code/ to confirm it.
 6. Which tables do callers outside legacy_code/ pass to `UTIL_LOG.ARCHIVE_ROWS`? Its dynamic SQL is not in `table_usage.json`, and the literal `'AUDIT_LOG'` argument is not traced by the parser (docs/extraction-limitations.md) [UTIL_LOG.ARCHIVE_ROWS:138-144] [UTIL_LOG.HOUSEKEEPING:162].
 7. `UTIL_LOG.ARCHIVE_ROWS` commits or rolls back the caller's whole transaction [UTIL_LOG.ARCHIVE_ROWS:147-153]. Is that intended for every caller: Unknown: needs human input [UTIL_LOG.ARCHIVE_ROWS:148] [UTIL_LOG.ARCHIVE_ROWS:153].
 8. On a count mismatch `UTIL_LOG.ARCHIVE_ROWS` rolls back and returns without an exception, so the caller cannot tell it failed [UTIL_LOG.ARCHIVE_ROWS:147-150]. The insert and the delete each evaluate SYSDATE separately, so rows that cross the cut-off between the two statements can cause a mismatch [UTIL_LOG.ARCHIVE_ROWS:138-143]. Is this behaviour known and accepted?
@@ -264,7 +264,7 @@ If `UTIL_LOG.LOG_MSG` fails while loading the log level, `UTIL_LOG.G_LOG_LEVEL` 
 14. `UTIL_LOG.IS_WORKDAY` depends on the session's date language, which the parser cannot see (docs/extraction-limitations.md, runtime facts), and ignores holidays [UTIL_LOG.IS_WORKDAY:105]. Which calendar should count as workdays: Unknown: needs human input.
 15. `UTIL_LOG.ADD_WORKDAYS` never ends for a NULL `P_DT` with a positive `P_DAYS` [UTIL_LOG.ADD_WORKDAYS:113-118]. Can callers pass a NULL date?
 16. Why `UTIL_LOG.FMT_AMT` fixes `','` as decimal and `'.'` as group separator, and what happens to amounts above the mask's nine integer digits: Unknown: needs human input [UTIL_LOG.FMT_AMT:125].
-17. Reason for the default of 90 days for `'AUDIT_KEEP_DAYS'`: Unknown: needs human input [UTIL_LOG.HOUSEKEEPING:162].
+17. Reason for the default of 90 days for `'AUDIT_KEEP_DAYS'`: Unknown: needs human input [UTIL_LOG.HOUSEKEEPING:162]. Elan (Confluence comment, 2026-10-31) says the 90 days is the retention period [UTIL_LOG.HOUSEKEEPING:162], and Elan (Confluence reply, 2026-10-31) says this is confirmed by retention policy RP-12; neither is in legacy_code/. The code archives `AUDIT_LOG` rows older than that number of days [UTIL_LOG.ARCHIVE_ROWS:138-143].
 18. The comment at [UTIL_LOG.HOUSEKEEPING:163] says the orders archive was disabled in 2013 (ticket 4471); the commented-out call would need an archive table for `ORDERS` that does not exist in legacy_code/ [UTIL_LOG.HOUSEKEEPING:164]. Can the commented code be treated as obsolete?
 19. `UTIL_LOG.LOG_ERR` only logs a meaningful error from inside an exception handler [UTIL_LOG.LOG_ERR:91]. Do callers outside legacy_code/ call it elsewhere?
 20. The `C_SEV_*` constants exist but `UTIL_LOG.C_SEV_INFO` and `UTIL_LOG.C_SEV_WARN` have no reader in legacy_code/ [UTIL_LOG(spec):8-10]. Are they used by code outside legacy_code/?
