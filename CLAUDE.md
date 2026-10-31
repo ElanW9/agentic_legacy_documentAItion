@@ -47,6 +47,8 @@ Document one package at a time. The `document-package` skill has the detailed st
 
 When the metadata and the source disagree, do not pick one silently: document what the source shows, and add an open question that names the metadata gap.
 
+When a documented package's source changes (`check_drift` reports `CHANGED`), do not re-document it: follow the `update-package` skill. `scripts/update_package.py` moves the line numbers that still point at unchanged code and marks the rest with `!changed`, which the validator rejects until each claim has been checked against the new code.
+
 ## Commands
 
 ```
@@ -54,6 +56,7 @@ python -m scripts.extract_metadata              # legacy_code/ -> metadata/*.jso
 python -m scripts.export_schemas                # models -> schemas/*.schema.json
 python -m scripts.validate_doc <doc.md>         # doc vs. metadata (step 6)
 python -m scripts.check_drift                   # stale metadata; new, changed, removed packages
+python -m scripts.update_package <PKG> [--write] # changed source: move line numbers, mark the rest
 python -m scripts.publish_confluence            # dry run -> build/confluence/ (--live: only when the user asks)
 python -m pytest
 ```
@@ -71,4 +74,4 @@ On Windows use `.venv\Scripts\python.exe`.
 | `docs/packages/`, `docs/flows/` | Documentation output. |
 | `docs/extraction-limitations.md` | What the regex parser misses. |
 | `state/doc-status.json` | Status and source hash per package. |
-| `.claude/skills/` | `document-package`, `review-doc`. |
+| `.claude/skills/` | `document-package`, `update-package`, `review-doc`. |

@@ -15,6 +15,8 @@ Checks. ERROR fails the doc; WARN is reported but does not fail it.
     uncited    every prose sentence and every table row carries a citation or a line column
     coverage   a package doc mentions every subprogram of the package (ERROR) and every
                variable, table and transaction/error/dynamic-SQL risk flag (WARN)
+    changed    no "!changed" marker is left: update_package puts it on line numbers whose
+               source lines changed, and the claim must be checked before it goes
 
 Line numbers in the report are lines of the doc. Exit code 0 when every doc passes.
 """
@@ -61,6 +63,7 @@ LIST_ITEM_RE = re.compile(r"\s*(?:[-*+]|\d+\.)\s+")
 LINK_RE = re.compile(r"\[[^\]]*\]\([^)]*\.md[^)]*\)")
 NUMBER_RANGE_RE = re.compile(r"\b(\d+)(?:\s*-\s*(\d+))?\b")
 LINE_COLUMNS = {"line", "spec", "body", "statement line"}
+CHANGED_MARK = "!changed"  # set by update_package on line numbers whose source lines changed
 
 # Risk kinds that every package doc must cite. HARDCODED_VALUE and PACKAGE_STATE are too
 # numerous to require one citation per flag; review-doc covers them.
@@ -84,9 +87,9 @@ ENUM_VALUES = {
 # Metadata with lookup indexes
 # ---------------------------------------------------------------------------
 
-def source_path(path: str) -> Path:
+def source_path(path: str, root: Path = REPO_ROOT) -> Path:
     p = Path(path)
-    return p if p.is_absolute() else REPO_ROOT / p
+    return p if p.is_absolute() else root / p
 
 
 @dataclass
@@ -106,6 +109,7 @@ class Metadata:
     known_names: set[str] = field(default_factory=set)             # bare names a doc may use
     code_words: set[str] = field(default_factory=set)              # identifiers in code
     comment_words: set[str] = field(default_factory=set)           # identifiers only in comments
+    root: Path = REPO_ROOT  # where the source files are; an older checkout for publish_confluence
 
     def __post_init__(self) -> None:
         c = self.catalog
@@ -134,7 +138,7 @@ class Metadata:
         self.known_names |= {e.split(".")[0] for e in self.externals}
         for f in c.files:
             self.files[f.path] = f.line_count
-            raw = source_path(f.path).read_text(encoding="utf-8").replace("\r\n", "\n")
+            raw = source_path(f.path, self.root).read_text(encoding="utf-8").replace("\r\n", "\n")
             code, _ = mask_source(raw)
             self.code_words |= {w.upper() for w in WORD_RE.findall(code)}
             self.comment_words |= {w.upper() for w in WORD_RE.findall(raw)}
@@ -175,12 +179,12 @@ class Metadata:
         return {p.name for s in units for p in s.params}
 
 
-def load_metadata(meta_dir: Path) -> Metadata:
+def load_metadata(meta_dir: Path, root: Path = REPO_ROOT) -> Metadata:
     def read(model, name):
         return model.model_validate_json((meta_dir / name).read_text(encoding="utf-8"))
 
     return Metadata(read(ObjectCatalog, "objects.json"), read(DependencyGraph, "dependencies.json"),
-                    read(TableUsage, "table_usage.json"), read(RiskFlags, "risk_flags.json"))
+                    read(TableUsage, "table_usage.json"), read(RiskFlags, "risk_flags.json"), root=root)
 
 
 # ---------------------------------------------------------------------------
@@ -302,7 +306,13 @@ def check_citations(doc: Doc, meta: Metadata, findings: list[Finding]) -> list[t
     """Validate every citation; return the valid ones as (id, start, end)."""
     cited = []
     for n, line in doc.content:
+        if CHANGED_MARK in line:
+            findings.append(Finding(n, "ERROR", "changed",
+                                    f"the source lines here changed since the doc was written; re-read the code, "
+                                    f"fix the claim and its line numbers, then remove '{CHANGED_MARK}'"))
         for m in LOOSE_CITATION_RE.finditer(line):
+            if CHANGED_MARK in m[0]:
+                continue  # reported above
             if not CITATION_RE.fullmatch(m[0]):
                 findings.append(Finding(n, "ERROR", "citation", f"malformed citation {m[0]}; use [ID:start-end]"))
         for m in CITATION_RE.finditer(line):

@@ -77,6 +77,24 @@ Known limits:
 - Names the metadata does not model (locals, cursors, record fields) only need to occur somewhere in the code of `legacy_code/`.
 - Questions and lines ending in `:` are not treated as claims.
 
+## Update a doc after a code change
+
+```bash
+python -m scripts.update_package UTIL_LOG           # report only
+python -m scripts.update_package UTIL_LOG --write   # move line numbers, mark the rest
+```
+
+When `check_drift` reports a package as `CHANGED`, its reviewed doc is updated, not rewritten. The script does the mechanical part, without an LLM:
+
+1. **Find the documented version.** It searches git history for the commit whose source matches the hash in `state/doc-status.json`.
+2. **Report what changed.** Units whose code changed, units added and removed, and dependencies, table accesses and risk flags added or removed.
+3. **Move line numbers.** Every citation and line-column number whose source lines are unchanged gets its new number. Unit ranges and the doc header come from the metadata.
+4. **Mark the rest.** A number whose lines changed keeps its old value and gets `!changed`. The validator fails on the marker, so no claim about changed code can slip through unchecked.
+
+The `update-package` skill then has the agent resolve each marker, re-read every changed unit, document added units and set the status back to `draft` for a new review. The pull request diff is mostly moved line numbers; the agent's report lists the claims it rewrote.
+
+Limits: running it twice is safe (the doc header records the source it was moved to). It needs the documented version to be in git history, and it can't see that an unchanged claim became false because of a change elsewhere; that is why the skill re-reads every changed unit.
+
 ## Publish to Confluence
 
 ```bash
@@ -88,6 +106,7 @@ python -m scripts.publish_confluence --live             # create or update the p
 Git stays the source of truth. The script, not an LLM, converts the markdown, so the result is deterministic and tested.
 
 - **What is published:** packages whose entry in `state/doc-status.json` has status `approved` or `stale`, with their unit docs; the glossary; and a root page that lists the packages. An approved entry whose source hash no longer matches `legacy_code/` is published as stale, with a warning banner. Draft and reviewed docs are never published live.
+- **A package that was approved before** but is now `draft` or `reviewed` (for example after `update-package`) keeps its last approved version. The script finds the newest commit where the state file had the package approved, and renders the docs, metadata and source of that commit. The banner says a newer version is in review. If the source changed since that approval, the page is also marked stale. Citations link to the code at that commit, so they match the old text. A package that was never approved is skipped.
 - **Pages:** the root page "Legacy PL/SQL documentation", one child page per package, and one grandchild per unit doc. The title of each page is the doc's `#` heading.
 - **Conversion:**
   - Every page starts with coloured status lozenges: `AI GENERATED` (purple) and, on package and unit pages, the doc status (`APPROVED` green, `STALE` yellow). Below them, a banner names the source file and commit.
@@ -148,3 +167,4 @@ Run it locally with `python -m scripts.check_drift`.
 | 9 | `feature/publishing-to-confluence` | `scripts/publish_confluence.py` and tests |
 | 10 | `feature/ci-pipeline` | GitHub Actions workflow that runs the tests |
 | 11 | `feature/drift-check` | `scripts/check_drift.py` and the drift job in CI |
+| 12 | `feature/update-package` | `scripts/update_package.py`, the `update-package` skill, the `!changed` validator check |

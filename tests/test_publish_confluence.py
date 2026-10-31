@@ -5,6 +5,7 @@ The fixture package is the one from test_validate_doc.py; the live tests use an 
 
 import io
 import json
+import subprocess
 import urllib.error
 import urllib.parse
 import xml.etree.ElementTree as ET
@@ -75,6 +76,49 @@ def test_changed_source_is_published_as_stale(meta):
     assert '<ac:parameter ac:name="title">STALE</ac:parameter><ac:parameter ac:name="colour">Yellow</ac:parameter>' \
         in pages[1].body
     assert pages[1].body.split("</p>", 1)[1].startswith('<ac:structured-macro ac:name="warning">')
+
+
+def test_unapproved_doc_keeps_its_last_approved_version(meta):
+    old = "a" * 40
+    previous = lambda name: pc.Version(REPO_ROOT, meta, old, state())  # noqa: E731 - approved at commit old
+    pages, skipped = pc.collect_pages(state(DocState.DRAFT), meta, COMMIT, BASE, previous=previous)
+    root, page = pages
+    assert skipped == []
+    assert (page.title, page.status, page.previous) == ("Package PKG_DEMO", DocState.APPROVED, old)
+    banner_text = page.body.split("</p>", 1)[1]
+    assert banner_text.startswith('<ac:structured-macro ac:name="note">') and pc.PREVIOUS_NOTE in banner_text
+    assert "Generated from tests/fixtures/validate/pkg_demo.md at commit aaaaaaaaaaaa." in page.body
+    assert f"{BASE}/{old}/tests/fixtures/validate/legacy/packages/pkg_demo.pks#L2" in page.body  # old commit's lines
+    assert "approved, last approved version" in root.body
+
+    # the source changed since that approval: stale, with both explanations
+    stale = lambda name: pc.Version(REPO_ROOT, meta, old, state(source_hash="0" * 64))  # noqa: E731
+    page = pc.collect_pages(state(DocState.DRAFT), meta, COMMIT, BASE, previous=stale)[0][1]
+    assert page.status == DocState.STALE
+    assert page.body.split("</p>", 1)[1].startswith('<ac:structured-macro ac:name="warning">')
+    assert pc.PREVIOUS_NOTE in page.body and "The PL/SQL source changed" in page.body
+
+    # never approved: skipped as before
+    pages, skipped = pc.collect_pages(state(DocState.DRAFT), meta, COMMIT, BASE, previous=lambda name: None)
+    assert len(pages) == 1 and skipped == ["PKG_DEMO: status draft, publishing needs approved"]
+
+
+def test_last_approved_reads_the_state_history(tmp_path, git_env):
+    def commit(status):
+        (tmp_path / "state").mkdir(exist_ok=True)
+        (tmp_path / pc.ROOT_SOURCE).write_text(state(status).model_dump_json(), encoding="utf-8")
+        subprocess.run(["git", "add", "."], cwd=tmp_path, check=True)
+        subprocess.run(["git", "commit", "-q", "-m", status], cwd=tmp_path, check=True)
+        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=tmp_path, check=True, capture_output=True,
+                              text=True).stdout.strip()
+
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    commit(DocState.DRAFT)
+    assert pc.last_approved("PKG_DEMO", tmp_path) is None
+    approved = commit(DocState.APPROVED)
+    commit(DocState.DRAFT)  # e.g. update-package after a source change
+    assert pc.last_approved("PKG_DEMO", tmp_path) == approved
+    assert pc.last_approved("OTHER", tmp_path) is None
 
 
 def test_include_drafts_renders_a_preview(meta):

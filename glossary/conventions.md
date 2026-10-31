@@ -38,6 +38,7 @@ Every claim ends with at least one citation in square brackets:
 | `None found in metadata.` | A template section with nothing to report. Never delete the heading. |
 | `the comment at [..] says ...` | The only way to use a source comment. Comments are not facts and may be outdated. |
 | `no caller in legacy_code/` | Instead of "unused" or "dead": callers outside the source tree cannot be seen. |
+| `!changed` | Set by `scripts/update_package.py` after a line number whose source lines changed. Never written by hand; the validator fails until the claim is checked against the new code and the marker removed. |
 
 ### Files
 
