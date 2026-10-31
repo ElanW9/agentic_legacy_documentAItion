@@ -17,7 +17,8 @@ Git stays the source of truth; Confluence gets a read-only copy.
                fingerprint (doc text, status, source hash) is unchanged, and refuses to touch a
                page this script did not generate. Needs a clean working tree
     labels     every page is labeled ai-generated; package and unit pages also get their status
-               (approved or stale). Labels are kept in sync, also on unchanged pages
+               (approved or stale). Labels are kept in sync, also on unchanged pages. The same
+               names open each page as coloured status lozenges, right under the title
 
 The dry run writes one .xhtml file per page and pages.json to --out, and calls nothing.
 """
@@ -54,6 +55,9 @@ LIVE_ENV = ("CONFLUENCE_SITE", "CONFLUENCE_SPACE", "ATLASSIAN_EMAIL", "ATLASSIAN
 GIT_PATHS = ("docs", "glossary", "state", "legacy_code")
 AI_LABEL = "ai-generated"
 STATUS_LABELS = {str(s) for s in PREVIEW}  # the script removes these when the status changes
+BADGE_COLOURS = {AI_LABEL: "Purple", DocState.APPROVED: "Green", DocState.STALE: "Yellow",
+                 DocState.REVIEWED: "Blue", DocState.DRAFT: "Grey"}
+FORMAT = "2"  # part of every fingerprint: bump it when the rendering changes, so all pages are updated
 
 ITEM_RE = re.compile(r"\s*([-*+]|\d+\.)\s+(.*)")
 TOKEN_RE = re.compile(r"(?P<cit>\[[A-Za-z0-9_$#.()/\-]+:\d+(?:-\d+)?\])"
@@ -231,7 +235,17 @@ def source_hash(files: list[str], root: Path) -> str:
 
 
 def fingerprint(*parts: str) -> str:
-    return hashlib.sha256("\n".join(parts).encode("utf-8")).hexdigest()[:16]
+    return hashlib.sha256("\n".join((FORMAT, *parts)).encode("utf-8")).hexdigest()[:16]
+
+
+def badges(status: str) -> str:
+    """Coloured status lozenges, the first thing under the page title: AI generated, and the doc status."""
+    names = [AI_LABEL] + ([status] if status in STATUS_LABELS else [])
+    return "<p>" + " ".join(
+        '<ac:structured-macro ac:name="status">'
+        f'<ac:parameter ac:name="title">{escape(name.replace("-", " ").upper())}</ac:parameter>'
+        f'<ac:parameter ac:name="colour">{BADGE_COLOURS[name]}</ac:parameter></ac:structured-macro>'
+        for name in names) + "</p>"
 
 
 def banner(source: str, status: str, commit: str, fp: str) -> str:
@@ -285,10 +299,11 @@ def collect_pages(state: DocStatusFile, meta: Metadata, commit: str, source_base
              f"{''.join(rows)}</tbody></table>"
              '<ac:structured-macro ac:name="children" />')
     fp = fingerprint(ROOT_SOURCE, index)
-    pages = [Page(ROOT_TITLE, None, ROOT_SOURCE, "generated", fp, banner(ROOT_SOURCE, "generated", commit, fp) + index)]
+    pages = [Page(ROOT_TITLE, None, ROOT_SOURCE, "generated", fp,
+                  badges("generated") + banner(ROOT_SOURCE, "generated", commit, fp) + index)]
     for path, parent, status, src_hash in docs:
         fp = fingerprint(path, status, src_hash, texts[path])
-        body = banner(path, status, commit, fp) + conv.convert(texts[path], path)
+        body = badges(status) + banner(path, status, commit, fp) + conv.convert(texts[path], path)
         pages.append(Page(titles[path], parent, path, status, fp, body))
     return pages, skipped
 

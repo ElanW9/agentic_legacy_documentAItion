@@ -90,7 +90,7 @@ Git stays the source of truth. The script, not an LLM, converts the markdown, so
 - **What is published:** packages whose entry in `state/doc-status.json` has status `approved` or `stale`, with their unit docs; the glossary; and a root page that lists the packages. An approved entry whose source hash no longer matches `legacy_code/` is published as stale, with a warning banner. Draft and reviewed docs are never published live.
 - **Pages:** the root page "Legacy PL/SQL documentation", one child page per package, and one grandchild per unit doc. The title of each page is the doc's `#` heading.
 - **Conversion:**
-  - Every page starts with a banner naming the source file and commit.
+  - Every page starts with coloured status lozenges: `AI GENERATED` (purple) and, on package and unit pages, the doc status (`APPROVED` green, `STALE` yellow). Below them, a banner names the source file and commit.
   - Citations link to the cited lines at that commit (`SOURCE_BASE_URL`).
   - Links between docs become page links.
   - "Open questions" becomes a Confluence task list.

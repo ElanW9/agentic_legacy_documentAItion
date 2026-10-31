@@ -52,7 +52,14 @@ def test_approved_doc_is_converted(meta):
     assert (page.title, page.parent, page.status) == ("Package PKG_DEMO", pc.ROOT_TITLE, DocState.APPROVED)
     assert "PKG_DEMO" in root.body
     well_formed(page.body)
-    assert page.body.startswith('<ac:structured-macro ac:name="info">')
+    # first under the title: the AI generated and status lozenges, then the banner
+    assert page.body.startswith('<p><ac:structured-macro ac:name="status">'
+                                '<ac:parameter ac:name="title">AI GENERATED</ac:parameter>'
+                                '<ac:parameter ac:name="colour">Purple</ac:parameter>')
+    assert ('<ac:parameter ac:name="title">APPROVED</ac:parameter>'
+            '<ac:parameter ac:name="colour">Green</ac:parameter>') in page.body
+    assert page.body.split("</p>", 1)[1].startswith('<ac:structured-macro ac:name="info">')
+    assert "APPROVED" not in root.body.split("</p>", 1)[0]
     assert "Generated from tests/fixtures/validate/pkg_demo.md at commit 0123456789ab." in page.body
     assert "<h1>" not in page.body  # the title is the page title
     # citations link to the cited lines of the file at the commit
@@ -65,12 +72,14 @@ def test_approved_doc_is_converted(meta):
 def test_changed_source_is_published_as_stale(meta):
     pages, _ = pc.collect_pages(state(source_hash="0" * 64), meta, COMMIT, BASE)
     assert pages[1].status == DocState.STALE
-    assert pages[1].body.startswith('<ac:structured-macro ac:name="warning">')
+    assert '<ac:parameter ac:name="title">STALE</ac:parameter><ac:parameter ac:name="colour">Yellow</ac:parameter>' \
+        in pages[1].body
+    assert pages[1].body.split("</p>", 1)[1].startswith('<ac:structured-macro ac:name="warning">')
 
 
 def test_include_drafts_renders_a_preview(meta):
     pages, skipped = pc.collect_pages(state(DocState.DRAFT), meta, COMMIT, BASE, include_drafts=True)
-    assert skipped == [] and pages[1].body.startswith('<ac:structured-macro ac:name="note">')
+    assert skipped == [] and pages[1].body.split("</p>", 1)[1].startswith('<ac:structured-macro ac:name="note">')
 
 
 def test_inline_markup(meta):
