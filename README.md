@@ -108,7 +108,21 @@ Not handled yet: pages for docs that are no longer published are not deleted, an
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs `python -m pytest` on every pull request and on every push to `main`, on Python 3.11 (the oldest supported version) and 3.14. It needs no secrets and calls no external service.
+`.github/workflows/ci.yml` runs on every pull request and on every push to `main`. It needs no secrets and calls no external service. It has two jobs:
+
+- **tests:** `python -m pytest`, on Python 3.11 (the oldest supported version) and 3.14.
+- **documentation drift:** `python -m scripts.check_drift`. It re-runs the extractor in memory and compares the result with `metadata/` and `state/doc-status.json`.
+
+| Finding | Meaning | Effect |
+|---------|---------|--------|
+| `METADATA` | `metadata/` is out of date with `legacy_code/`. Fix: run the extractor and commit `metadata/`. | Fails the build |
+| `NEW` | A package has no doc yet (no state entry, or status `todo`). | Warning |
+| `CHANGED` | A package's source changed since its doc was written, or moved to another file. | Warning |
+| `REMOVED` | A documented package is gone from `legacy_code/`; its doc is orphaned. | Warning |
+
+Warnings appear as annotations on the pull request and as a table in the job summary. They don't fail the build, because a code change can't bring its own doc update. The check says *which package* changed, not which lines: the state file stores one hash per package.
+
+Run it locally with `python -m scripts.check_drift`.
 
 ## Git workflow
 
@@ -133,3 +147,4 @@ Not handled yet: pages for docs that are no longer published are not deleted, an
 | 8 | `feature/step-8-retrospective` | `docs/pilot-report.md` |
 | 9 | `feature/publishing-to-confluence` | `scripts/publish_confluence.py` and tests |
 | 10 | `feature/ci-pipeline` | GitHub Actions workflow that runs the tests |
+| 11 | `feature/drift-check` | `scripts/check_drift.py` and the drift job in CI |
