@@ -94,6 +94,7 @@ Git stays the source of truth. The script, not an LLM, converts the markdown, so
   - Citations link to the cited lines at that commit (`SOURCE_BASE_URL`).
   - Links between docs become page links.
   - "Open questions" becomes a Confluence task list.
+- **Labels:** every page gets the label `ai-generated`; package and unit pages also get their status (`approved` or `stale`). When the status changes, the old status label is removed. Other labels are left alone.
 - **Live mode:**
   - Needs `CONFLUENCE_SITE`, `CONFLUENCE_SPACE`, `ATLASSIAN_EMAIL` and `ATLASSIAN_TOKEN` in `.env`, and no uncommitted changes in `docs/`, `glossary/`, `state/` or `legacy_code/`.
   - Publishes through the REST API; `PUBLISH_MODE` must be empty or `rest` (the `mcp` mode is not implemented).

@@ -16,6 +16,8 @@ Git stays the source of truth; Confluence gets a read-only copy.
                CONFLUENCE_PARENT_ID when set) through the REST API, skips pages whose
                fingerprint (doc text, status, source hash) is unchanged, and refuses to touch a
                page this script did not generate. Needs a clean working tree
+    labels     every page is labeled ai-generated; package and unit pages also get their status
+               (approved or stale). Labels are kept in sync, also on unchanged pages
 
 The dry run writes one .xhtml file per page and pages.json to --out, and calls nothing.
 """
@@ -50,6 +52,8 @@ PUBLISHED = {DocState.APPROVED, DocState.STALE}
 PREVIEW = PUBLISHED | {DocState.DRAFT, DocState.REVIEWED}
 LIVE_ENV = ("CONFLUENCE_SITE", "CONFLUENCE_SPACE", "ATLASSIAN_EMAIL", "ATLASSIAN_TOKEN")
 GIT_PATHS = ("docs", "glossary", "state", "legacy_code")
+AI_LABEL = "ai-generated"
+STATUS_LABELS = {str(s) for s in PREVIEW}  # the script removes these when the status changes
 
 ITEM_RE = re.compile(r"\s*([-*+]|\d+\.)\s+(.*)")
 TOKEN_RE = re.compile(r"(?P<cit>\[[A-Za-z0-9_$#.()/\-]+:\d+(?:-\d+)?\])"
@@ -69,6 +73,10 @@ class Page:
     status: str
     fingerprint: str
     body: str           # storage format, banner included
+
+    @property
+    def labels(self) -> list[str]:
+        return [AI_LABEL] + ([self.status] if self.status in STATUS_LABELS else [])
 
 
 # ---------------------------------------------------------------------------
@@ -297,7 +305,8 @@ def write_dry_run(pages: list[Page], out: Path) -> None:
     for n, page in enumerate(pages, 1):
         name = f"{n:02d}-{re.sub(r'[^A-Za-z0-9]+', '_', page.title).strip('_').lower()}.xhtml"
         (out / name).write_text(page.body + "\n", encoding="utf-8", newline="\n")
-        manifest.append({**{k: v for k, v in asdict(page).items() if k != "body"}, "file": name})
+        manifest.append({**{k: v for k, v in asdict(page).items() if k != "body"}, "labels": page.labels,
+                         "file": name})
     (out / "pages.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
@@ -315,7 +324,7 @@ class Confluence:
         self.url, self.space, self.urlopen = site_url(site), space, urlopen
         self.auth = "Basic " + base64.b64encode(f"{user}:{token}".encode()).decode()
 
-    def call(self, method: str, path: str, payload: dict | None = None) -> dict:
+    def call(self, method: str, path: str, payload: dict | list | None = None) -> dict:
         req = urllib.request.Request(self.url + path, method=method,
                                      data=json.dumps(payload).encode() if payload is not None else None,
                                      headers={"Authorization": self.auth, "Accept": "application/json",
@@ -327,12 +336,15 @@ class Confluence:
             raise PublishError(f"{method} {path.split('?')[0]}: HTTP {e.code}") from None
 
     def find(self, title: str) -> dict | None:
-        query = urllib.parse.urlencode({"spaceKey": self.space, "title": title, "expand": "version,body.storage"})
+        query = urllib.parse.urlencode({"spaceKey": self.space, "title": title,
+                                        "expand": "version,body.storage,metadata.labels"})
         results = self.call("GET", f"/rest/api/content?{query}").get("results", [])
         if not results:
             return None
         r = results[0]
-        return {"id": r["id"], "version": r["version"]["number"], "body": r["body"]["storage"]["value"]}
+        labels = [label["name"] for label in r.get("metadata", {}).get("labels", {}).get("results", [])]
+        return {"id": r["id"], "version": r["version"]["number"], "body": r["body"]["storage"]["value"],
+                "labels": labels}
 
     def _payload(self, title: str, parent_id: str | None, body: str) -> dict:
         payload = {"type": "page", "title": title, "space": {"key": self.space},
@@ -348,9 +360,26 @@ class Confluence:
         payload = self._payload(title, parent_id, body) | {"id": page_id, "version": {"number": version + 1}}
         self.call("PUT", f"/rest/api/content/{page_id}", payload)
 
+    def add_labels(self, page_id: str, labels: list[str]) -> None:
+        self.call("POST", f"/rest/api/content/{page_id}/label", [{"prefix": "global", "name": n} for n in labels])
+
+    def remove_label(self, page_id: str, label: str) -> None:
+        self.call("DELETE", f"/rest/api/content/{page_id}/label?" + urllib.parse.urlencode({"name": label}))
+
+
+def sync_labels(client, page_id: str, current: list[str], wanted: list[str]) -> bool:
+    """Add missing labels and remove outdated status labels; other labels are left alone."""
+    missing = [n for n in wanted if n not in current]
+    outdated = [n for n in current if n in STATUS_LABELS and n not in wanted]
+    if missing:
+        client.add_labels(page_id, missing)
+    for name in outdated:
+        client.remove_label(page_id, name)
+    return bool(missing or outdated)
+
 
 def publish(pages: list[Page], client, root_parent_id: str | None = None) -> list[tuple[str, str]]:
-    """Create or update every page; return (action, title). Nothing is written if a page is foreign."""
+    """Create or update every page and its labels; return (action, title). Nothing is written if a page is foreign."""
     found = {p.title: client.find(p.title) for p in pages}
     foreign = [p.title for p in pages if found[p.title] and f"Generated from {p.source} " not in found[p.title]["body"]]
     if foreign:
@@ -361,14 +390,16 @@ def publish(pages: list[Page], client, root_parent_id: str | None = None) -> lis
         page = found[p.title]
         if page is None:
             ids[p.title] = client.create(p.title, parent_id, p.body)
+            sync_labels(client, ids[p.title], [], p.labels)
             actions.append(("created", p.title))
-        elif f"Fingerprint: {p.fingerprint}." in page["body"]:
-            ids[p.title] = page["id"]
-            actions.append(("unchanged", p.title))
-        else:
-            ids[p.title] = page["id"]
+            continue
+        ids[p.title] = page["id"]
+        relabeled = sync_labels(client, page["id"], page.get("labels", []), p.labels)
+        if f"Fingerprint: {p.fingerprint}." not in page["body"]:
             client.update(page["id"], page["version"], p.title, parent_id, p.body)
             actions.append(("updated", p.title))
+        else:
+            actions.append(("labeled" if relabeled else "unchanged", p.title))
     return actions
 
 
