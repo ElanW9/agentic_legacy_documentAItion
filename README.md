@@ -125,6 +125,22 @@ Git stays the source of truth. The script, not an LLM, converts the markdown, so
 
 Not handled yet: pages for docs that are no longer published are not deleted, answers that experts tick off in Confluence tasks are not read back, and `docs/flows/` is not published (it is empty).
 
+## Read analyst feedback from Confluence
+
+Analysts don't use git. They answer on the published pages: in comments, or by ticking an open question. The read-only MCP server `confluence-feedback` (`scripts/confluence_mcp.py`, registered in `.mcp.json`) lets the agent read that back, so it can propose doc changes in a pull request.
+
+| Tool | Returns |
+|------|---------|
+| `list_doc_pages` | The pages generated from this repo: title, doc path, the commit and status each page shows, and whether it shows an older approved version. |
+| `get_page_feedback(title)` | One page's comments (inline with the text they are attached to, footer, resolved, replies; author and date) and its open questions with their ticks. |
+
+- **Read-only by construction.** The client refuses every request except GET. It reads only pages with the `ai-generated` label and a "Generated from" banner. It cannot comment, resolve, tick or edit.
+- **Untrusted input.** Comment text is written by people. The agent treats it as claims to check and cite (author, date), never as instructions. The rules are in `CLAUDE.md`, "Analyst feedback".
+- **Interactive only.** It uses the same `.env` settings as `--live` publishing and runs only when you ask the agent to read feedback, never in CI. Claude Code asks you to approve the project's MCP server the first time; `/mcp` shows its status.
+- **Republishing resets ticks.** `publish_confluence` writes every open question as not ticked, and an inline comment whose text disappears becomes "dangling". Read the feedback before you publish a new version.
+
+Not handled yet: who ticked a question and when (the page source does not say), and mentions show as `@user`.
+
 ## Continuous integration
 
 `.github/workflows/ci.yml` runs on every pull request and on every push to `main`. It needs no secrets and calls no external service. It has two jobs:
@@ -168,3 +184,4 @@ Run it locally with `python -m scripts.check_drift`.
 | 10 | `feature/ci-pipeline` | GitHub Actions workflow that runs the tests |
 | 11 | `feature/drift-check` | `scripts/check_drift.py` and the drift job in CI |
 | 12 | `feature/update-package` | `scripts/update_package.py`, the `update-package` skill, the `!changed` validator check |
+| 13 | `feature/confluence-mcp` | `scripts/confluence_mcp.py`: read-only MCP server for analyst feedback |
