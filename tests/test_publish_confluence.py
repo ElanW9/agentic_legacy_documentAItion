@@ -6,6 +6,7 @@ The fixture package is the one from test_validate_doc.py; the live tests use an 
 import io
 import json
 import urllib.error
+import urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 
@@ -51,7 +52,14 @@ def test_approved_doc_is_converted(meta):
     assert (page.title, page.parent, page.status) == ("Package PKG_DEMO", pc.ROOT_TITLE, DocState.APPROVED)
     assert "PKG_DEMO" in root.body
     well_formed(page.body)
-    assert page.body.startswith('<ac:structured-macro ac:name="info">')
+    # first under the title: the AI generated and status lozenges, then the banner
+    assert page.body.startswith('<p><ac:structured-macro ac:name="status">'
+                                '<ac:parameter ac:name="title">AI GENERATED</ac:parameter>'
+                                '<ac:parameter ac:name="colour">Purple</ac:parameter>')
+    assert ('<ac:parameter ac:name="title">APPROVED</ac:parameter>'
+            '<ac:parameter ac:name="colour">Green</ac:parameter>') in page.body
+    assert page.body.split("</p>", 1)[1].startswith('<ac:structured-macro ac:name="info">')
+    assert "APPROVED" not in root.body.split("</p>", 1)[0]
     assert "Generated from tests/fixtures/validate/pkg_demo.md at commit 0123456789ab." in page.body
     assert "<h1>" not in page.body  # the title is the page title
     # citations link to the cited lines of the file at the commit
@@ -64,12 +72,14 @@ def test_approved_doc_is_converted(meta):
 def test_changed_source_is_published_as_stale(meta):
     pages, _ = pc.collect_pages(state(source_hash="0" * 64), meta, COMMIT, BASE)
     assert pages[1].status == DocState.STALE
-    assert pages[1].body.startswith('<ac:structured-macro ac:name="warning">')
+    assert '<ac:parameter ac:name="title">STALE</ac:parameter><ac:parameter ac:name="colour">Yellow</ac:parameter>' \
+        in pages[1].body
+    assert pages[1].body.split("</p>", 1)[1].startswith('<ac:structured-macro ac:name="warning">')
 
 
 def test_include_drafts_renders_a_preview(meta):
     pages, skipped = pc.collect_pages(state(DocState.DRAFT), meta, COMMIT, BASE, include_drafts=True)
-    assert skipped == [] and pages[1].body.startswith('<ac:structured-macro ac:name="note">')
+    assert skipped == [] and pages[1].body.split("</p>", 1)[1].startswith('<ac:structured-macro ac:name="note">')
 
 
 def test_inline_markup(meta):
@@ -102,15 +112,24 @@ class FakeConfluence:
     def find(self, title):
         return self.pages.get(title)
 
+    def by_id(self, page_id):
+        return next(p for p in self.pages.values() if p["id"] == page_id)
+
     def create(self, title, parent_id, body):
         page_id = str(len(self.pages) + 1)
-        self.pages[title] = {"id": page_id, "version": 1, "body": body, "parent": parent_id}
+        self.pages[title] = {"id": page_id, "version": 1, "body": body, "parent": parent_id, "labels": []}
         self.writes.append(("create", title))
         return page_id
 
     def update(self, page_id, version, title, parent_id, body):
-        self.pages[title] = {"id": page_id, "version": version + 1, "body": body, "parent": parent_id}
+        self.pages[title] |= {"version": version + 1, "body": body, "parent": parent_id}
         self.writes.append(("update", title))
+
+    def add_labels(self, page_id, labels):
+        self.by_id(page_id)["labels"] += labels
+
+    def remove_label(self, page_id, label):
+        self.by_id(page_id)["labels"].remove(label)
 
 
 def test_publish_creates_skips_and_updates(meta):
@@ -124,6 +143,25 @@ def test_publish_creates_skips_and_updates(meta):
 
     stale, _ = pc.collect_pages(state(source_hash="0" * 64), meta, COMMIT, BASE)
     assert pc.publish(stale, fake)[1] == ("updated", "Package PKG_DEMO")
+
+
+def test_labels_mark_ai_and_status(meta):
+    pages, _ = pc.collect_pages(state(), meta, COMMIT, BASE)
+    fake = FakeConfluence()
+    pc.publish(pages, fake)
+    assert fake.pages[pc.ROOT_TITLE]["labels"] == ["ai-generated"]
+    assert fake.pages["Package PKG_DEMO"]["labels"] == ["ai-generated", "approved"]
+
+    # a page published before labels existed gets them without a new version
+    fake.pages["Package PKG_DEMO"]["labels"] = ["team-label"]
+    assert pc.publish(pages, fake)[1] == ("labeled", "Package PKG_DEMO")
+    assert fake.pages["Package PKG_DEMO"]["version"] == 1
+    assert fake.pages["Package PKG_DEMO"]["labels"] == ["team-label", "ai-generated", "approved"]
+
+    # the status label follows the status; labels added by people stay
+    stale, _ = pc.collect_pages(state(source_hash="0" * 64), meta, COMMIT, BASE)
+    pc.publish(stale, fake)
+    assert fake.pages["Package PKG_DEMO"]["labels"] == ["team-label", "ai-generated", "stale"]
 
 
 def test_publish_never_overwrites_a_foreign_page(meta):
@@ -172,6 +210,8 @@ def test_client_requests():
         sent.append(req)
         if req.get_method() == "PUT":
             raise urllib.error.HTTPError(req.full_url, 409, "Conflict", {}, None)
+        if req.get_method() == "DELETE":
+            return io.BytesIO(b"")  # 204 No Content
         return io.BytesIO(json.dumps({"id": "42", "results": []}).encode())
 
     client = pc.Confluence("wiki.example", "DOC", "bot@example.com", "secret-token-value", urlopen)
@@ -180,9 +220,16 @@ def test_client_requests():
     with pytest.raises(pc.PublishError) as e:
         client.update("42", 1, "Package PKG_DEMO", "7", "<p>y</p>")
     assert "HTTP 409" in str(e.value) and "secret" not in str(e.value)
+    client.add_labels("42", ["ai-generated", "approved"])
+    client.remove_label("42", "stale")
 
-    get, post, put = sent
+    get, post, put, label, unlabel = sent
     assert get.full_url.startswith("https://wiki.example/wiki/rest/api/content?spaceKey=DOC&title=Package+PKG_DEMO")
+    assert "metadata.labels" in urllib.parse.unquote(get.full_url)
     assert post.get_header("Authorization").startswith("Basic ")
     assert json.loads(post.data)["ancestors"] == [{"id": "7"}]
     assert json.loads(put.data)["version"] == {"number": 2}
+    assert label.full_url.endswith("/rest/api/content/42/label")
+    assert json.loads(label.data) == [{"prefix": "global", "name": "ai-generated"},
+                                      {"prefix": "global", "name": "approved"}]
+    assert (unlabel.get_method(), unlabel.full_url) == ("DELETE", "https://wiki.example/wiki/rest/api/content/42/label?name=stale")
