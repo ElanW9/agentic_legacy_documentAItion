@@ -53,6 +53,7 @@ When the metadata and the source disagree, do not pick one silently: document wh
 python -m scripts.extract_metadata              # legacy_code/ -> metadata/*.json
 python -m scripts.export_schemas                # models -> schemas/*.schema.json
 python -m scripts.validate_doc <doc.md>         # doc vs. metadata (step 6)
+python -m scripts.check_drift                   # stale metadata; new, changed, removed packages
 python -m scripts.publish_confluence            # dry run -> build/confluence/ (--live: only when the user asks)
 python -m pytest
 ```
