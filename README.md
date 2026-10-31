@@ -106,6 +106,10 @@ Git stays the source of truth. The script, not an LLM, converts the markdown, so
 
 Not handled yet: pages for docs that are no longer published are not deleted, answers that experts tick off in Confluence tasks are not read back, and `docs/flows/` is not published (it is empty).
 
+## Continuous integration
+
+`.github/workflows/ci.yml` runs `python -m pytest` on every pull request and on every push to `main`, on Python 3.11 (the oldest supported version) and 3.14. It needs no secrets and calls no external service.
+
 ## Git workflow
 
 - Each step is built on its own branch, `feature/step-<number>-<short-name>`, created from `main`. If the previous step hasn't been merged yet, the branch is created from the previous step's branch instead.
@@ -128,3 +132,4 @@ Not handled yet: pages for docs that are no longer published are not deleted, an
 | 7 | `feature/step-7-pilot` | Documentation for the 4 packages |
 | 8 | `feature/step-8-retrospective` | `docs/pilot-report.md` |
 | 9 | `feature/publishing-to-confluence` | `scripts/publish_confluence.py` and tests |
+| 10 | `feature/ci-pipeline` | GitHub Actions workflow that runs the tests |
