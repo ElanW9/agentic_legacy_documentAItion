@@ -15,6 +15,8 @@ Checks. ERROR fails the doc; WARN is reported but does not fail it.
     uncited    every prose sentence and every table row carries a citation or a line column
     coverage   a package doc mentions every subprogram of the package (ERROR) and every
                variable, table and transaction/error/dynamic-SQL risk flag (WARN)
+    changed    no "!changed" marker is left: update_package puts it on line numbers whose
+               source lines changed, and the claim must be checked before it goes
 
 Line numbers in the report are lines of the doc. Exit code 0 when every doc passes.
 """
@@ -61,6 +63,7 @@ LIST_ITEM_RE = re.compile(r"\s*(?:[-*+]|\d+\.)\s+")
 LINK_RE = re.compile(r"\[[^\]]*\]\([^)]*\.md[^)]*\)")
 NUMBER_RANGE_RE = re.compile(r"\b(\d+)(?:\s*-\s*(\d+))?\b")
 LINE_COLUMNS = {"line", "spec", "body", "statement line"}
+CHANGED_MARK = "!changed"  # set by update_package on line numbers whose source lines changed
 
 # Risk kinds that every package doc must cite. HARDCODED_VALUE and PACKAGE_STATE are too
 # numerous to require one citation per flag; review-doc covers them.
@@ -302,7 +305,13 @@ def check_citations(doc: Doc, meta: Metadata, findings: list[Finding]) -> list[t
     """Validate every citation; return the valid ones as (id, start, end)."""
     cited = []
     for n, line in doc.content:
+        if CHANGED_MARK in line:
+            findings.append(Finding(n, "ERROR", "changed",
+                                    f"the source lines here changed since the doc was written; re-read the code, "
+                                    f"fix the claim and its line numbers, then remove '{CHANGED_MARK}'"))
         for m in LOOSE_CITATION_RE.finditer(line):
+            if CHANGED_MARK in m[0]:
+                continue  # reported above
             if not CITATION_RE.fullmatch(m[0]):
                 findings.append(Finding(n, "ERROR", "citation", f"malformed citation {m[0]}; use [ID:start-end]"))
         for m in CITATION_RE.finditer(line):
