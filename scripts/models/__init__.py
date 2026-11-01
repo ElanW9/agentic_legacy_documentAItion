@@ -19,6 +19,7 @@ from .objects import (
     Trigger,
     View,
 )
+from .owners import Owner, OwnersFile
 from .risk_flags import RiskFlag, RiskFlags, RiskKind
 from .table_usage import AccessVia, Operation, TableAccess, TableUsage
 
@@ -29,5 +30,6 @@ SCHEMA_ROOTS = {
     "table_usage": TableUsage,
     "risk_flags": RiskFlags,
     "doc_status": DocStatusFile,
+    "owners": OwnersFile,
     "package_summary": PackageSummary,
 }

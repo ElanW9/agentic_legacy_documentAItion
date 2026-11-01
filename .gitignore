@@ -3,6 +3,9 @@
 .env.*
 !.env.example
 
+# --- Question owners: Atlassian account ids stay local (template: state/owners.example.json) ---
+state/owners.json
+
 # --- Oracle wallets and credential files ---
 wallet/
 **/wallet/

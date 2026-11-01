@@ -1,0 +1,44 @@
+{
+  "$defs": {
+    "Owner": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Name used when the doc cites this owner.",
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "account_id": {
+          "description": "Atlassian account id. Display names can be changed by anyone for their own profile; the account id cannot.",
+          "minLength": 1,
+          "title": "Account Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "account_id"
+      ],
+      "title": "Owner",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "packages": {
+      "additionalProperties": {
+        "items": {
+          "$ref": "#/$defs/Owner"
+        },
+        "type": "array"
+      },
+      "default": {},
+      "description": "Package name -> its owners.",
+      "title": "Packages",
+      "type": "object"
+    }
+  },
+  "title": "OwnersFile",
+  "type": "object"
+}
