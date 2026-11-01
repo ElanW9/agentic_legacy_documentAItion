@@ -1,6 +1,8 @@
 {
   "packages": {
-    "CUST_MGMT": [],
+    "CUST_MGMT": [
+      {"name": "Elan", "account_id": "63930d1aa593cb822e994f89"}
+    ],
     "INV_API": [],
     "PKG_ORDER": [],
     "UTIL_LOG": []

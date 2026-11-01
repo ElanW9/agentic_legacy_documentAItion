@@ -20,6 +20,7 @@ from scripts.models import DocStatusFile, Owner, OwnersFile
 from scripts.publish_confluence import AI_LABEL, PREVIOUS_NOTE, ROOT_SOURCE, Confluence
 
 OWNERS_PATH = "state/owners.json"
+OWNERS_EXAMPLE = "state/owners.example.json"
 
 GENERATED_RE = re.compile(r"Generated from (\S+) at commit ([0-9a-f]{7,40})\.")
 STATUS_RE = re.compile(r"Status: (\w+)\.")
@@ -139,8 +140,10 @@ def doc_pages(client: ReadOnlyConfluence) -> list[dict]:
 
 
 def owners_by_doc(root: Path) -> dict[str, list[Owner]]:
-    """Doc path -> the owners of its package, from state/owners.json and state/doc-status.json."""
-    owners = OwnersFile.model_validate_json((root / OWNERS_PATH).read_text(encoding="utf-8"))
+    """Doc path -> the owners of its package, from state/owners.json and state/doc-status.json.
+    state/owners.json is local (gitignored, template state/owners.example.json); without it there are no owners."""
+    path = root / OWNERS_PATH
+    owners = OwnersFile.model_validate_json(path.read_text(encoding="utf-8")) if path.exists() else OwnersFile()
     status = DocStatusFile.model_validate_json((root / ROOT_SOURCE).read_text(encoding="utf-8"))
     return {entry.doc_path: owners.packages.get(package, []) for package, entry in status.entries.items()}
 

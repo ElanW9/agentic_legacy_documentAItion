@@ -87,5 +87,5 @@ On Windows use `.venv\Scripts\python.exe`.
 | `docs/packages/`, `docs/flows/` | Documentation output. |
 | `docs/extraction-limitations.md` | What the regex parser misses. |
 | `state/doc-status.json` | Status and source hash per package. |
-| `state/owners.json` | Who may answer open questions per package, by Atlassian account id. |
+| `state/owners.json` | Who may answer open questions per package, by Atlassian account id. Local and gitignored; template `state/owners.example.json`. |
 | `.claude/skills/` | `document-package`, `update-package`, `review-doc`. |

@@ -12,7 +12,7 @@ import pytest
 from mcp import Client
 
 import scripts.confluence_mcp as server_module
-from scripts.confluence_feedback import (OWNERS_PATH, FeedbackError, ReadOnlyConfluence, doc_pages, get_feedback,
+from scripts.confluence_feedback import (OWNERS_EXAMPLE, OWNERS_PATH, FeedbackError, ReadOnlyConfluence, doc_pages, get_feedback,
                                          open_questions, owners_by_doc, text_of)
 from scripts.extract_metadata import REPO_ROOT
 from scripts.models import DocStatusFile, Owner, OwnersFile
@@ -135,12 +135,18 @@ def test_owner_is_matched_on_account_id_not_name(fake):
     assert not any(c["owner"] for c in get_feedback(client, "Package UTIL_LOG", renamed)["comments"])
 
 
-def test_owners_file_names_documented_packages():
-    owners = owners_by_doc(REPO_ROOT)
-    packages = OwnersFile.model_validate_json((REPO_ROOT / OWNERS_PATH).read_text(encoding="utf-8")).packages
+def test_owners_example_names_documented_packages():
+    packages = OwnersFile.model_validate_json((REPO_ROOT / OWNERS_EXAMPLE).read_text(encoding="utf-8")).packages
     status = DocStatusFile.model_validate_json((REPO_ROOT / ROOT_SOURCE).read_text(encoding="utf-8"))
     assert set(packages) <= set(status.entries)
-    assert set(owners) == {e.doc_path for e in status.entries.values()}
+
+
+def test_owners_file_is_optional(tmp_path):
+    (tmp_path / "state").mkdir()
+    (tmp_path / ROOT_SOURCE).write_bytes((REPO_ROOT / ROOT_SOURCE).read_bytes())
+    assert all(owners == [] for owners in owners_by_doc(tmp_path).values())  # no state/owners.json
+    (tmp_path / OWNERS_PATH).write_bytes((REPO_ROOT / OWNERS_EXAMPLE).read_bytes())
+    assert owners_by_doc(tmp_path)["docs/packages/cust_mgmt.md"][0].name == "Ann Analyst"
 
 
 def test_get_feedback_reads_only_generated_pages(fake):
