@@ -146,7 +146,11 @@ def test_owners_file_is_optional(tmp_path):
     (tmp_path / ROOT_SOURCE).write_bytes((REPO_ROOT / ROOT_SOURCE).read_bytes())
     assert all(owners == [] for owners in owners_by_doc(tmp_path).values())  # no state/owners.json
     (tmp_path / OWNERS_PATH).write_bytes((REPO_ROOT / OWNERS_EXAMPLE).read_bytes())
-    assert owners_by_doc(tmp_path)["docs/packages/cust_mgmt.md"][0].name == "Ann Analyst"
+    (tmp_path / "docs/packages/cust_mgmt").mkdir(parents=True)
+    (tmp_path / "docs/packages/cust_mgmt/chk_credit.md").write_text("# CHK_CREDIT\n", encoding="utf-8")
+    owners = owners_by_doc(tmp_path)
+    assert owners["docs/packages/cust_mgmt.md"][0].name == "Ann Analyst"
+    assert owners["docs/packages/cust_mgmt/chk_credit.md"] == owners["docs/packages/cust_mgmt.md"]  # unit doc
 
 
 def test_get_feedback_reads_only_generated_pages(fake):

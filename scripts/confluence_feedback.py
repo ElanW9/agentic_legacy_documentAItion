@@ -140,12 +140,19 @@ def doc_pages(client: ReadOnlyConfluence) -> list[dict]:
 
 
 def owners_by_doc(root: Path) -> dict[str, list[Owner]]:
-    """Doc path -> the owners of its package, from state/owners.json and state/doc-status.json.
+    """Doc path -> the owners of its package, from state/owners.json and state/doc-status.json. A package's
+    unit docs (docs/packages/<package>/*.md) have the same owners as its package doc.
     state/owners.json is local (gitignored, template state/owners.example.json); without it there are no owners."""
     path = root / OWNERS_PATH
     owners = OwnersFile.model_validate_json(path.read_text(encoding="utf-8")) if path.exists() else OwnersFile()
     status = DocStatusFile.model_validate_json((root / ROOT_SOURCE).read_text(encoding="utf-8"))
-    return {entry.doc_path: owners.packages.get(package, []) for package, entry in status.entries.items()}
+    by_doc = {}
+    for package, entry in status.entries.items():
+        package_owners = owners.packages.get(package, [])
+        by_doc[entry.doc_path] = package_owners
+        for unit_doc in (root / entry.doc_path).with_suffix("").glob("*.md"):
+            by_doc[unit_doc.relative_to(root).as_posix()] = package_owners
+    return by_doc
 
 
 def get_feedback(client: ReadOnlyConfluence, title: str, owners: dict[str, list[Owner]] | None = None) -> dict:
