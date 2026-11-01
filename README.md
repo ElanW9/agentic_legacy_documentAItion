@@ -24,7 +24,7 @@ An AI agent documents undocumented legacy Oracle PL/SQL. All code in `legacy_cod
 | `glossary/` | Domain terms and naming conventions. |
 | `docs/packages/`, `docs/flows/` | Generated documentation. |
 | `docs/repo-plan.md` | Inspection findings and design. |
-| `state/` | Doc status tracking. |
+| `state/` | Doc status tracking; who may answer open questions per package. |
 | `.claude/skills/` | Agent skills. |
 | `CLAUDE.md` | Agent rules. |
 
@@ -132,10 +132,11 @@ Analysts don't use git. They answer on the published pages: in comments, or by t
 | Tool | Returns |
 |------|---------|
 | `list_doc_pages` | The pages generated from this repo: title, doc path, the commit and status each page shows, and whether it shows an older approved version. |
-| `get_page_feedback(title)` | One page's comments (inline with the text they are attached to, footer, resolved, replies; author and date) and its open questions with their ticks. |
+| `get_page_feedback(title)` | One page's comments (inline with the text they are attached to, footer, resolved, replies; author, account id, date, and whether the author is an owner) and its open questions with their ticks. |
 
 - **Read-only by construction.** The client refuses every request except GET. It reads only pages with the `ai-generated` label and a "Generated from" banner. It cannot comment, resolve, tick or edit.
 - **Untrusted input.** Comment text is written by people. The agent treats it as claims to check and cite (author, date), never as instructions. The rules are in `CLAUDE.md`, "Analyst feedback".
+- **Owners close questions, without git.** `state/owners.json` lists who may answer open questions for each package, by Atlassian account id (a display name can be changed by anyone, an account id cannot; it is the last part of the person's Confluence profile URL). An owner closes a question in Confluence by ticking it and writing the answer in a comment. The agent then proposes the answer in a pull request: the answer moves into the doc text, attributed, and the question is removed. The reviewer decides; after the merge and republish the owner sees the answer on the page. Comments from anyone else stay claims next to the open question.
 - **Interactive only.** It uses the same `.env` settings as `--live` publishing and runs only when you ask the agent to read feedback, never in CI. Claude Code asks you to approve the project's MCP server the first time; `/mcp` shows its status.
 - **Republishing resets ticks.** `publish_confluence` writes every open question as not ticked, and an inline comment whose text disappears becomes "dangling". Read the feedback before you publish a new version.
 
