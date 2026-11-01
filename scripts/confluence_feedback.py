@@ -14,8 +14,12 @@ import re
 import urllib.parse
 from dataclasses import asdict, dataclass
 from html.parser import HTMLParser
+from pathlib import Path
 
-from scripts.publish_confluence import AI_LABEL, PREVIOUS_NOTE, Confluence
+from scripts.models import DocStatusFile, Owner, OwnersFile
+from scripts.publish_confluence import AI_LABEL, PREVIOUS_NOTE, ROOT_SOURCE, Confluence
+
+OWNERS_PATH = "state/owners.json"
 
 GENERATED_RE = re.compile(r"Generated from (\S+) at commit ([0-9a-f]{7,40})\.")
 STATUS_RE = re.compile(r"Status: (\w+)\.")
@@ -83,19 +87,22 @@ class Comment:
     id: str
     kind: str          # "inline" (attached to selected page text) or "footer" (at the bottom of the page)
     author: str
+    author_id: str     # Atlassian account id; unlike the display name, its owner cannot change it
     created: str
     text: str
     quoted: str = ""   # inline: the page text the comment is attached to
     status: str = ""   # inline: open, reopened, resolved, or dangling (the quoted text is gone)
     reply_to: str = ""  # id of the comment this one answers
+    owner: bool = False  # the author is an owner of the doc's package in state/owners.json
 
 
 def comment_of(raw: dict) -> Comment:
     ext = raw.get("extensions", {})
     history = raw.get("history", {})
+    created_by = history.get("createdBy", {})
     parents = [a["id"] for a in raw.get("ancestors", []) if a.get("type") == "comment"]
     return Comment(id=raw["id"], kind=ext.get("location", "footer"),
-                   author=history.get("createdBy", {}).get("displayName", "unknown"),
+                   author=created_by.get("displayName", "unknown"), author_id=created_by.get("accountId", ""),
                    created=history.get("createdDate", ""),
                    text=text_of(raw.get("body", {}).get("storage", {}).get("value", "")),
                    quoted=ext.get("inlineProperties", {}).get("originalSelection", ""),
@@ -131,8 +138,16 @@ def doc_pages(client: ReadOnlyConfluence) -> list[dict]:
     return sorted(pages, key=lambda p: p["title"])
 
 
-def get_feedback(client: ReadOnlyConfluence, title: str) -> dict:
-    """Comments (inline, footer and resolved, with replies) and open-question ticks on one generated page."""
+def owners_by_doc(root: Path) -> dict[str, list[Owner]]:
+    """Doc path -> the owners of its package, from state/owners.json and state/doc-status.json."""
+    owners = OwnersFile.model_validate_json((root / OWNERS_PATH).read_text(encoding="utf-8"))
+    status = DocStatusFile.model_validate_json((root / ROOT_SOURCE).read_text(encoding="utf-8"))
+    return {entry.doc_path: owners.packages.get(package, []) for package, entry in status.entries.items()}
+
+
+def get_feedback(client: ReadOnlyConfluence, title: str, owners: dict[str, list[Owner]] | None = None) -> dict:
+    """Comments (inline, footer and resolved, with replies) and open-question ticks on one generated page.
+    A comment is marked owner when its author's account id is listed for the page's doc in `owners`."""
     page = client.find(title)
     if page is None:
         raise FeedbackError(f"no page titled {title!r} in space {client.space}")
@@ -143,6 +158,9 @@ def get_feedback(client: ReadOnlyConfluence, title: str) -> dict:
     comments = [comment_of(r) for r in client.get_all(f"/rest/api/content/{page['id']}/child/comment?{query}")]
     info = page_info(title, page["id"], page["body"], page["version"],
                      f"{client.url}/pages/viewpage.action?pageId={page['id']}")
-    return info | {"note": UNTRUSTED,
+    page_owners = (owners or {}).get(info["doc"], [])
+    for c in comments:
+        c.owner = any(c.author_id == o.account_id for o in page_owners)
+    return info | {"note": UNTRUSTED, "owners": [o.name for o in page_owners],
                    "comments": [asdict(c) for c in sorted(comments, key=lambda c: (c.created, c.id))],
                    "open_questions": open_questions(page["body"])}
