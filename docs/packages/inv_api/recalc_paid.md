@@ -40,7 +40,7 @@ None found in metadata.
 | `INVOICES` | UPDATE | 27 | STATIC |
 | `PAYMENTS` | SELECT | 29 | STATIC |
 
-No FIRES_TRIGGER edge exists for this unit [INV_API.RECALC_PAID:27].
+The `INVOICES` update fires no trigger, because legacy_code/ has no trigger on `INVOICES` [INV_API.RECALC_PAID:27] [TRG_CUST_BIU:2] [TRG_ORDL_AIUD:2] [TRG_PAY_AIR:2].
 
 ## Side effects and risks
 

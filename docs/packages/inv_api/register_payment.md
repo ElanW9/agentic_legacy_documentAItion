@@ -28,7 +28,7 @@ The business reason for the checks is Unknown: needs human input.
 
 ## Logic walkthrough
 
-1. Calls `UTIL_LOG.SET_CTX` with 'INV_API', which sets the `UTIL_LOG` module for the rest of the session [INV_API.REGISTER_PAYMENT:170] [UTIL_LOG.SET_CTX:28].
+1. Calls `UTIL_LOG.SET_CTX` with 'INV_API', which sets the `UTIL_LOG` module until the next `UTIL_LOG.SET_CTX` call in the session [INV_API.REGISTER_PAYMENT:170] [UTIL_LOG.SET_CTX:28].
 2. Reads the whole `INVOICES` row; when it does not exist, NO_DATA_FOUND goes to the handler at line 200 [INV_API.REGISTER_PAYMENT:172] [INV_API.REGISTER_PAYMENT:199-201].
 3. Raises -20201 'Invoice cancelled' when `INVOICES.INV_STATUS` is 'CANC' [INV_API.REGISTER_PAYMENT:174-176].
 4. Raises -20202 'Unknown payment method' when `P_METHOD` is not 'BT', 'CC' or 'CA'; a NULL method passes, because `NOT IN` with NULL is not true [INV_API.REGISTER_PAYMENT:177-179].

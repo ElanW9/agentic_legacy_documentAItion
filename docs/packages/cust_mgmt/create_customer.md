@@ -63,8 +63,8 @@ There is no caller in legacy_code/ [CUST_MGMT.CREATE_CUSTOMER:36].
 ## Side effects and risks
 
 - No COMMIT: the new row stays uncommitted until the caller commits [CUST_MGMT.CREATE_CUSTOMER:36-76].
-- The "customer created" log line is committed on its own and survives a rollback by the caller [CUST_MGMT.CREATE_CUSTOMER:75] [UTIL_LOG.LOG_MSG:82].
-- `UTIL_LOG.G_MODULE` keeps the value `'CUST_MGMT'` for the rest of the session, also for logging by other packages [UTIL_LOG.SET_CTX:28].
+- The "customer created" log line, when written, is committed on its own and survives a rollback by the caller [CUST_MGMT.CREATE_CUSTOMER:75] [UTIL_LOG.LOG_MSG:82]. `UTIL_LOG.LOG_MSG` writes it only when its severity reaches the session's log level, and swallows its own errors [UTIL_LOG.LOG_MSG:71] [UTIL_LOG.LOG_MSG:83-85].
+- `UTIL_LOG.G_MODULE` keeps the value `'CUST_MGMT'` until the next `UTIL_LOG.SET_CTX` call in the session, also for logging by other packages [UTIL_LOG.SET_CTX:28]. Other units that call `UTIL_LOG.SET_CTX` are `INV_API.REGISTER_PAYMENT`, `PKG_ORDER.NEW_ORDER`, `PKG_ORDER.PROCESS_ORDER` and `UTIL_LOG.HOUSEKEEPING` [INV_API.REGISTER_PAYMENT:170] [PKG_ORDER.NEW_ORDER:39] [PKG_ORDER.PROCESS_ORDER:140] [UTIL_LOG.HOUSEKEEPING:161].
 - The duplicate check is a `COUNT(*)` before the INSERT; the table script declares no unique constraint on `VAT_NO` [CUST_MGMT.CREATE_CUSTOMER:49-56] [CUSTOMERS:14-16].
 - Hardcoded values: `'W'`, 20000, `'G'`, 2500, `'R'`, `'BE'`, `'A'` at lines 60-73 [CUST_MGMT.CREATE_CUSTOMER:60-73]; their meaning is Unknown: needs human input.
 - No caller in legacy_code/; it may be called from outside the source tree [CUST_MGMT.CREATE_CUSTOMER:36].

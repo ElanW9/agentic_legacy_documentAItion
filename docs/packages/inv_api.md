@@ -50,7 +50,7 @@ It does not commit and has no exception handler, so NO_DATA_FOUND for an unknown
 ### `INV_API.CANCEL_INVOICE_FOR_ORDER`
 
 Loops over the invoices of `P_ORD_ID` whose status is 'OPEN' or 'PART' and calls `INV_API.CANCEL_INVOICE` for each [INV_API.CANCEL_INVOICE_FOR_ORDER:155-160].
-It has no exception handler: when one invoice raises -20200, the loop stops, the error reaches the caller, and invoices cancelled earlier in the loop stay cancelled in the caller's open transaction [INV_API.CANCEL_INVOICE_FOR_ORDER:153-161] [INV_API.CANCEL_INVOICE:140-142].
+It has no exception handler: when one invoice raises -20200, the loop stops and the error reaches the caller [INV_API.CANCEL_INVOICE_FOR_ORDER:153-161] [INV_API.CANCEL_INVOICE:140-142]. Its only caller, `PKG_ORDER.CANCEL_ORDER`, has no handler either [PKG_ORDER.CANCEL_ORDER:258-277]. Invoices cancelled earlier in the loop stay cancelled only when some PL/SQL caller further up handles the error; when it reaches the client unhandled, Oracle rolls back the whole failed call (general Oracle behaviour) [PKG_ORDER.CANCEL_ORDER:265].
 It does not commit [INV_API.CANCEL_INVOICE_FOR_ORDER:153-161].
 
 ### `INV_API.REGISTER_PAYMENT`
@@ -103,7 +103,7 @@ Details: [recalc_paid.md](inv_api/recalc_paid.md).
 
 `INV_API.GET_DUE_DT` gets the customer type from `CUST_MGMT.GET_CUST_TYPE` [INV_API.GET_DUE_DT:38].
 For type 'G' it returns `UTIL_LOG.ADD_WORKDAYS` of the date and 60, for type 'W' the date plus 45, and for any other type the date plus 30 [INV_API.GET_DUE_DT:40-46].
-`UTIL_LOG.ADD_WORKDAYS` counts only days that are not Saturday or Sunday [UTIL_LOG.ADD_WORKDAYS:113-118].
+`UTIL_LOG.ADD_WORKDAYS` counts only days for which `UTIL_LOG.IS_WORKDAY` is TRUE [UTIL_LOG.ADD_WORKDAYS:113-118]. That function compares the day abbreviation with `'SAT'` and `'SUN'`, which depends on the session's date language and ignores holidays [UTIL_LOG.IS_WORKDAY:105].
 `CUST_MGMT.GET_CUST_TYPE` returns 'R' when the customer does not exist, so an unknown customer gets the 30-day branch [CUST_MGMT.GET_CUST_TYPE:140-142] [INV_API.GET_DUE_DT:44-45].
 The comment at [legacy_code/tables/customers.sql:19] says "R=retail W=wholesale" and does not mention 'G'; the meaning of the customer types is Unknown: needs human input.
 
@@ -207,7 +207,7 @@ No access is via DYNAMIC_LITERAL [INV_API(body):1-248].
 
 `TRG_PAY_AIR` is an AFTER INSERT row-level trigger on `PAYMENTS`, so it fires for every payment row inserted at line 181 [TRG_PAY_AIR:1-3] [INV_API.REGISTER_PAYMENT:181-182].
 The comment at [TRG_PAY_AIR:16] says "close order"; the meaning of status 50 is Unknown: needs human input, and `PKG_ORDER` declares no constant with value 50 [PKG_ORDER(spec):3-9].
-No `INV_API` write to `INVOICES` or `ORDERS` has a FIRES_TRIGGER edge [INV_API(body):1-248].
+No `INV_API` write to `INVOICES` or `ORDERS` fires a trigger, because legacy_code/ has no trigger on those tables; the triggers are on `CUSTOMERS`, `ORDER_LINES` and `PAYMENTS` [INV_API(body):1-248] [TRG_CUST_BIU:2] [TRG_ORDL_AIUD:2] [TRG_PAY_AIR:2].
 
 ## Side effects and risks
 
@@ -217,11 +217,11 @@ No `INV_API` write to `INVOICES` or `ORDERS` has a FIRES_TRIGGER edge [INV_API(b
 - `INV_API.REGISTER_PAYMENT` rolls back at line 194 for a cash payment above 3000: this undoes the payment, the trigger's updates, and all uncommitted work of the caller, not only this payment, and then raises -20203 [INV_API.REGISTER_PAYMENT:193-195].
 - The cash-limit check runs after the INSERT, so the trigger has already run when the ROLLBACK happens [INV_API.REGISTER_PAYMENT:181-196].
 - `INV_API.SEND_REMINDERS` commits at line 243: this commits all `INVOICES.REMINDER_CNT` increments and any uncommitted work of the caller [INV_API.SEND_REMINDERS:243].
-- `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` runs after that COMMIT, so its writes are not committed by `INV_API.SEND_REMINDERS` [INV_API.SEND_REMINDERS:243-245].
+- `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` runs after that COMMIT [INV_API.SEND_REMINDERS:243-245]. Its writes are still committed: it calls `CUST_MGMT.BLOCK_CUSTOMER` for each customer it blocks, and that unit commits each time [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:236-241] [CUST_MGMT.BLOCK_CUSTOMER:113].
 - `INV_API.RECALC_PAID` commits at line 31, which would also commit the caller's work, but it has no caller in legacy_code/ [INV_API.RECALC_PAID:31].
 - `INV_API.CREATE_INVOICE#1`, `INV_API.CREATE_INVOICE#2`, `INV_API.CANCEL_INVOICE` and `INV_API.CANCEL_INVOICE_FOR_ORDER` neither commit nor roll back: their writes stay in the caller's transaction [INV_API.CREATE_INVOICE#2:113-119] [INV_API.CANCEL_INVOICE:144-147] [INV_API.CANCEL_INVOICE_FOR_ORDER:155-160].
 - `PKG_ORDER.PROCESS_ORDER` rolls back to its savepoint when `INV_API.CREATE_INVOICE#1` returns NULL [PKG_ORDER.PROCESS_ORDER:214-219].
-- Every log line written through `UTIL_LOG.LOG_MSG` is committed in an autonomous transaction, so it survives a rollback by the caller, including the 'overpaid' warning written just before the cash-limit ROLLBACK [UTIL_LOG.LOG_MSG:63] [INV_API.REGISTER_PAYMENT:187-194].
+- A log line that `UTIL_LOG.LOG_MSG` writes is committed in an autonomous transaction, so it survives a rollback by the caller, including the 'overpaid' warning written just before the cash-limit ROLLBACK [UTIL_LOG.LOG_MSG:63] [INV_API.REGISTER_PAYMENT:187-194]. `UTIL_LOG.LOG_MSG` writes only lines whose severity reaches the session's log level, and swallows its own errors, so a line can be missing [UTIL_LOG.LOG_MSG:71] [UTIL_LOG.LOG_MSG:83-85].
 
 ### Package state
 
@@ -234,7 +234,7 @@ No `INV_API` write to `INVOICES` or `ORDERS` has a FIRES_TRIGGER edge [INV_API(b
 `INV_API.G_VAT_RATE` is loaded once and then kept for the database session: a change to the 'VAT_RATE' row in `APP_PARAMS` is not seen by a session that has already called `INV_API.CALC_VAT` [INV_API.G_VAT_RATE:12] [INV_API.CALC_VAT:55-57].
 `INV_API.G_INV_PREFIX` is not a constant but no unit assigns it, so it keeps 'INV' for the session [INV_API.G_INV_PREFIX:13].
 `INV_API.REGISTER_PAYMENT` reads the package variable `UTIL_LOG.G_USER` for `PAYMENTS.CREATED_BY`, falling back to USER when it is NULL [INV_API.REGISTER_PAYMENT:182].
-`INV_API.REGISTER_PAYMENT` calls `UTIL_LOG.SET_CTX` with 'INV_API', which sets the `UTIL_LOG` module for the rest of the session and leaves `UTIL_LOG.G_USER` unchanged [INV_API.REGISTER_PAYMENT:170] [UTIL_LOG.SET_CTX:28-31].
+`INV_API.REGISTER_PAYMENT` calls `UTIL_LOG.SET_CTX` with 'INV_API', which sets the `UTIL_LOG` module until the next `UTIL_LOG.SET_CTX` call in the session and leaves `UTIL_LOG.G_USER` unchanged [INV_API.REGISTER_PAYMENT:170] [UTIL_LOG.SET_CTX:28-31].
 
 ### Dynamic SQL
 
@@ -277,8 +277,8 @@ The comment at [INV_API.REGISTER_PAYMENT:192] says "cash payments above 3000 not
 - `INV_API.NEXT_INV_NO` pads `P_ID` with LPAD to 6 characters; LPAD truncates longer values, so ids above 999999 give a truncated number [INV_API.NEXT_INV_NO:20].
 - `INV_SEQ` has no MAXVALUE, and `INVOICES.INV_NO` has a unique key, so a truncated number could collide with an existing one [INV_SEQ:1-5] [INVOICES:15].
 - `INVOICES.REMINDER_CNT` is NUMBER(2), and `INV_API.SEND_REMINDERS` adds 1 on every run without an upper bound [INVOICES:13] [INV_API.SEND_REMINDERS:237-239].
-- `INV_API.CREATE_INVOICE#2` lets an order with a NULL `ORDERS.ORD_STATUS` through the status check, because `NOT IN` with NULL is not true [INV_API.CREATE_INVOICE#2:94].
-- `INV_API.CREATE_INVOICE#2` performs DML, so neither overload can be called from a SQL statement [INV_API.CREATE_INVOICE#2:113-119].
+- The status check of `INV_API.CREATE_INVOICE#2` cannot be bypassed with a NULL status, because `ORDERS.ORD_STATUS` is NOT NULL [INV_API.CREATE_INVOICE#2:94] [ORDERS:5].
+- `INV_API.CREATE_INVOICE#2` performs DML, so neither overload can be called from a query (a SELECT fails with ORA-14551, general Oracle behaviour); calls from PL/SQL work [INV_API.CREATE_INVOICE#2:113-119].
 
 ## Error handling
 

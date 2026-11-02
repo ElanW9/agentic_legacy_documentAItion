@@ -49,13 +49,13 @@ None found in metadata.
 | `INVOICES` | UPDATE | 237 | STATIC |
 
 `CUSTOMERS` is read through dynamic SQL in `CUST_MGMT.GET_CUST_ATTR`, which table_usage cannot see for this unit [CUST_MGMT.GET_CUST_ATTR:216].
-No FIRES_TRIGGER edge exists for this unit [INV_API.SEND_REMINDERS:237].
+The `INVOICES` update fires no trigger, because legacy_code/ has no trigger on `INVOICES` [INV_API.SEND_REMINDERS:237] [TRG_CUST_BIU:2] [TRG_ORDL_AIUD:2] [TRG_PAY_AIR:2].
 
 ## Side effects and risks
 
 - The COMMIT at line 243 commits all reminder-count increments and any uncommitted work of the caller [INV_API.SEND_REMINDERS:243].
-- The writes made by `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` happen after that COMMIT and are not committed by this unit [INV_API.SEND_REMINDERS:245].
-- The reminder log lines are written in an autonomous transaction, so they survive even if the increment or the COMMIT does not happen [UTIL_LOG.LOG_MSG:63] [INV_API.SEND_REMINDERS:234-239].
+- The writes made by `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` happen after that COMMIT [INV_API.SEND_REMINDERS:245]. They are still committed, one customer at a time, by the COMMIT in `CUST_MGMT.BLOCK_CUSTOMER` [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:236-241] [CUST_MGMT.BLOCK_CUSTOMER:113].
+- The reminder log lines are written in an autonomous transaction, so they survive even if the increment or the COMMIT does not happen [UTIL_LOG.LOG_MSG:63] [INV_API.SEND_REMINDERS:234-239]. They have severity 'I', so they are not written when the session's log level is above 1 [INV_API.SEND_REMINDERS:234-235] [UTIL_LOG.LOG_MSG:71].
 - Every run adds 1 again for every invoice still overdue, and `INVOICES.REMINDER_CNT` is NUMBER(2) [INV_API.SEND_REMINDERS:237-239] [INVOICES:13].
 - Hardcoded value 14 [INV_API.SEND_REMINDERS:229]; its meaning is Unknown: needs human input.
 
