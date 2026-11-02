@@ -65,5 +65,5 @@ The `ORDERS` and `INVOICES` updates fire no trigger, because legacy_code/ has no
 
 ## Open questions
 
-1. Was this procedure ever called by a nightly batch, as the comment at [CUST_MGMT(body):18] says, and can it be removed [CUST_MGMT.MERGE_CUST:19]?
-2. What does status `'C'` mean? Unknown: needs human input [CUST_MGMT.MERGE_CUST:31].
+1. Technical: Was this procedure ever called by a nightly batch, as the comment at [CUST_MGMT(body):18] says, and can it be removed [CUST_MGMT.MERGE_CUST:19]?
+2. Business: What does status `'C'` mean? Unknown: needs human input [CUST_MGMT.MERGE_CUST:31].

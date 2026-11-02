@@ -7,6 +7,15 @@
 | Source hash | `1157cbb9f7dc25b98a2882f7eca548d971f7a1c97445caf0c33ebe6554cf4776` |
 | Status | draft |
 
+## In plain language
+
+- Blocking a customer also sets its credit limit to 0 and moves its orders with status 10 or 20 to status 15; the block is saved at once, together with any other unsaved changes of the process that asked for it, which can then no longer undo them [CUST_MGMT.BLOCK_CUSTOMER:101-113] [TRG_CUST_BIU:22-24].
+- Unblocking makes the customer active again but leaves the credit limit at 0 [CUST_MGMT.UNBLOCK_CUSTOMER:120-124] [TRG_CUST_BIU:22-24].
+- The automatic overdue check blocks every customer with an open invoice more than 90 days overdue, except customers of type G; customers that are already blocked or have status C are blocked again and their block reason is replaced [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:230-240] [V_OPEN_INVOICES:12-14].
+- The credit check for an order refuses customers that are not active or do not exist, always accepts customers of type G and customers without a credit limit, and otherwise accepts an order as long as open amounts plus the new order stay within the credit limit plus 10% [CUST_MGMT.CHK_CREDIT:154-176].
+- Setting a credit limit above 250000 does nothing and shows no error: the old limit stays; any other failure while changing a limit is also hidden [CUST_MGMT.UPD_CREDIT_LIMIT:82-94].
+- A new customer gets credit limit 20000 for type W, no limit for type G and 2500 for every other type, and is refused when another customer has the same VAT number; a customer's balance counts payments on cancelled invoices but not the cancelled invoices themselves [CUST_MGMT.CREATE_CUSTOMER:48-66] [CUST_MGMT.GET_BALANCE#2:193-207].
+
 ## Purpose
 
 The package creates rows in `CUSTOMERS` and updates their credit limit and status [CUST_MGMT.CREATE_CUSTOMER:36-76] [CUST_MGMT.UPD_CREDIT_LIMIT:79-95] [CUST_MGMT.BLOCK_CUSTOMER:98-114] [CUST_MGMT.UNBLOCK_CUSTOMER:117-127].
@@ -300,22 +309,22 @@ Units not listed (`CUST_MGMT.UNBLOCK_CUSTOMER`, `CUST_MGMT.GET_BALANCE#1`, `CUST
 
 ## Open questions
 
-1. What is the business purpose of the package, and of each rule below? Unknown: needs human input [CUST_MGMT(body):5].
-2. The comment at [CUST_MGMT(body):59] says "default limit: 5000, wholesale 20000", but the code sets 2500 for the default case [CUST_MGMT.CREATE_CUSTOMER:65]. The `CUSTOMERS` column default is 5000 [CUSTOMERS:8]. Which value is intended?
-3. Is the NULL credit limit for type `'G'` intended to mean "no limit"? `CUST_MGMT.CHK_CREDIT` passes a NULL limit [CUST_MGMT.CREATE_CUSTOMER:62-63] [CUST_MGMT.CHK_CREDIT:169].
-4. The comment at [CUST_MGMT(spec):20] says `CUST_MGMT.CHK_CREDIT` "returns Y/N", but it returns 0/1 [CUST_MGMT.CHK_CREDIT:160]. Is the comment outdated?
-5. What does the 1.1 multiplier on the credit limit represent? Unknown: needs human input [CUST_MGMT.CHK_CREDIT:169].
-6. The comment at [CUST_MGMT(body):227] says 60 days, the code uses 90 [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:234]. Which threshold is intended?
-7. `CUST_MGMT.UPD_CREDIT_LIMIT` swallows its own -20011 "Limit too high" error, so a too-high limit fails silently [CUST_MGMT.UPD_CREDIT_LIMIT:83] [CUST_MGMT.UPD_CREDIT_LIMIT:93-94]. Is that known and accepted?
-8. `CUST_MGMT.BLOCK_CUSTOMER` commits the caller's transaction [CUST_MGMT.BLOCK_CUSTOMER:113]. Do callers outside legacy_code/ rely on, or suffer from, this commit?
-9. What do `ORD_STATUS` 10, 15 and 20 mean in `CUST_MGMT.BLOCK_CUSTOMER`? The table comment does not list 15; is it the same as `PKG_ORDER.ST_HOLD`? Unknown: needs human input [CUST_MGMT.BLOCK_CUSTOMER:108-110] [PKG_ORDER.ST_HOLD:5].
-10. `CUST_MGMT.UNBLOCK_CUSTOMER` does not restore `CREDIT_LIMIT`, which `TRG_CUST_BIU` set to 0 on blocking [CUST_MGMT.UNBLOCK_CUSTOMER:120-124] [TRG_CUST_BIU:22-24]. Is that intended?
-11. `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` re-blocks customers that are already `'B'` and also blocks `'C'` customers that still have overdue invoices [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:232-240] [V_OPEN_INVOICES:12-14]. Is that intended?
-12. `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` commits (via `CUST_MGMT.BLOCK_CUSTOMER`) inside an open cursor loop [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:236-241]. Has this caused errors in production runs?
-13. `CUST_MGMT.MERGE_CUST` is private and has no caller, but the comment at [CUST_MGMT(body):18] says it is "called from nightly batch" [CUST_MGMT.MERGE_CUST:19]. Was it called once, and can it be removed?
-14. `CUST_MGMT.GET_CUST_ATTR` concatenates `P_COL` unchecked into dynamic SQL [CUST_MGMT.GET_CUST_ATTR:216]. Which callers outside legacy_code/ (the comment at [CUST_MGMT(body):211] says "reports") pass which values? The parser cannot trace dynamic SQL or outside callers [CUST_MGMT.GET_CUST_ATTR:216].
-15. `CUST_MGMT.GET_BALANCE#2` excludes `'CANC'` invoices but still subtracts payments on them [CUST_MGMT.GET_BALANCE#2:198] [CUST_MGMT.GET_BALANCE#2:200-205]. Is that intended?
-16. Callers of the four public units with NO_CALLER (`CUST_MGMT.CREATE_CUSTOMER`, `CUST_MGMT.UPD_CREDIT_LIMIT`, `CUST_MGMT.UNBLOCK_CUSTOMER`, `CUST_MGMT.GET_BALANCE#1`) may exist outside legacy_code/ (applications, schedulers, other schemas) [CUST_MGMT(spec):5-25]. Which ones?
-17. Does `'G'` stand for the "gov customers" of the revision comment at [CUST_MGMT(body):12]? What do `'R'`, `'W'`, `'A'`, `'B'` and `'C'` mean beyond the incomplete column comments? Unknown: needs human input [CUSTOMERS:15-16].
-18. Only `CUST_MGMT.CREATE_CUSTOMER` sets the `UTIL_LOG` module; the other units log under whatever module the session set last [CUST_MGMT.CREATE_CUSTOMER:46] [UTIL_LOG.SET_CTX:28]. Is the module in `AUDIT_LOG` relied on?
-19. The parser does not flag the reason literal `'AUTO: overdue invoices'` and the length 200 as hardcoded values (longer strings and `SUBSTR` arguments are ignored by design) [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:239] [CUST_MGMT.BLOCK_CUSTOMER:103].
+1. Business: What is the business purpose of the package, and of each rule below? Unknown: needs human input [CUST_MGMT(body):5].
+2. Business: The comment at [CUST_MGMT(body):59] says "default limit: 5000, wholesale 20000", but the code sets 2500 for the default case [CUST_MGMT.CREATE_CUSTOMER:65]. The `CUSTOMERS` column default is 5000 [CUSTOMERS:8]. Which value is intended?
+3. Business: Is the NULL credit limit for type `'G'` intended to mean "no limit"? `CUST_MGMT.CHK_CREDIT` passes a NULL limit [CUST_MGMT.CREATE_CUSTOMER:62-63] [CUST_MGMT.CHK_CREDIT:169].
+4. Technical: The comment at [CUST_MGMT(spec):20] says `CUST_MGMT.CHK_CREDIT` "returns Y/N", but it returns 0/1 [CUST_MGMT.CHK_CREDIT:160]. Is the comment outdated?
+5. Business: What does the 1.1 multiplier on the credit limit represent? Unknown: needs human input [CUST_MGMT.CHK_CREDIT:169].
+6. Business: The comment at [CUST_MGMT(body):227] says 60 days, the code uses 90 [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:234]. Which threshold is intended?
+7. Business: `CUST_MGMT.UPD_CREDIT_LIMIT` swallows its own -20011 "Limit too high" error, so a too-high limit fails silently [CUST_MGMT.UPD_CREDIT_LIMIT:83] [CUST_MGMT.UPD_CREDIT_LIMIT:93-94]. Is that known and accepted?
+8. Technical: `CUST_MGMT.BLOCK_CUSTOMER` commits the caller's transaction [CUST_MGMT.BLOCK_CUSTOMER:113]. Do callers outside legacy_code/ rely on, or suffer from, this commit?
+9. Business: What do `ORD_STATUS` 10, 15 and 20 mean in `CUST_MGMT.BLOCK_CUSTOMER`? The table comment does not list 15; is it the same as `PKG_ORDER.ST_HOLD`? Unknown: needs human input [CUST_MGMT.BLOCK_CUSTOMER:108-110] [PKG_ORDER.ST_HOLD:5].
+10. Business: `CUST_MGMT.UNBLOCK_CUSTOMER` does not restore `CREDIT_LIMIT`, which `TRG_CUST_BIU` set to 0 on blocking [CUST_MGMT.UNBLOCK_CUSTOMER:120-124] [TRG_CUST_BIU:22-24]. Is that intended?
+11. Business: `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` re-blocks customers that are already `'B'` and also blocks `'C'` customers that still have overdue invoices [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:232-240] [V_OPEN_INVOICES:12-14]. Is that intended?
+12. Technical: `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` commits (via `CUST_MGMT.BLOCK_CUSTOMER`) inside an open cursor loop [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:236-241]. Has this caused errors in production runs?
+13. Technical: `CUST_MGMT.MERGE_CUST` is private and has no caller, but the comment at [CUST_MGMT(body):18] says it is "called from nightly batch" [CUST_MGMT.MERGE_CUST:19]. Was it called once, and can it be removed?
+14. Technical: `CUST_MGMT.GET_CUST_ATTR` concatenates `P_COL` unchecked into dynamic SQL [CUST_MGMT.GET_CUST_ATTR:216]. Which callers outside legacy_code/ (the comment at [CUST_MGMT(body):211] says "reports") pass which values? The parser cannot trace dynamic SQL or outside callers [CUST_MGMT.GET_CUST_ATTR:216].
+15. Business: `CUST_MGMT.GET_BALANCE#2` excludes `'CANC'` invoices but still subtracts payments on them [CUST_MGMT.GET_BALANCE#2:198] [CUST_MGMT.GET_BALANCE#2:200-205]. Is that intended?
+16. Technical: Callers of the four public units with NO_CALLER (`CUST_MGMT.CREATE_CUSTOMER`, `CUST_MGMT.UPD_CREDIT_LIMIT`, `CUST_MGMT.UNBLOCK_CUSTOMER`, `CUST_MGMT.GET_BALANCE#1`) may exist outside legacy_code/ (applications, schedulers, other schemas) [CUST_MGMT(spec):5-25]. Which ones?
+17. Business: Does `'G'` stand for the "gov customers" of the revision comment at [CUST_MGMT(body):12]? What do `'R'`, `'W'`, `'A'`, `'B'` and `'C'` mean beyond the incomplete column comments? Unknown: needs human input [CUSTOMERS:15-16].
+18. Technical: Only `CUST_MGMT.CREATE_CUSTOMER` sets the `UTIL_LOG` module; the other units log under whatever module the session set last [CUST_MGMT.CREATE_CUSTOMER:46] [UTIL_LOG.SET_CTX:28]. Is the module in `AUDIT_LOG` relied on?
+19. Technical: The parser does not flag the reason literal `'AUTO: overdue invoices'` and the length 200 as hardcoded values (longer strings and `SUBSTR` arguments are ignored by design) [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:239] [CUST_MGMT.BLOCK_CUSTOMER:103].

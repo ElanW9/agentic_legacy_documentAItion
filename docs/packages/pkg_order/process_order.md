@@ -100,10 +100,10 @@ The calls to `PKG_ORDER.SET_STATUS` also update `ORDERS` [PKG_ORDER.SET_STATUS:1
 
 ## Open questions
 
-1. Why are orders in status `PKG_ORDER.ST_HOLD` never picked up in batch mode, while an explicit `P_ORD_ID` in that status is processed? Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:126] [PKG_ORDER.PROCESS_ORDER:147]
-2. The discount cap of 15 and the "> 50" approval branch have no effect with the current `PKG_ORDER.CALC_DISC` (maximum 9.5); is the approval branch expected to be reachable? Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:180-186]
-3. For customer type 'G' with a failed credit check the order is confirmed but never shipped or invoiced, even with `P_SHIP` TRUE; is that intended? Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:225-231]
-4. The meaning of the hardcoded values 25, 15, 50 (twice), 'N', 'B', 'G', 'BE' and 'MIN AMOUNT' is Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:138] [PKG_ORDER.PROCESS_ORDER:160]
-5. The comment "government never on hold" contradicts lines 171-175, which can put a 'G' customer's order on hold [PKG_ORDER.PROCESS_ORDER:226] [PKG_ORDER.PROCESS_ORDER:171-175]
-6. The procedure commits the caller's transaction; callers outside legacy_code/ (schedulers, applications) cannot be seen, so it is unknown who relies on this [PKG_ORDER.PROCESS_ORDER:120] [PKG_ORDER.PROCESS_ORDER:253]
-7. `ORDERS.TOTAL_AMT` holds the discounted net amount after confirmation, but `TRG_ORDL_AIUD` keeps adjusting it by gross line amounts, and `PKG_ORDER.GET_ORDER_TOTAL` returns the gross sum; which value is authoritative is Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:197] [TRG_ORDL_AIUD:5-10] [PKG_ORDER.GET_ORDER_TOTAL:110-111]
+1. Business: Why are orders in status `PKG_ORDER.ST_HOLD` never picked up in batch mode, while an explicit `P_ORD_ID` in that status is processed? Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:126] [PKG_ORDER.PROCESS_ORDER:147]
+2. Business: The discount cap of 15 and the "> 50" approval branch have no effect with the current `PKG_ORDER.CALC_DISC` (maximum 9.5); is the approval branch expected to be reachable? Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:180-186]
+3. Business: For customer type 'G' with a failed credit check the order is confirmed but never shipped or invoiced, even with `P_SHIP` TRUE; is that intended? Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:225-231]
+4. Business: The meaning of the hardcoded values 25, 15, 50 (twice), 'N', 'B', 'G', 'BE' and 'MIN AMOUNT' is Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:138] [PKG_ORDER.PROCESS_ORDER:160]
+5. Business: The comment "government never on hold" contradicts lines 171-175, which can put a 'G' customer's order on hold [PKG_ORDER.PROCESS_ORDER:226] [PKG_ORDER.PROCESS_ORDER:171-175]
+6. Technical: The procedure commits the caller's transaction; callers outside legacy_code/ (schedulers, applications) cannot be seen, so it is unknown who relies on this [PKG_ORDER.PROCESS_ORDER:120] [PKG_ORDER.PROCESS_ORDER:253]
+7. Business: `ORDERS.TOTAL_AMT` holds the discounted net amount after confirmation, but `TRG_ORDL_AIUD` keeps adjusting it by gross line amounts, and `PKG_ORDER.GET_ORDER_TOTAL` returns the gross sum; which value is authoritative is Unknown: needs human input [PKG_ORDER.PROCESS_ORDER:197] [TRG_ORDL_AIUD:5-10] [PKG_ORDER.GET_ORDER_TOTAL:110-111]
