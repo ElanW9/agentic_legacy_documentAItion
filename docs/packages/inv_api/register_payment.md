@@ -71,7 +71,7 @@ The INSERT at line 181 fires `TRG_PAY_AIR`, which updates `INVOICES` (paid amoun
 - The comment at [INV_API.REGISTER_PAYMENT:192] says "cash payments above 3000 not allowed (anti money laundering)"; the code checks each payment alone, not a total, and states no currency [INV_API.REGISTER_PAYMENT:193].
 - The unit does not check `P_AMT` for NULL, zero or a negative value, and accepts payments on 'PAID' or 'PART' invoices [INV_API.REGISTER_PAYMENT:174-182].
 - It reads the package variable `UTIL_LOG.G_USER` and changes the `UTIL_LOG` module context for the session [INV_API.REGISTER_PAYMENT:170] [INV_API.REGISTER_PAYMENT:182].
-- Hardcoded values: 'CANC', 'BT', 'CC', 'CA' and 3000; their meaning is Unknown: needs human input.
+- Hardcoded values: 'CANC', 'BT', 'CC', 'CA' and 3000 [INV_API.REGISTER_PAYMENT:174] [INV_API.REGISTER_PAYMENT:177] [INV_API.REGISTER_PAYMENT:193]; their meaning is Unknown: needs human input.
 
 ## Error handling
 

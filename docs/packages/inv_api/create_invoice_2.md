@@ -71,7 +71,7 @@ No FIRES_TRIGGER edge exists for this unit [INV_API.CREATE_INVOICE#2:113].
 - The invoice number takes its year from SYSDATE, not from `P_INV_DT` [INV_API.NEXT_INV_NO:20].
 - `INV_API.CALC_VAT` reads the session-cached package variable `INV_API.G_VAT_RATE` [INV_API.CALC_VAT:55-56].
 - The unit does DML, so it cannot be called from a SQL statement [INV_API.CREATE_INVOICE#2:113].
-- Hardcoded values: 20, 30, 'CANC' and 'OPEN'; their meaning is Unknown: needs human input.
+- Hardcoded values: 20, 30, 'CANC' and 'OPEN' [INV_API.CREATE_INVOICE#2:94] [INV_API.CREATE_INVOICE#2:103] [INV_API.CREATE_INVOICE#2:117]; their meaning is Unknown: needs human input.
 
 ## Error handling
 
