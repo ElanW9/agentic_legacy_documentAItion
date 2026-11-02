@@ -31,7 +31,7 @@ The comment at [CUST_MGMT(body):18] says "merge duplicate customers (called from
 3. Update `CUSTOMERS`: `STATUS` = `'C'` where `CUST_ID` = `P_FROM` [CUST_MGMT.MERGE_CUST:30-32].
 4. `TRG_CUST_BIU` fires on step 3 and sets `UPD_DT`, `UPD_BY` and the upper-cased `CUST_NAME`; it writes no `CUST_HIST` row because `CREDIT_LIMIT` is not in the SET list [TRG_CUST_BIU:12-17].
 
-There is no check that `P_TO` exists, no COMMIT and no log call [CUST_MGMT.MERGE_CUST:19-33].
+The procedure has no COMMIT and no log call, and does not check `P_TO` itself [CUST_MGMT.MERGE_CUST:19-33]. The foreign keys on `ORDERS.CUST_ID` and `INVOICES.CUST_ID` reject a `P_TO` that is not an existing customer as soon as a row is moved [ORDERS:13] [INVOICES:17]. When `P_FROM` has no orders and no invoices, nothing checks `P_TO` [CUST_MGMT.MERGE_CUST:22-28].
 
 ## Dependencies
 
@@ -49,7 +49,7 @@ There is no caller in legacy_code/, and as a PRIVATE unit it cannot be called fr
 | `INVOICES` | UPDATE | 26 | STATIC |
 | `CUSTOMERS` | UPDATE | 30 | STATIC |
 
-The metadata has no FIRES_TRIGGER edge for the `ORDERS` and `INVOICES` updates [CUST_MGMT.MERGE_CUST:22-28].
+The `ORDERS` and `INVOICES` updates fire no trigger, because legacy_code/ has no trigger on those tables [CUST_MGMT.MERGE_CUST:22-28] [TRG_CUST_BIU:2] [TRG_ORDL_AIUD:2] [TRG_PAY_AIR:2].
 
 ## Side effects and risks
 

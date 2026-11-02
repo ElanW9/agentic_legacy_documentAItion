@@ -29,7 +29,7 @@ The comment at [UTIL_LOG(spec):2] says "Utility package. Logging + misc helpers.
 
 ### `UTIL_LOG.SET_CTX`
 
-Sets `UTIL_LOG.G_MODULE` to the first 30 characters of `P_MODULE` in uppercase [UTIL_LOG.SET_CTX:28]. A NULL `P_MODULE` sets `UTIL_LOG.G_MODULE` to NULL [UTIL_LOG.SET_CTX:28]. `UTIL_LOG.G_USER` is set to the first 30 characters of `P_USER` only when `P_USER` is not NULL; otherwise the previous value stays in place for the session [UTIL_LOG.SET_CTX:29-31]. Both values are read later by `UTIL_LOG.LOG_MSG` and `UTIL_LOG.DBG`, and `UTIL_LOG.G_USER` also by other packages (see "Package state") [UTIL_LOG.LOG_MSG:75-79] [UTIL_LOG.DBG:98].
+Sets `UTIL_LOG.G_MODULE` to the first 30 characters of `P_MODULE` in uppercase [UTIL_LOG.SET_CTX:28]. A NULL `P_MODULE` sets `UTIL_LOG.G_MODULE` to NULL [UTIL_LOG.SET_CTX:28]. `UTIL_LOG.G_USER` is set to the first 30 characters of `P_USER` only when `P_USER` is not NULL; otherwise the previous value stays in place for the session [UTIL_LOG.SET_CTX:29-31]. Both values are read later by `UTIL_LOG.LOG_MSG`, and `UTIL_LOG.G_USER` also by other packages (see "Package state") [UTIL_LOG.LOG_MSG:75-79]. `UTIL_LOG.DBG` reads `UTIL_LOG.G_MODULE`, not `UTIL_LOG.G_USER` [UTIL_LOG.DBG:98].
 
 ### `UTIL_LOG.LOG_MSG`
 

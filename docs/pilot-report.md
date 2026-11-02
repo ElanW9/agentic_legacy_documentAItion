@@ -200,3 +200,16 @@ Publishing was out of scope for this PoC. This is how to add it without weakenin
 - **Trigger.** Run the publish on merge to `main` (CI), only for changed docs, and record the published page version per entry in the state file.
 
 This keeps the property the pilot showed matters most: every published sentence is traceable to a reviewed line of source.
+
+## 6. Follow-up after the pilot
+
+- **Validator gaps closed** (`feature/validator-gaps`): "Unknown: needs human input" now exempts only its own clause, and line numbers in a row that contains it are still checked. Dependency rows and "Called by" cells must match an edge in `dependencies.json`. A citation of more than 40 lines no longer counts as covering a risk flag. The stricter checks found three uncited sentences in `INV_API` unit docs.
+- **CI validates every committed doc** (`feature/ci-validate-docs`), so `validation_passed` in the state file is no longer only the agent's own report.
+- **Wrong claims corrected** (`feature/fix-pilot-claims`). Each was checked against the source again; `evaluation/` was not reopened.
+  - "Every log line survives a rollback": now says a line is written only when its severity reaches the session's log level, and that `LOG_MSG` swallows its own errors.
+  - "`G_MODULE` keeps its value for the rest of the session": now until the next `SET_CTX` call, with the other callers named.
+  - Workday claims now cite `IS_WORKDAY` and its date-language dependence.
+  - "The last log call is raised to the caller" (it cannot raise); "`CHK_OVERDUE_CUSTOMERS`' writes are not committed" (`BLOCK_CUSTOMER` commits each one); invoices "stay cancelled" (only when a PL/SQL caller handles the error); a NULL return from `CHK_CREDIT` (it returns only 0 or 1).
+  - "No check that `P_TO` exists" (the foreign keys check it); the NULL order-status path (the column is NOT NULL); "no FIRES_TRIGGER edge" (there is no trigger on `ORDERS` or `INVOICES`).
+  - `DBG` "reads `G_USER`"; "cannot be called from SQL" (only not from a query).
+- **Not done yet:** the extractor changes, the shared `UTIL_LOG` doc and the flow docs (Build next, items 1 and 3), so the cross-package partials are still open. One of the 15 wrong claims is not named in this report and could not be traced without the answer key.

@@ -53,13 +53,13 @@ No step checks that the customer exists; with no matching rows, steps 6 and 7 st
 
 `TRG_CUST_BIU` writes `:NEW` columns of the same `CUSTOMERS` row, including `CREDIT_LIMIT` = 0 [TRG_CUST_BIU:12-24].
 `UTIL_LOG.LOG_MSG` inserts into `AUDIT_LOG` in an autonomous transaction [UTIL_LOG.LOG_MSG:63] [UTIL_LOG.LOG_MSG:72].
-The metadata has no FIRES_TRIGGER edge for the `ORDERS` update [CUST_MGMT.BLOCK_CUSTOMER:107].
+The `ORDERS` update fires no trigger, because legacy_code/ has no trigger on `ORDERS` [CUST_MGMT.BLOCK_CUSTOMER:107] [TRG_CUST_BIU:2] [TRG_ORDL_AIUD:2] [TRG_PAY_AIR:2].
 
 ## Side effects and risks
 
 - COMMIT: the `COMMIT` at line 113 commits the two updates and all other uncommitted work of the caller's transaction; the caller cannot roll any of it back afterwards [CUST_MGMT.BLOCK_CUSTOMER:113].
 - When called from `CUST_MGMT.CHK_OVERDUE_CUSTOMERS`, the commit runs once per customer, inside its open cursor loop [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:236-241].
-- The `AUDIT_LOG` line is committed separately and survives even if the commit at line 113 is never reached [UTIL_LOG.LOG_MSG:63] [UTIL_LOG.LOG_MSG:82].
+- The `AUDIT_LOG` line, when written, is committed separately and survives even if the commit at line 113 is never reached [UTIL_LOG.LOG_MSG:63] [UTIL_LOG.LOG_MSG:82]. `UTIL_LOG.LOG_MSG` skips it when the session's log level is above that of 'W', and swallows its own errors [UTIL_LOG.LOG_MSG:71] [UTIL_LOG.LOG_MSG:83-85].
 - Hardcoded values: `'B'` at line 102, 15 at line 108, 10 and 20 at line 110, 200 at line 103 [CUST_MGMT.BLOCK_CUSTOMER:102-110]; their meaning is Unknown: needs human input.
 - Blocking leaves `CREDIT_LIMIT` at 0 (set by the trigger); `CUST_MGMT.UNBLOCK_CUSTOMER` does not restore it [TRG_CUST_BIU:22-24] [CUST_MGMT.UNBLOCK_CUSTOMER:120-124].
 

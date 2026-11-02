@@ -143,9 +143,9 @@ Detailed walkthrough: [merge_cust](cust_mgmt/merge_cust.md).
 | `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` | `CUST_MGMT.GET_CUST_TYPE` | CALL | 238 |
 | `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` | `CUST_MGMT.BLOCK_CUSTOMER` | CALL | 239 |
 
-`UTIL_LOG.LOG_MSG` runs as an autonomous transaction and commits its `AUDIT_LOG` row on its own, so every log line written by this package survives a rollback by the caller [UTIL_LOG.LOG_MSG:63] [UTIL_LOG.LOG_MSG:72] [UTIL_LOG.LOG_MSG:82].
+`UTIL_LOG.LOG_MSG` runs as an autonomous transaction and commits its `AUDIT_LOG` row on its own, so a log line it writes survives a rollback by the caller [UTIL_LOG.LOG_MSG:63] [UTIL_LOG.LOG_MSG:72] [UTIL_LOG.LOG_MSG:82]. It writes the line only when the severity reaches the session's log level from `APP_PARAMS` 'LOG_LEVEL' (default 1), and swallows any error of its own, so a line can also be missing [UTIL_LOG.LOG_MSG:65-66] [UTIL_LOG.LOG_MSG:71] [UTIL_LOG.LOG_MSG:83-85].
 `UTIL_LOG.LOG_MSG` swallows its own errors with `WHEN OTHERS` and `ROLLBACK`, so a logging failure never reaches this package [UTIL_LOG.LOG_MSG:83-85].
-`UTIL_LOG.SET_CTX` writes the package variable `UTIL_LOG.G_MODULE`, which keeps the value `'CUST_MGMT'` for the rest of the session and is used by every later `UTIL_LOG.LOG_MSG` call in that session, from any package [UTIL_LOG.SET_CTX:28] [UTIL_LOG.LOG_MSG:75].
+`UTIL_LOG.SET_CTX` writes the package variable `UTIL_LOG.G_MODULE`, which keeps the value `'CUST_MGMT'` until the next `UTIL_LOG.SET_CTX` call in the session and is used by every `UTIL_LOG.LOG_MSG` call until then, from any package [UTIL_LOG.SET_CTX:28] [UTIL_LOG.LOG_MSG:75]. `INV_API.REGISTER_PAYMENT`, `PKG_ORDER.NEW_ORDER`, `PKG_ORDER.PROCESS_ORDER` and `UTIL_LOG.HOUSEKEEPING` set it too [INV_API.REGISTER_PAYMENT:170] [PKG_ORDER.NEW_ORDER:39] [PKG_ORDER.PROCESS_ORDER:140] [UTIL_LOG.HOUSEKEEPING:161].
 Only `CUST_MGMT.CREATE_CUSTOMER` calls `UTIL_LOG.SET_CTX`; the other units log with whatever module was set last in the session [CUST_MGMT.CREATE_CUSTOMER:46].
 
 ### Called by
@@ -216,7 +216,7 @@ On every row it upper-cases and trims `CUST_NAME` and sets `UPD_DT` and `UPD_BY`
 On INSERT it sets `CREATED_DT` and takes a `SEQ_CUSTOMERS` value only when `CUST_ID` is NULL, which never happens for `CUST_MGMT.CREATE_CUSTOMER` because it supplies the id [TRG_CUST_BIU:5-10] [CUST_MGMT.CREATE_CUSTOMER:68-72].
 Its `CUST_HIST` insert is TRIGGER_DML in the caller's transaction, so it is undone by a caller rollback (unlike the `AUDIT_LOG` lines) [TRG_CUST_BIU:17-20].
 In `CUST_MGMT.UPD_CREDIT_LIMIT` on a customer with status `'B'`, the trigger records `P_LIMIT` as the new limit in `CUST_HIST` and then sets the stored `CREDIT_LIMIT` to 0 [TRG_CUST_BIU:17-24] [CUST_MGMT.UPD_CREDIT_LIMIT:86-89].
-The writes of `CUST_MGMT.MERGE_CUST` to `ORDERS` and `INVOICES` and of `CUST_MGMT.BLOCK_CUSTOMER` to `ORDERS` have no FIRES_TRIGGER edge in the metadata [CUST_MGMT.MERGE_CUST:22-28] [CUST_MGMT.BLOCK_CUSTOMER:107-110].
+The writes of `CUST_MGMT.MERGE_CUST` to `ORDERS` and `INVOICES` and of `CUST_MGMT.BLOCK_CUSTOMER` to `ORDERS` fire no trigger: legacy_code/ has no trigger on those tables, only on `CUSTOMERS`, `ORDER_LINES` and `PAYMENTS` [CUST_MGMT.MERGE_CUST:22-28] [CUST_MGMT.BLOCK_CUSTOMER:107-110] [TRG_CUST_BIU:2] [TRG_ORDL_AIUD:2] [TRG_PAY_AIR:2].
 
 ## Side effects and risks
 
@@ -225,7 +225,7 @@ The writes of `CUST_MGMT.MERGE_CUST` to `ORDERS` and `INVOICES` and of `CUST_MGM
 - `CUST_MGMT.BLOCK_CUSTOMER` ends with `COMMIT`: it commits its own two updates and all uncommitted work of the caller's transaction, and the caller can no longer roll any of it back [CUST_MGMT.BLOCK_CUSTOMER:113].
 - Through `CUST_MGMT.CHK_OVERDUE_CUSTOMERS`, that `COMMIT` runs once per blocked customer inside the cursor loop [CUST_MGMT.CHK_OVERDUE_CUSTOMERS:236-241].
 - No other unit of the package commits, rolls back or sets a savepoint; their changes stay open until the caller commits [CUST_MGMT(body):1-244].
-- The log lines from `UTIL_LOG.LOG_MSG` are committed in an autonomous transaction and survive a rollback by the caller [UTIL_LOG.LOG_MSG:63] [UTIL_LOG.LOG_MSG:82].
+- The log lines that `UTIL_LOG.LOG_MSG` writes are committed in an autonomous transaction and survive a rollback by the caller; lines below the session's log level are not written [UTIL_LOG.LOG_MSG:63] [UTIL_LOG.LOG_MSG:71] [UTIL_LOG.LOG_MSG:82].
 
 ### Package state
 
