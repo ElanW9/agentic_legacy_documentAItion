@@ -48,7 +48,7 @@ flowchart TD
 Blue: deterministic scripts. Purple: the LLM agent. Green: people. Grey: data. Every change to a doc goes through validation and a reviewed pull request; Confluence only ever receives approved docs.
 
 1. **Extract facts.** `scripts/extract_metadata.py` parses `legacy_code/` with regexes (there is no database access) and writes `metadata/*.json`: objects and signatures, dependencies, table usage, and risk flags. Every file is validated through the Pydantic models in `scripts/models/`.
-2. **Draft docs.** The agent fills `templates/` for one package at a time, reading the metadata and the source. Every claim cites a unit and line range. Anything it can't establish from the code becomes "Unknown: needs human input".
+2. **Draft docs.** The agent fills `templates/` for one package at a time, reading the metadata and the source. Every claim cites a unit and line range. Anything it can't establish from the code becomes "Unknown: needs human input". For analysts, each package doc starts with an "In plain language" summary, and each open question is marked `Business:` (an analyst can answer it) or `Technical:` (it needs a developer).
 3. **Validate.** `scripts/validate_doc.py` checks each doc against the metadata: referenced units, parameters and tables must exist, claims need citations, and required sections must be present.
 4. **Review.** Docs are reviewed through pull requests. `state/doc-status.json` tracks the status of each package and the hash of its source.
 5. **Publish.** `scripts/publish_confluence.py` converts approved docs to Confluence pages. Confluence is a read-only copy; changes go through git.
