@@ -4,6 +4,49 @@ An AI agent documents undocumented legacy Oracle PL/SQL. All code in `legacy_cod
 
 ## How it works
 
+```mermaid
+flowchart TD
+    code[("legacy_code/<br/>PL/SQL, read-only")]
+    extract["extract_metadata<br/>regex parser, no LLM"]
+    meta[("metadata/*.json<br/>facts about the code")]
+    draft["Agent drafts the doc<br/>document-package skill"]
+    validate{"validate_doc<br/>PASS?"}
+    pr["Pull request review<br/>reviewer sets approved in<br/>state/doc-status.json"]
+    publish["publish_confluence --live"]
+    drift{"check_drift in CI<br/>source CHANGED?"}
+    update["update_package<br/>moves line numbers,<br/>marks the rest !changed"]
+    resolve["Agent checks each !changed claim<br/>update-package skill"]
+    mcp["confluence-feedback<br/>read-only MCP server"]
+    feedback["Agent proposes doc changes<br/>on a branch"]
+
+    subgraph confluence["Confluence"]
+        pages[("Published pages<br/>read-only copy of git")]
+        analysts["Analysts and owners"]
+    end
+
+    code --> extract --> meta --> draft
+    code --> draft
+    draft --> validate
+    validate -- FAIL --> draft
+    validate -- PASS --> pr
+    pr -- changes requested --> draft
+    pr -- approved --> publish --> pages
+    analysts -- comment, tick open questions --> pages
+    pages -- read --> mcp --> feedback --> validate
+    code -. code change .-> drift -- CHANGED --> update --> resolve --> validate
+
+    classDef script fill:#dbeafe,stroke:#1d4ed8,color:#0b1b3a
+    classDef agent fill:#ede9fe,stroke:#6d28d9,color:#2e1065
+    classDef human fill:#dcfce7,stroke:#15803d,color:#052e16
+    classDef store fill:#f3f4f6,stroke:#4b5563,color:#111827
+    class extract,validate,publish,drift,update,mcp script
+    class draft,resolve,feedback agent
+    class pr,analysts human
+    class code,meta,pages store
+```
+
+Blue: deterministic scripts. Purple: the LLM agent. Green: people. Grey: data. Every change to a doc goes through validation and a reviewed pull request; Confluence only ever receives approved docs.
+
 1. **Extract facts.** `scripts/extract_metadata.py` parses `legacy_code/` with regexes (there is no database access) and writes `metadata/*.json`: objects and signatures, dependencies, table usage, and risk flags. Every file is validated through the Pydantic models in `scripts/models/`.
 2. **Draft docs.** The agent fills `templates/` for one package at a time, reading the metadata and the source. Every claim cites a unit and line range. Anything it can't establish from the code becomes "Unknown: needs human input".
 3. **Validate.** `scripts/validate_doc.py` checks each doc against the metadata: referenced units, parameters and tables must exist, claims need citations, and required sections must be present.
@@ -123,7 +166,7 @@ Git stays the source of truth. The script, not an LLM, converts the markdown, so
   - A page that the script did not generate is never overwritten; the run stops before writing anything.
 - **Status:** to approve a package, the reviewer changes its status to `approved` in `state/doc-status.json` in a pull request.
 
-Not handled yet: pages for docs that are no longer published are not deleted, answers that experts tick off in Confluence tasks are not read back, and `docs/flows/` is not published (it is empty).
+Not handled yet: pages for docs that are no longer published are not deleted, and `docs/flows/` is not published (it is empty).
 
 ## Read analyst feedback from Confluence
 
