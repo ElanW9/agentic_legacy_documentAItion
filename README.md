@@ -187,9 +187,10 @@ Not handled yet: who ticked a question and when (the page source does not say), 
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs on every pull request and on every push to `main`. It needs no secrets and calls no external service. It has two jobs:
+`.github/workflows/ci.yml` runs on every pull request and on every push to `main`. It needs no secrets and calls no external service. It has three jobs:
 
 - **tests:** `python -m pytest`, on Python 3.14 (the version used locally).
+- **doc validation:** `python -m scripts.validate_doc` on every doc in `docs/packages/` and `docs/flows/`. A failing doc, or one that still has a `!changed` marker from `update_package`, fails the build. So `validation_passed` in `state/doc-status.json` is no longer only the agent's own report.
 - **documentation drift:** `python -m scripts.check_drift`. It re-runs the extractor in memory and compares the result with `metadata/` and `state/doc-status.json`.
 
 | Finding | Meaning | Effect |
