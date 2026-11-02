@@ -12,9 +12,14 @@ Checks. ERROR fails the doc; WARN is reported but does not fail it.
     reference  `UPPERCASE` names exist: units, variables, parameters, tables, columns.
                Names not in the metadata must at least occur in the code of legacy_code/
     signature  `PROCEDURE ...` / `FUNCTION ...` spans match a signature in objects.json
-    uncited    every prose sentence and every table row carries a citation or a line column
+    uncited    every prose sentence and every table row carries a citation or a line column.
+               "Unknown: needs human input" exempts only its own clause (split at ";"); line
+               numbers in a row that contains it are still checked
+    dependency a row of a dependency table, or a "Called by" cell, matches an edge in
+               dependencies.json: same units, kind and line
     coverage   a package doc mentions every subprogram of the package (ERROR) and every
-               variable, table and transaction/error/dynamic-SQL risk flag (WARN)
+               variable, table and transaction/error/dynamic-SQL risk flag (WARN). A flag
+               counts as cited only by a citation of at most 40 lines that contains it
     changed    no "!changed" marker is left: update_package puts it on line numbers whose
                source lines changed, and the claim must be checked before it goes
 
@@ -68,6 +73,9 @@ CHANGED_MARK = "!changed"  # set by update_package on line numbers whose source 
 # Risk kinds that every package doc must cite. HARDCODED_VALUE and PACKAGE_STATE are too
 # numerous to require one citation per flag; review-doc covers them.
 COVERED_RISKS = set(RiskKind) - {RiskKind.HARDCODED_VALUE, RiskKind.PACKAGE_STATE}
+# A wider citation, such as a whole package body, supports a claim like "no unit commits",
+# but does not show that the doc looked at one flagged line.
+MAX_FLAG_SPAN = 40
 
 # Oracle names a doc may mention that need not occur in legacy_code/.
 ORACLE_TERMS = {
@@ -417,8 +425,10 @@ def split_sentences(text: str) -> list[str]:
 
 def exempt(sentence: str) -> bool:
     s = sentence.strip()
+    if UNKNOWN in s:  # only the clause with the marker is exempt: "X runs nightly; why: Unknown ..."
+        return all(UNKNOWN in c or exempt(c) for c in re.split(r";\s+", s))
     # Questions and lead-ins ("The unit has three branches:") are not claims.
-    return (UNKNOWN in s or NONE_FOUND in s or not re.search(r"[A-Za-z]", s) or s.endswith((":", "?"))
+    return (NONE_FOUND in s or not re.search(r"[A-Za-z]", s) or s.endswith((":", "?"))
             or bool(LINK_RE.search(s)))
 
 
@@ -454,14 +464,14 @@ def check_uncited(doc: Doc, meta: Metadata, findings: list[Finding]) -> list[tup
         if doc.sections[n] is None:
             continue
         row = " | ".join(cells)
-        if UNKNOWN in row or NONE_FOUND in row:
+        if NONE_FOUND in row:
             continue
         values = []
         for col, cell in zip(header, cells):
             if col in LINE_COLUMNS:
                 values += [(int(a), int(b or a)) for a, b in NUMBER_RANGE_RE.findall(cell)]
-        if not values:
-            if not CITATION_RE.search(row):
+        if not values:  # a row with the Unknown marker needs no citation, but its line numbers are checked
+            if not CITATION_RE.search(row) and UNKNOWN not in row:
                 findings.append(Finding(n, "ERROR", "uncited", "table row without citation or line number"))
             continue
         ids = [s.strip() for s in CODE_SPAN_RE.findall(row)]
@@ -479,6 +489,48 @@ def check_uncited(doc: Doc, meta: Metadata, findings: list[Finding]) -> list[tup
                                         f"line {start}-{end} is not inside any unit named in the row"))
             points += [(i, start, end) for i in owners]
     return points
+
+
+def same_unit(doc_id: str, edge_id: str) -> bool:
+    """A doc may name an overload by its base name, and an unresolved edge has no #n."""
+    return doc_id == edge_id or ("#" not in doc_id or "#" not in edge_id) and \
+        doc_id.split("#")[0] == edge_id.split("#")[0]
+
+
+def has_edge(meta: Metadata, source: str, target: str, kind: str | None, lines: list[tuple[int, int]]) -> bool:
+    return any(same_unit(source, e.source) and same_unit(target, e.target) and kind in (None, e.kind)
+               and (not lines or any(a <= e.line <= b for a, b in lines)) for e in meta.graph.edges)
+
+
+def check_dependencies(doc: Doc, meta: Metadata, findings: list[Finding]) -> None:
+    """Rows of dependency tables and "Called by" cells must match an edge in dependencies.json."""
+    kinds = {str(k) for k in DependencyKind}
+    for n, header, cells in table_rows(doc):
+        cols = dict(zip(header, cells))
+        units = {c: [s.strip() for s in CODE_SPAN_RE.findall(cols.get(c, ""))] for c in header}
+        kind = cols.get("kind", "").strip("` ")
+        kind = kind if kind in kinds else None
+        lines = [(int(a), int(b or a)) for a, b in NUMBER_RANGE_RE.findall(cols.get("line", ""))]
+        if "caller" in cols and "unit called" in cols:
+            pairs = [(units["caller"], units["unit called"])]  # calls, and reads of package variables
+        elif "from unit" in cols and "to" in cols:
+            pairs = [(units["from unit"], units["to"])]
+        elif "direction" in cols and "unit / object" in cols and doc.kind == "procedure" and doc.subject:
+            other = units["unit / object"]
+            pairs = [(other, [doc.subject])] if "by" in cols["direction"] else [([doc.subject], other)]
+        elif "called by" in cols and "unit" in cols:
+            lines, kind = [], str(DependencyKind.CALL)
+            pairs = [([caller], units["unit"]) for caller in units["called by"]]
+        else:
+            continue
+        for sources, targets in pairs:
+            for source in sources:
+                for target in targets:
+                    if not has_edge(meta, source, target, kind, lines):
+                        where = f" at line {cols.get('line')}" if lines else ""
+                        findings.append(Finding(n, "ERROR", "dependency",
+                                                f"no {kind or 'dependency'} edge from {source} to {target}{where} "
+                                                f"in dependencies.json"))
 
 
 def check_coverage(doc: Doc, meta: Metadata, mentioned: set[str], points: list[tuple[str, int, int]],
@@ -502,7 +554,7 @@ def check_coverage(doc: Doc, meta: Metadata, mentioned: set[str], points: list[t
         if f.kind not in COVERED_RISKS or not (f.unit_id == pkg.name or f.unit_id.startswith(own)):
             continue
         owner = (lambda i: re.split(r"[.(]", i)[0]) if f.unit_id == pkg.name else (lambda i: i)
-        if not any(owner(i) == f.unit_id for i, s, e in points if s <= f.line <= e):
+        if not any(owner(i) == f.unit_id for i, s, e in points if s <= f.line <= e and e - s < MAX_FLAG_SPAN):
             findings.append(Finding(None, "WARN", "coverage",
                                     f"{f.kind} at {f.file}:{f.line} ({f.unit_id}) is not cited"))
 
@@ -518,6 +570,7 @@ def validate(text: str, path: str, meta: Metadata) -> list[Finding]:
     cited = check_citations(doc, meta, findings)
     mentioned = check_references(doc, meta, findings)
     points = check_uncited(doc, meta, findings)
+    check_dependencies(doc, meta, findings)
     if doc.kind == "package":
         check_coverage(doc, meta, mentioned, cited + points, findings)
     elif doc.kind == "procedure" and doc.subject not in meta.subs:

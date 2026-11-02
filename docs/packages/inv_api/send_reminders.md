@@ -57,7 +57,7 @@ No FIRES_TRIGGER edge exists for this unit [INV_API.SEND_REMINDERS:237].
 - The writes made by `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` happen after that COMMIT and are not committed by this unit [INV_API.SEND_REMINDERS:245].
 - The reminder log lines are written in an autonomous transaction, so they survive even if the increment or the COMMIT does not happen [UTIL_LOG.LOG_MSG:63] [INV_API.SEND_REMINDERS:234-239].
 - Every run adds 1 again for every invoice still overdue, and `INVOICES.REMINDER_CNT` is NUMBER(2) [INV_API.SEND_REMINDERS:237-239] [INVOICES:13].
-- Hardcoded value 14; its meaning is Unknown: needs human input.
+- Hardcoded value 14 [INV_API.SEND_REMINDERS:229]; its meaning is Unknown: needs human input.
 
 ## Error handling
 
