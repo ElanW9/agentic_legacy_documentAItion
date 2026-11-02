@@ -5,6 +5,7 @@ The fixture package lives in tests/fixtures/validate/legacy/ so these tests do n
 
 import pytest
 
+from scripts import validate_doc
 from scripts.extract_metadata import REPO_ROOT, extract
 from scripts.validate_doc import Metadata, main, validate
 
@@ -97,6 +98,42 @@ def test_uncited_table_row(meta):
 def test_table_row_line_outside_unit(meta):
     assert_fails(meta, broken("| `PKG_DEMO.GET_QTY` | 16 |", "| `PKG_DEMO.GET_QTY` | 26 |"),
                  "citation", "line 26-26 is not inside")
+
+
+def test_unknown_marker_exempts_only_its_clause(meta):
+    text = broken("Adds `P_QTY` to `DEMO_ITEMS.QTY` [PKG_DEMO.ADD_QTY#2:27].",
+                  "Adds `P_QTY` to `DEMO_ITEMS.QTY`; why: Unknown: needs human input.")
+    assert_fails(meta, text, "uncited", "Adds `P_QTY`")
+
+
+def test_unknown_marker_does_not_skip_line_numbers(meta):
+    text = broken("| `PKG_DEMO.GET_QTY` | 16 | WHEN OTHERS | returns NULL; the error is not raised |",
+                  "| `PKG_DEMO.GET_QTY` | 26 | WHEN OTHERS | Unknown: needs human input |")
+    assert_fails(meta, text, "citation", "line 26-26 is not inside")
+
+
+def test_invented_dependency_row(meta):
+    text = broken("| `PKG_DEMO.SET_STATUS` | `TRG_DEMO_BU` | FIRES_TRIGGER | 5 |",
+                  "| `PKG_DEMO.SET_STATUS` | `TRG_DEMO_BU` | FIRES_TRIGGER | 5 |\n"
+                  "| `PKG_DEMO.GET_QTY` | `PKG_DEMO.SET_STATUS` | CALL | 14 |")
+    assert_fails(meta, text, "dependency", "no CALL edge from PKG_DEMO.GET_QTY to PKG_DEMO.SET_STATUS")
+
+
+def test_called_by_row_with_wrong_line(meta):
+    # Line 21 is inside PKG_DEMO.ADD_QTY#1, so only the edge check catches it.
+    text = broken("| `PKG_DEMO.ADD_QTY#1` | `PKG_DEMO.ADD_QTY#2` | 22 |", "| `PKG_DEMO.ADD_QTY#1` | `PKG_DEMO.ADD_QTY#2` | 21 |")
+    assert_fails(meta, text, "dependency", "at line 21")
+
+
+def test_broad_citation_does_not_cover_a_risk_flag(meta, monkeypatch):
+    monkeypatch.setattr(validate_doc, "MAX_FLAG_SPAN", 5)  # the fixture body is shorter than the real cap
+    text = GOOD_DOC.replace("[PKG_DEMO.SET_STATUS:3-8]", "[PKG_DEMO.SET_STATUS:3]")
+    text = text.replace("[PKG_DEMO.SET_STATUS:6-7]", "[PKG_DEMO.SET_STATUS:6]")
+    text = text.replace("open work [PKG_DEMO.SET_STATUS:7]", "open work [PKG_DEMO(body):1-30]")
+    warnings = [f.message for f in validate(text, "doc.md", meta) if f.check == "coverage"]
+    assert warnings == ["COMMIT at tests/fixtures/validate/legacy/packages/pkg_demo.pkb:7 (PKG_DEMO.SET_STATUS) "
+                        "is not cited"]
+    assert not [f for f in validate(GOOD_DOC, "doc.md", meta) if f.check == "coverage"]
 
 
 def test_unknown_parameter(meta):
