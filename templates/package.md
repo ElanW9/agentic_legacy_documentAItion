@@ -17,6 +17,16 @@ TEMPLATE: one package. Copy to docs/packages/<package_lowercase>.md.
 | Source hash | `{{sha256 of spec + body, same value as state/doc-status.json}}` |
 | Status | draft |
 
+## In plain language
+
+<!-- For analysts who do not read code. 3-6 bullets on what the package does to the business data, in everyday words:
+     customers, orders, invoices, amounts, statuses. No SQL, no unit ids in the text, no Oracle terms (commit, trigger,
+     autonomous transaction): say what the user would notice instead, e.g. "blocking a customer is saved at once and
+     cannot be undone by the screen that asked for it". Every bullet still ends with a citation.
+     Describe what the code does, never why: the business reason stays "Unknown: needs human input". -->
+
+- {{what happens, in business words}} [{{UNIT_ID}}:{{start}}-{{end}}]
+
 ## Purpose
 
 <!-- 2-4 sentences: what the package does, judged from what its units do. Cite the units the summary is based on.
@@ -125,6 +135,9 @@ TEMPLATE: one package. Copy to docs/packages/<package_lowercase>.md.
 ## Open questions
 
 <!-- Numbered. Each question cites the code it is about. Includes every "Unknown: needs human input" above,
-     contradictions between comments and code, and anything the parser cannot see (see docs/extraction-limitations.md). -->
+     contradictions between comments and code, and anything the parser cannot see (see docs/extraction-limitations.md).
+     Each question starts with "Business:" or "Technical:".
+     Business: an analyst or owner can answer it without reading code (what a value means, whether a rule is intended);
+     write it in everyday words. Technical: it needs a developer or DBA (code outside legacy_code/, Oracle behaviour). -->
 
-1. {{question}} [{{UNIT_ID}}:{{line}}]
+1. Business: {{question}} [{{UNIT_ID}}:{{line}}]

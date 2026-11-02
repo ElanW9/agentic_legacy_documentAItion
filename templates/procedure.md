@@ -69,4 +69,6 @@ link it from the package doc.
 
 ## Open questions
 
-1. {{question}} [{{PACKAGE.UNIT}}:{{line}}]
+<!-- Each question starts with "Business:" or "Technical:", as in templates/package.md. -->
+
+1. Business: {{question}} [{{PACKAGE.UNIT}}:{{line}}]

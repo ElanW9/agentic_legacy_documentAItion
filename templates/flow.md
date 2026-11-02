@@ -51,4 +51,6 @@ TEMPLATE: one cross-package flow, for example order -> invoice -> payment. Copy 
 
 ## Open questions
 
-1. {{question}} [{{UNIT_ID}}:{{line}}]
+<!-- Each question starts with "Business:" or "Technical:", as in templates/package.md. -->
+
+1. Business: {{question}} [{{UNIT_ID}}:{{line}}]
