@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(/evaluation/**)",
+      "Read(/.env)",
+      "Edit(/legacy_code/**)",
+      "Edit(/metadata/**)",
+      "Edit(/state/owners.json)",
+      "Edit(/.claude/settings.json)"
+    ]
+  }
+}
