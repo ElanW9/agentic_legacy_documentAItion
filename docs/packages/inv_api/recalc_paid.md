@@ -54,5 +54,5 @@ None found in metadata.
 
 ## Open questions
 
-1. The comment at [INV_API(body):24] says "run monthly!"; who ran this unit, and is it still needed [INV_API.RECALC_PAID:25]?
-2. Should a recalculation also reset `INVOICES.INV_STATUS`, as `TRG_PAY_AIR` does on each payment [TRG_PAY_AIR:14-20]?
+1. Technical: The comment at [INV_API(body):24] says "run monthly!"; who ran this unit, and is it still needed [INV_API.RECALC_PAID:25]?
+2. Business: Should a recalculation also reset `INVOICES.INV_STATUS`, as `TRG_PAY_AIR` does on each payment [TRG_PAY_AIR:14-20]?

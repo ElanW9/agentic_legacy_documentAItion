@@ -42,7 +42,7 @@ Document one package at a time. The `document-package` skill has the detailed st
 2. **Read the source** in `legacy_code/packages/<package>.pks` and `.pkb`, using the line ranges from the metadata. The source explains *what* the code does. Comments are not facts: quote them only as "the comment at [..] says ...", and check them against the code.
 3. **Draft from the template.** Copy `templates/package.md` to `docs/packages/<package_lowercase>.md` and fill every section. Use `templates/procedure.md` for units too complex for a subsection, and `templates/flow.md` for cross-package flows.
 4. **Run validation**: `python -m scripts.validate_doc docs/packages/<package_lowercase>.md` (added in step 6). Fix every failure. Do not weaken the doc or the validator to make it pass.
-5. **List open questions.** Every `Unknown: needs human input`, every comment that contradicts the code, and everything the parser cannot see (`docs/extraction-limitations.md`) goes under "Open questions", with a citation.
+5. **List open questions.** Every `Unknown: needs human input`, every comment that contradicts the code, and everything the parser cannot see (`docs/extraction-limitations.md`) goes under "Open questions", with a citation. Each starts with `Business:` (an analyst can answer it) or `Technical:` (it needs a developer), because analysts read these pages without reading code; the doc's "In plain language" section is for them too.
 6. **Update `state/doc-status.json`** through the `DocStatusFile` model: source files (spec, then body), the sha256 over them in that order, status `draft`, and the validation result.
 
 When the metadata and the source disagree, do not pick one silently: document what the source shows, and add an open question that names the metadata gap.

@@ -82,7 +82,7 @@ An error while loading the level (line 66) also lands in this handler and leaves
 
 ## Open questions
 
-1. Meaning of the severity codes and levels, and of the default level 1: Unknown: needs human input [UTIL_LOG.LOG_MSG:66-71] [UTIL_LOG.LVL:18-22].
-2. Why log rows must survive the caller's rollback: Unknown: needs human input [UTIL_LOG.LOG_MSG:63].
-3. Every error is swallowed, so a failed log write is invisible to the caller [UTIL_LOG.LOG_MSG:83-85]. Is that accepted?
-4. `UTIL_LOG.G_CALL_CNT` is incremented but never read in legacy_code/ [UTIL_LOG.LOG_MSG:69]. Is it read from outside legacy_code/?
+1. Business: Meaning of the severity codes and levels, and of the default level 1: Unknown: needs human input [UTIL_LOG.LOG_MSG:66-71] [UTIL_LOG.LVL:18-22].
+2. Business: Why log rows must survive the caller's rollback: Unknown: needs human input [UTIL_LOG.LOG_MSG:63].
+3. Business: Every error is swallowed, so a failed log write is invisible to the caller [UTIL_LOG.LOG_MSG:83-85]. Is that accepted?
+4. Technical: `UTIL_LOG.G_CALL_CNT` is incremented but never read in legacy_code/ [UTIL_LOG.LOG_MSG:69]. Is it read from outside legacy_code/?

@@ -85,7 +85,7 @@ Other errors are not handled and reach the caller [INV_API.CREATE_INVOICE#2:124-
 
 ## Open questions
 
-1. What do order statuses 20 and 30 mean for invoicing? Unknown: needs human input [INV_API.CREATE_INVOICE#2:94].
-2. Should the duplicate-invoice case be logged like the bad-status case [INV_API.CREATE_INVOICE#2:105-106]?
-3. Is a VAT amount of 0 after an error in `INV_API.CALC_VAT` acceptable on an invoice [INV_API.CALC_VAT:69-71]?
-4. Should the invoice number use the year of `P_INV_DT` instead of SYSDATE [INV_API.NEXT_INV_NO:20]?
+1. Business: What do order statuses 20 and 30 mean for invoicing? Unknown: needs human input [INV_API.CREATE_INVOICE#2:94].
+2. Technical: Should the duplicate-invoice case be logged like the bad-status case [INV_API.CREATE_INVOICE#2:105-106]?
+3. Business: Is a VAT amount of 0 after an error in `INV_API.CALC_VAT` acceptable on an invoice [INV_API.CALC_VAT:69-71]?
+4. Business: Should the invoice number use the year of `P_INV_DT` instead of SYSDATE [INV_API.NEXT_INV_NO:20]?

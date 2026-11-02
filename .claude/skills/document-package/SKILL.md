@@ -33,6 +33,7 @@ Copy `templates/package.md` to `docs/packages/<package_lowercase>.md`.
 - Describe behaviour, not intent. Purpose, the meaning of a code value or a hardcoded number, and why something exists are `Unknown: needs human input` unless the code itself states it.
 - Say "no caller in legacy_code/", never "unused" or "dead".
 - A unit with many branches, a COMMIT, or several tables gets its own `docs/packages/<package_lowercase>/<unit_lowercase>.md` from `templates/procedure.md`, linked from the package doc.
+- Write "In plain language" last, from the finished doc: what an analyst would notice, in everyday words, cited, with no code.
 - Remove all template comments and `{{placeholders}}`.
 
 ## 4. Validate
@@ -42,7 +43,7 @@ Copy `templates/package.md` to `docs/packages/<package_lowercase>.md`.
 ## 5. Coverage and open questions
 
 Tick off the list from step 1: every public unit, private unit, variable, edge, table access and risk flag appears in the doc. Then run the `review-doc` checklist.
-Under "Open questions", list every `Unknown`, every comment that contradicts the code, every metadata gap, and every limitation from `docs/extraction-limitations.md` that applies (for example, dynamic SQL table names, or callers outside `legacy_code/`).
+Under "Open questions", list every `Unknown`, every comment that contradicts the code, every metadata gap, and every limitation from `docs/extraction-limitations.md` that applies (for example, dynamic SQL table names, or callers outside `legacy_code/`). Start each with `Business:` (an analyst can answer it; write it in everyday words) or `Technical:` (it needs a developer or DBA).
 
 ## 6. Record status
 

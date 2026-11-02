@@ -72,7 +72,7 @@ The `ORDERS` update fires no trigger, because legacy_code/ has no trigger on `OR
 
 ## Open questions
 
-1. What do status `'B'` and `ORD_STATUS` 10, 15 and 20 mean? Unknown: needs human input [CUST_MGMT.BLOCK_CUSTOMER:102] [CUST_MGMT.BLOCK_CUSTOMER:108-110].
-2. Do callers outside legacy_code/ expect their open work to be committed by this procedure [CUST_MGMT.BLOCK_CUSTOMER:113]?
-3. Should blocking a customer that is already `'B'` or `'C'` be possible? The UPDATE has no status filter [CUST_MGMT.BLOCK_CUSTOMER:101-104].
-4. Is the credit limit of 0 left after unblocking intended [TRG_CUST_BIU:22-24]?
+1. Business: What do status `'B'` and `ORD_STATUS` 10, 15 and 20 mean? Unknown: needs human input [CUST_MGMT.BLOCK_CUSTOMER:102] [CUST_MGMT.BLOCK_CUSTOMER:108-110].
+2. Technical: Do callers outside legacy_code/ expect their open work to be committed by this procedure [CUST_MGMT.BLOCK_CUSTOMER:113]?
+3. Business: Should blocking a customer that is already `'B'` or `'C'` be possible? The UPDATE has no status filter [CUST_MGMT.BLOCK_CUSTOMER:101-104].
+4. Business: Is the credit limit of 0 left after unblocking intended [TRG_CUST_BIU:22-24]?

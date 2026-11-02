@@ -86,10 +86,10 @@ Other errors, such as a NULL `P_AMT` violating the NOT NULL column, are not hand
 
 ## Open questions
 
-1. Which external system calls this unit, given there is no caller in legacy_code/ [INV_API.REGISTER_PAYMENT:164]?
-2. Should the cash-limit check run before the INSERT, without rolling back the caller's whole transaction [INV_API.REGISTER_PAYMENT:181-196]?
-3. What does method 'CA' mean? The column comment at [legacy_code/tables/payments.sql:13] lists only 'BT' and 'CC'. Unknown: needs human input.
-4. What do the cash limit 3000 and its currency mean? Unknown: needs human input [INV_API.REGISTER_PAYMENT:193].
-5. Is the missing validation of `P_AMT` (NULL, zero, negative) handled elsewhere [INV_API.REGISTER_PAYMENT:177-182]?
-6. Is it intended that the paid amount and status are updated by `TRG_PAY_AIR` rather than by this unit, as the comment at [INV_API.REGISTER_PAYMENT:184] suggests [TRG_PAY_AIR:9-20]?
-7. What does order status 50, set by `TRG_PAY_AIR`, mean? Unknown: needs human input [TRG_PAY_AIR:17].
+1. Technical: Which external system calls this unit, given there is no caller in legacy_code/ [INV_API.REGISTER_PAYMENT:164]?
+2. Technical: Should the cash-limit check run before the INSERT, without rolling back the caller's whole transaction [INV_API.REGISTER_PAYMENT:181-196]?
+3. Business: What does method 'CA' mean? The column comment at [legacy_code/tables/payments.sql:13] lists only 'BT' and 'CC'. Unknown: needs human input.
+4. Business: What do the cash limit 3000 and its currency mean? Unknown: needs human input [INV_API.REGISTER_PAYMENT:193].
+5. Technical: Is the missing validation of `P_AMT` (NULL, zero, negative) handled elsewhere [INV_API.REGISTER_PAYMENT:177-182]?
+6. Technical: Is it intended that the paid amount and status are updated by `TRG_PAY_AIR` rather than by this unit, as the comment at [INV_API.REGISTER_PAYMENT:184] suggests [TRG_PAY_AIR:9-20]?
+7. Business: What does order status 50, set by `TRG_PAY_AIR`, mean? Unknown: needs human input [TRG_PAY_AIR:17].

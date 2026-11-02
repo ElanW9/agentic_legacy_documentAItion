@@ -7,6 +7,15 @@
 | Source hash | `af29cc787e6fe6d3d728cbb3fb2d41fafc8f38fc7868291e09b784baa60cdbbf` |
 | Status | draft |
 
+## In plain language
+
+- An invoice is created only for an order in status 20 or 30 that has no invoice yet (cancelled invoices do not count); otherwise no invoice is made and no error is shown [INV_API.CREATE_INVOICE#2:94-107]. The due date is 30 days after the invoice date, 45 days for customer type 'W', and 60 weekdays for customer type 'G' (weekends skipped, public holidays not) [INV_API.GET_DUE_DT:40-46] [UTIL_LOG.IS_WORKDAY:105].
+- Customers in the Netherlands, France, Germany or Luxembourg that have a VAT number pay no VAT; every other customer, including one without a country, pays the standard VAT rate, which is a setting (21% when it is missing) [INV_API.CALC_VAT:55-67]. When the VAT calculation fails for any reason, the invoice is still created, with 0 VAT and no warning [INV_API.CALC_VAT:69-71] [INV_API.CREATE_INVOICE#2:111-117].
+- Recording a payment adds the amount to the invoice's paid amount right away; the invoice becomes 'PAID' when at most 5 cents is still open, otherwise 'PART', and a fully paid invoice moves its order to status 50 [TRG_PAY_AIR:9-20]. The payment is saved at once, together with any unsaved changes the calling screen had made [INV_API.REGISTER_PAYMENT:198].
+- A cash payment above 3000 is refused, but only after it was briefly recorded; the refusal also throws away every other unsaved change of the calling screen [INV_API.REGISTER_PAYMENT:181-195]. The limit applies to each payment on its own, not to a total per invoice or customer [INV_API.REGISTER_PAYMENT:193].
+- An invoice with any payment on it cannot be cancelled; cancelling an unpaid invoice, in any status, puts its order back to status 20 [INV_API.CANCEL_INVOICE:140-147]. When all invoices of an order are cancelled together, the first invoice with a payment stops the cancellation of the remaining invoices with an error [INV_API.CANCEL_INVOICE_FOR_ORDER:155-160].
+- Reminders are not e-mailed: for every open or partly paid invoice more than 14 days past its due date whose customer has an e-mail address, the system only writes a note in the audit log and adds 1 to the invoice's reminder count [INV_API.SEND_REMINDERS:227-243].
+
 ## Purpose
 
 `INV_API` inserts invoices for orders, cancels invoices, inserts payments, computes a VAT amount and a due date, sums a customer's open amount, and increments a reminder counter on overdue invoices [INV_API.CREATE_INVOICE#2:86-127] [INV_API.CANCEL_INVOICE:130-150] [INV_API.REGISTER_PAYMENT:164-202] [INV_API.CALC_VAT:51-72] [INV_API.GET_DUE_DT:35-47] [INV_API.GET_OPEN_AMT:205-221] [INV_API.SEND_REMINDERS:224-246].
@@ -302,25 +311,25 @@ The comment at [INV_API.REGISTER_PAYMENT:192] says "cash payments above 3000 not
 
 ## Open questions
 
-1. What is the business purpose of `INV_API`? The comment at [INV_API(spec):3] only says "Invoicing API". Unknown: needs human input.
-2. What do the hardcoded values listed under "Hardcoded values" mean (order statuses 20 and 30, invoice statuses, customer types 'G' and 'W', the 60/45/30 day terms, the 14-day reminder threshold, the 0.05 tolerance, the 3000 cash limit and its currency)? Unknown: needs human input [INV_API.GET_DUE_DT:40-45] [INV_API.REGISTER_PAYMENT:193] [INV_API.SEND_REMINDERS:229].
-3. The comment at [INV_API(body):50] says "0 for intra-EU with VAT number", but the code gives 0 only for 'NL', 'FR', 'DE' and 'LU'; are other EU countries meant to be included [INV_API.CALC_VAT:64]?
-4. The comment at [INV_API(body):50] says the rate is 21%, but the code uses the 'VAT_RATE' parameter cached per session; is the session cache acceptable when the rate changes [INV_API.CALC_VAT:55-57]?
-5. `INV_API.CALC_VAT` returns 0 on any error, which creates an invoice with zero VAT without a warning; is that intended [INV_API.CALC_VAT:69-71]?
-6. What does "reverse charge" in the comment at [INV_API.CALC_VAT:65] mean for the business? Unknown: needs human input.
-7. The comment at [INV_API.GET_OPEN_AMT:213] says "confirmed orders not yet invoiced", but the code also adds orders with status 30 (`PKG_ORDER.ST_SHIPPED`); which is correct [INV_API.GET_OPEN_AMT:218]?
-8. The comment at [INV_API(body):24] says "run monthly!", but the unit is private and has no caller; is it still needed, and who ran it [INV_API.RECALC_PAID:25]?
-9. `INV_API.REGISTER_PAYMENT` has no caller in legacy_code/; which external system calls it [INV_API.REGISTER_PAYMENT:164]?
-10. The cash-limit check runs after the INSERT and its ROLLBACK undoes the caller's whole transaction; should the check run before the INSERT, without a full rollback [INV_API.REGISTER_PAYMENT:181-196]?
-11. `INV_API.REGISTER_PAYMENT` accepts payment method 'CA', which the column comment at [legacy_code/tables/payments.sql:13] does not list; what does 'CA' mean [INV_API.REGISTER_PAYMENT:177]?
-12. `INV_API.REGISTER_PAYMENT` does not check `P_AMT` for NULL, zero or a negative value; is that validated elsewhere [INV_API.REGISTER_PAYMENT:177-182]?
-13. The comment at [INV_API.REGISTER_PAYMENT:184] says "update invoice paid amount and status", but the unit only re-reads the invoice; the update is done by `TRG_PAY_AIR` [TRG_PAY_AIR:9-20]. Is this split intended?
-14. `TRG_PAY_AIR` sets `ORDERS.ORD_STATUS` to 50, a value with no constant in `PKG_ORDER`; what does 50 mean [TRG_PAY_AIR:17]?
-15. `INV_API.CANCEL_INVOICE` sets the order back to `PKG_ORDER.ST_CONFIRMED` (20), even when it was called from `PKG_ORDER.CANCEL_ORDER`, which then sets the order to cancelled; is the intermediate status change intended [INV_API.CANCEL_INVOICE:147] [PKG_ORDER.CANCEL_ORDER:263-274]?
-16. `INV_API.CANCEL_INVOICE` cancels an invoice in any status, including 'PAID' with a paid amount of 0 or one already 'CANC'; is a status check missing [INV_API.CANCEL_INVOICE:140-144]?
-17. Invoice numbers take the year from SYSDATE, not from the invoice date, and LPAD truncates ids above 999999; is either a known issue [INV_API.NEXT_INV_NO:20]?
-18. `INVOICES.REMINDER_CNT` is NUMBER(2) and grows by 1 per run of `INV_API.SEND_REMINDERS`; what should happen after 99 reminders [INVOICES:13] [INV_API.SEND_REMINDERS:237-239]?
-19. Metadata gap: the hardcoded-value heuristic did not flag the literal '-' in `INV_API.NEXT_INV_NO`, although it is a string of up to 4 characters outside the excluded calls [INV_API.NEXT_INV_NO:20].
-20. Parser limitation: the read of `CUSTOMERS` through dynamic SQL in `CUST_MGMT.GET_CUST_ATTR` is not in table_usage for this package [CUST_MGMT.GET_CUST_ATTR:216].
-21. Parser limitation: callers outside legacy_code/ (schedulers, applications, other schemas) are not visible, so the "Called by" list may be incomplete [INV_API(spec):7-22].
-22. The body comment at [INV_API(body):4] says the package "Replaces the old INVOICE_HDR / INVOICE_DTL logic"; those objects do not exist in legacy_code/. Do they still exist elsewhere? Unknown: needs human input.
+1. Business: What is the business purpose of `INV_API`? The comment at [INV_API(spec):3] only says "Invoicing API". Unknown: needs human input.
+2. Business: What do the hardcoded values listed under "Hardcoded values" mean (order statuses 20 and 30, invoice statuses, customer types 'G' and 'W', the 60/45/30 day terms, the 14-day reminder threshold, the 0.05 tolerance, the 3000 cash limit and its currency)? Unknown: needs human input [INV_API.GET_DUE_DT:40-45] [INV_API.REGISTER_PAYMENT:193] [INV_API.SEND_REMINDERS:229].
+3. Business: The comment at [INV_API(body):50] says "0 for intra-EU with VAT number", but the code gives 0 only for 'NL', 'FR', 'DE' and 'LU'; are other EU countries meant to be included [INV_API.CALC_VAT:64]?
+4. Business: The comment at [INV_API(body):50] says the rate is 21%, but the code uses the 'VAT_RATE' parameter cached per session; is the session cache acceptable when the rate changes [INV_API.CALC_VAT:55-57]?
+5. Business: `INV_API.CALC_VAT` returns 0 on any error, which creates an invoice with zero VAT without a warning; is that intended [INV_API.CALC_VAT:69-71]?
+6. Business: What does "reverse charge" in the comment at [INV_API.CALC_VAT:65] mean for the business? Unknown: needs human input.
+7. Business: The comment at [INV_API.GET_OPEN_AMT:213] says "confirmed orders not yet invoiced", but the code also adds orders with status 30 (`PKG_ORDER.ST_SHIPPED`); which is correct [INV_API.GET_OPEN_AMT:218]?
+8. Technical: The comment at [INV_API(body):24] says "run monthly!", but the unit is private and has no caller; is it still needed, and who ran it [INV_API.RECALC_PAID:25]?
+9. Technical: `INV_API.REGISTER_PAYMENT` has no caller in legacy_code/; which external system calls it [INV_API.REGISTER_PAYMENT:164]?
+10. Technical: The cash-limit check runs after the INSERT and its ROLLBACK undoes the caller's whole transaction; should the check run before the INSERT, without a full rollback [INV_API.REGISTER_PAYMENT:181-196]?
+11. Business: `INV_API.REGISTER_PAYMENT` accepts payment method 'CA', which the column comment at [legacy_code/tables/payments.sql:13] does not list; what does 'CA' mean [INV_API.REGISTER_PAYMENT:177]?
+12. Technical: `INV_API.REGISTER_PAYMENT` does not check `P_AMT` for NULL, zero or a negative value; is that validated elsewhere [INV_API.REGISTER_PAYMENT:177-182]?
+13. Technical: The comment at [INV_API.REGISTER_PAYMENT:184] says "update invoice paid amount and status", but the unit only re-reads the invoice; the update is done by `TRG_PAY_AIR` [TRG_PAY_AIR:9-20]. Is this split intended?
+14. Business: `TRG_PAY_AIR` sets `ORDERS.ORD_STATUS` to 50, a value with no constant in `PKG_ORDER`; what does 50 mean [TRG_PAY_AIR:17]?
+15. Technical: `INV_API.CANCEL_INVOICE` sets the order back to `PKG_ORDER.ST_CONFIRMED` (20), even when it was called from `PKG_ORDER.CANCEL_ORDER`, which then sets the order to cancelled; is the intermediate status change intended [INV_API.CANCEL_INVOICE:147] [PKG_ORDER.CANCEL_ORDER:263-274]?
+16. Business: `INV_API.CANCEL_INVOICE` cancels an invoice in any status, including 'PAID' with a paid amount of 0 or one already 'CANC'; is a status check missing [INV_API.CANCEL_INVOICE:140-144]?
+17. Business: Invoice numbers take the year from SYSDATE, not from the invoice date, and LPAD truncates ids above 999999; is either a known issue [INV_API.NEXT_INV_NO:20]?
+18. Business: `INVOICES.REMINDER_CNT` is NUMBER(2) and grows by 1 per run of `INV_API.SEND_REMINDERS`; what should happen after 99 reminders [INVOICES:13] [INV_API.SEND_REMINDERS:237-239]?
+19. Technical: Metadata gap: the hardcoded-value heuristic did not flag the literal '-' in `INV_API.NEXT_INV_NO`, although it is a string of up to 4 characters outside the excluded calls [INV_API.NEXT_INV_NO:20].
+20. Technical: Parser limitation: the read of `CUSTOMERS` through dynamic SQL in `CUST_MGMT.GET_CUST_ATTR` is not in table_usage for this package [CUST_MGMT.GET_CUST_ATTR:216].
+21. Technical: Parser limitation: callers outside legacy_code/ (schedulers, applications, other schemas) are not visible, so the "Called by" list may be incomplete [INV_API(spec):7-22].
+22. Technical: The body comment at [INV_API(body):4] says the package "Replaces the old INVOICE_HDR / INVOICE_DTL logic"; those objects do not exist in legacy_code/. Do they still exist elsewhere? Unknown: needs human input.

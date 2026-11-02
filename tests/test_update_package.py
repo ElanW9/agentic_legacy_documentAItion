@@ -101,8 +101,8 @@ def test_write_moves_unchanged_lines_and_marks_changed_ones(repo):
     assert "| `DEMO_ITEMS` | UPDATE | `PKG_DEMO.SET_STATUS` | 7 | STATIC |" in doc
     assert "| 4 | 5-10 |" in doc                        # SET_STATUS spec and body, from the metadata
     assert f"`{source_hash(FILES, repo)}`" in doc       # header hash refreshed
-    # 3-8 and 6-7 on SET_STATUS, and 6 twice in the package state row
-    assert "line numbers marked !changed: 4" in report, report
+    # 5-7 (plain language), 3-8 and 6-7 on SET_STATUS, and 6 twice in the package state row
+    assert "line numbers marked !changed: 5" in report, report
 
     # the doc now fails validation only on the marked lines: the marker itself, and a sentence whose
     # only citation is marked no longer counts as cited
@@ -114,7 +114,7 @@ def test_write_moves_unchanged_lines_and_marks_changed_ones(repo):
     # a second run must not move the numbers again
     again = "\n".join(update("PKG_DEMO", write=True, root=repo))
     assert (repo / DOC).read_text(encoding="utf-8") == doc
-    assert "already moved to this source" in again and "4 !changed markers left" in again
+    assert "already moved to this source" in again and "5 !changed markers left" in again
 
 
 def test_stale_metadata_is_refused(repo):

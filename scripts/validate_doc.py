@@ -22,6 +22,9 @@ Checks. ERROR fails the doc; WARN is reported but does not fail it.
                counts as cited only by a citation of at most 40 lines that contains it
     changed    no "!changed" marker is left: update_package puts it on line numbers whose
                source lines changed, and the claim must be checked before it goes
+    question   every open question starts with "Business:" or "Technical:", so analysts can
+               find the ones they can answer
+    plain      "In plain language" has no `code` (WARN): it is written for analysts
 
 Line numbers in the report are lines of the doc. Exit code 0 when every doc passes.
 """
@@ -69,6 +72,8 @@ LINK_RE = re.compile(r"\[[^\]]*\]\([^)]*\.md[^)]*\)")
 NUMBER_RANGE_RE = re.compile(r"\b(\d+)(?:\s*-\s*(\d+))?\b")
 LINE_COLUMNS = {"line", "spec", "body", "statement line"}
 CHANGED_MARK = "!changed"  # set by update_package on line numbers whose source lines changed
+QUESTION_TAGS = ("Business:", "Technical:")
+PLAIN_SECTION = "In plain language"
 
 # Risk kinds that every package doc must cite. HARDCODED_VALUE and PACKAGE_STATE are too
 # numerous to require one citation per flag; review-doc covers them.
@@ -491,6 +496,18 @@ def check_uncited(doc: Doc, meta: Metadata, findings: list[Finding]) -> list[tup
     return points
 
 
+def check_audience(doc: Doc, findings: list[Finding]) -> None:
+    """Open questions say who can answer them; the plain-language section has no code."""
+    for n, line in doc.content:
+        section = doc.sections[n]
+        if section == "Open questions" and (item := LIST_ITEM_RE.match(line)):
+            if not line[item.end():].startswith(QUESTION_TAGS):
+                findings.append(Finding(n, "ERROR", "question",
+                                        f"open question must start with {' or '.join(QUESTION_TAGS)}"))
+        elif section == PLAIN_SECTION and CODE_SPAN_RE.search(line):
+            findings.append(Finding(n, "WARN", "plain", "`code` in the plain-language section; use everyday words"))
+
+
 def same_unit(doc_id: str, edge_id: str) -> bool:
     """A doc may name an overload by its base name, and an unresolved edge has no #n."""
     return doc_id == edge_id or ("#" not in doc_id or "#" not in edge_id) and \
@@ -571,6 +588,7 @@ def validate(text: str, path: str, meta: Metadata) -> list[Finding]:
     mentioned = check_references(doc, meta, findings)
     points = check_uncited(doc, meta, findings)
     check_dependencies(doc, meta, findings)
+    check_audience(doc, findings)
     if doc.kind == "package":
         check_coverage(doc, meta, mentioned, cited + points, findings)
     elif doc.kind == "procedure" and doc.subject not in meta.subs:

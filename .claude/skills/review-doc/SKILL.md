@@ -43,6 +43,11 @@ Open the cited lines for a sample of at least five claims, plus every claim abou
 
 - [ ] Every `Unknown` in the body is repeated as an open question.
 - [ ] Every comment that contradicts the code, every metadata gap, and every parser limitation that applies is listed, with a citation.
+- [ ] Each question's `Business:` or `Technical:` tag fits: an analyst could answer a Business question without reading code.
+
+## In plain language
+
+- [ ] Each bullet is true for the cited lines and says what a user would notice, without code or Oracle terms, and without a reason the code does not state.
 
 ## Report
 
