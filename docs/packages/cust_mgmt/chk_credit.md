@@ -27,6 +27,7 @@ The business rule behind the check is Unknown: needs human input.
 | return | - | NUMBER | - | 1 or 0; see the walkthrough [CUST_MGMT.CHK_CREDIT:159-176] |
 
 The comment at [CUST_MGMT(spec):20] says the function "returns Y/N"; the code returns the numbers 1 and 0, so the comment does not match the code [CUST_MGMT.CHK_CREDIT:160] [CUST_MGMT.CHK_CREDIT:164].
+Elan, package owner (Confluence comment on the package page, 2026-11-03), confirms the comment is outdated [CUST_MGMT(spec):20]: "This comment is outdated. The code returns 0/1." [CUST_MGMT.CHK_CREDIT:160]
 
 ## Logic walkthrough
 
@@ -73,4 +74,3 @@ No triggers are fired: the function only reads [CUST_MGMT.CHK_CREDIT:154-157].
 
 1. Business: What does the factor 1.1 on the credit limit represent? Unknown: needs human input [CUST_MGMT.CHK_CREDIT:169].
 2. Business: Why does type `'G'` always pass? Unknown: needs human input [CUST_MGMT.CHK_CREDIT:163-165].
-3. Technical: Is the spec comment "returns Y/N" outdated, given that the function returns 1/0 [CUST_MGMT.CHK_CREDIT:160]?
