@@ -17,6 +17,7 @@ Rules for the agent that documents the legacy PL/SQL in `legacy_code/`. This is 
 - Never set a status to `reviewed` or `approved` in `state/doc-status.json`; only the reviewer does. Approved docs are published.
 - **Never read anything in `evaluation/`** during documentation work. It holds the answer key and is used only in the retrospective (step 8).
 - If something is ambiguous, ask one focused question instead of assuming.
+- `.claude/settings.json` enforces part of this: it denies reading `evaluation/` and `.env`, and editing `legacy_code/`, `metadata/`, `state/owners.json` and itself. A denied tool call means the rule applies; never work around it with a shell command or a script.
 
 ## Secrets and environment
 

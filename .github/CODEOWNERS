@@ -1,0 +1,8 @@
+# Changes to these paths need the repo owner's review: the agent's rules and permissions,
+# the review status of each doc, the answer key and the legacy code it documents.
+/CLAUDE.md                @ElanW9
+/.claude/                 @ElanW9
+/state/                   @ElanW9
+/evaluation/              @ElanW9
+/legacy_code/             @ElanW9
+/.github/                 @ElanW9

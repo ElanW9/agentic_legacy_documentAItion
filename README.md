@@ -69,6 +69,7 @@ Blue: deterministic scripts. Purple: the LLM agent. Green: people. Grey: data. E
 | `docs/repo-plan.md` | Inspection findings and design. |
 | `state/` | Doc status tracking; who may answer open questions per package. |
 | `.claude/skills/` | Agent skills. |
+| `.claude/settings.json` | Permission rules that enforce the hard constraints of `CLAUDE.md`. |
 | `CLAUDE.md` | Agent rules. |
 
 ## Setup
@@ -210,6 +211,24 @@ Run it locally with `python -m scripts.check_drift`.
 - Make small commits with clear messages.
 - Merges into `main` happen only through a reviewed pull request. Never force-push.
 - Before every commit, check `git status` to make sure no `.env` or credential file is staged.
+
+### Guardrails
+
+The hard rules in `CLAUDE.md` are not only instructions to the model. Where a tool can enforce them, it does:
+
+| Rule | Enforced by |
+|------|-------------|
+| Never read the answer key or `.env` | `.claude/settings.json` denies `Read` on `evaluation/**` and `.env` (also covers Grep, Glob and shell commands such as `cat` that name the file) |
+| `legacy_code/` and `metadata/` are not edited by hand | `.claude/settings.json` denies `Edit` there; the extractor still writes `metadata/` |
+| Only the owner changes who may answer questions, or the agent's permissions | `Edit` denied on `state/owners.json` and on `.claude/settings.json` |
+| Only the reviewer approves a doc | `.github/CODEOWNERS` on `state/`, plus the pull request review |
+| Docs are valid when merged | the `doc validation` CI job |
+
+Limits, kept on purpose:
+- A deny rule in the committed project settings cannot be overridden by an allow in `settings.local.json`. To run the retrospective (step 8), the owner removes the `evaluation/` rule in a branch.
+- Permission rules match tool calls, not every process. A script that opens a file itself, or a shell command that does not name the file, is not stopped; the CLAUDE.md rule still applies.
+- `CODEOWNERS` only requests the owner's review. It blocks a merge when branch protection requires code-owner review, which a one-person repo cannot use, because GitHub does not let you approve your own pull request.
+- Nothing stops the agent from writing `approved` into `state/doc-status.json`: it updates that file through a script. The pull request diff shows it, and the reviewer rejects it.
 
 ## Steps
 
