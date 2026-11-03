@@ -71,6 +71,6 @@ No triggers are fired: the function only reads [CUST_MGMT.CHK_CREDIT:154-157].
 
 ## Open questions
 
-1. What does the factor 1.1 on the credit limit represent? Unknown: needs human input [CUST_MGMT.CHK_CREDIT:169].
-2. Why does type `'G'` always pass? Unknown: needs human input [CUST_MGMT.CHK_CREDIT:163-165].
-3. Is the spec comment "returns Y/N" outdated, given that the function returns 1/0 [CUST_MGMT.CHK_CREDIT:160]?
+1. Business: What does the factor 1.1 on the credit limit represent? Unknown: needs human input [CUST_MGMT.CHK_CREDIT:169].
+2. Business: Why does type `'G'` always pass? Unknown: needs human input [CUST_MGMT.CHK_CREDIT:163-165].
+3. Technical: Is the spec comment "returns Y/N" outdated, given that the function returns 1/0 [CUST_MGMT.CHK_CREDIT:160]?

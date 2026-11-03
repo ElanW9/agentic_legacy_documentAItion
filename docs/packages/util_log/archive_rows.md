@@ -67,8 +67,8 @@ Both statements are dynamic SQL with table and column names built at runtime, so
 
 ## Open questions
 
-1. Which tables do callers outside legacy_code/ pass, and do triggers exist on them: Unknown: needs human input [UTIL_LOG.ARCHIVE_ROWS:138-144].
-2. Committing or rolling back the caller's whole transaction: intended for every caller: Unknown: needs human input [UTIL_LOG.ARCHIVE_ROWS:148] [UTIL_LOG.ARCHIVE_ROWS:153].
-3. A count mismatch is only logged, not raised [UTIL_LOG.ARCHIVE_ROWS:147-151]. Is that accepted?
-4. The two statements evaluate SYSDATE separately, which can make the counts differ for rows near the cut-off [UTIL_LOG.ARCHIVE_ROWS:139] [UTIL_LOG.ARCHIVE_ROWS:143]. Has that been seen in practice?
-5. `P_TAB` and `P_DATE_COL` are not checked before being concatenated into SQL [UTIL_LOG.ARCHIVE_ROWS:138-143]. Who may call this procedure: Unknown: needs human input.
+1. Technical: Which tables do callers outside legacy_code/ pass, and do triggers exist on them: Unknown: needs human input [UTIL_LOG.ARCHIVE_ROWS:138-144].
+2. Technical: Committing or rolling back the caller's whole transaction: intended for every caller: Unknown: needs human input [UTIL_LOG.ARCHIVE_ROWS:148] [UTIL_LOG.ARCHIVE_ROWS:153].
+3. Technical: A count mismatch is only logged, not raised [UTIL_LOG.ARCHIVE_ROWS:147-151]. Is that accepted?
+4. Technical: The two statements evaluate SYSDATE separately, which can make the counts differ for rows near the cut-off [UTIL_LOG.ARCHIVE_ROWS:139] [UTIL_LOG.ARCHIVE_ROWS:143]. Has that been seen in practice?
+5. Technical: `P_TAB` and `P_DATE_COL` are not checked before being concatenated into SQL [UTIL_LOG.ARCHIVE_ROWS:138-143]. Who may call this procedure: Unknown: needs human input.

@@ -78,6 +78,6 @@ There is no caller in legacy_code/ [CUST_MGMT.CREATE_CUSTOMER:36].
 
 ## Open questions
 
-1. Which default credit limit is intended: 2500 in the code, 5000 in the comment and in the column default [CUST_MGMT.CREATE_CUSTOMER:59-65] [CUSTOMERS:8]?
-2. Does a NULL limit for type `'G'` mean "no limit"? Unknown: needs human input [CUST_MGMT.CREATE_CUSTOMER:62-63].
-3. Who calls this procedure from outside legacy_code/ [CUST_MGMT.CREATE_CUSTOMER:36]?
+1. Business: Which default credit limit is intended: 2500 in the code, 5000 in the comment and in the column default [CUST_MGMT.CREATE_CUSTOMER:59-65] [CUSTOMERS:8]?
+2. Business: Does a NULL limit for type `'G'` mean "no limit"? Unknown: needs human input [CUST_MGMT.CREATE_CUSTOMER:62-63].
+3. Technical: Who calls this procedure from outside legacy_code/ [CUST_MGMT.CREATE_CUSTOMER:36]?

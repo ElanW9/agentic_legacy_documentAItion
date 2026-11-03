@@ -67,7 +67,7 @@ The `INVOICES` update fires no trigger, because legacy_code/ has no trigger on `
 
 ## Open questions
 
-1. What does the 14-day threshold mean? Unknown: needs human input [INV_API.SEND_REMINDERS:229].
-2. Is the missing mail sending, noted in the TODO comment, still open [INV_API.SEND_REMINDERS:233]?
-3. What should happen when `INVOICES.REMINDER_CNT` reaches the NUMBER(2) limit [INVOICES:13]?
-4. Should the COMMIT also cover the work of `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` [INV_API.SEND_REMINDERS:243-245]?
+1. Business: What does the 14-day threshold mean? Unknown: needs human input [INV_API.SEND_REMINDERS:229].
+2. Business: Is the missing mail sending, noted in the TODO comment, still open [INV_API.SEND_REMINDERS:233]?
+3. Business: What should happen when `INVOICES.REMINDER_CNT` reaches the NUMBER(2) limit [INVOICES:13]?
+4. Technical: Should the COMMIT also cover the work of `CUST_MGMT.CHK_OVERDUE_CUSTOMERS` [INV_API.SEND_REMINDERS:243-245]?

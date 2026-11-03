@@ -7,6 +7,11 @@
 | Source hash | `0000` |
 | Status | draft |
 
+## In plain language
+
+- Changing an item's status is saved at once, together with any other unsaved change made before it [PKG_DEMO.SET_STATUS:5-7].
+- Asking for the quantity of an item that does not exist gives an empty answer instead of an error [PKG_DEMO.GET_QTY:13-17].
+
 ## Purpose
 
 The package updates and reads rows of `DEMO_ITEMS` [PKG_DEMO.SET_STATUS:3-8] [PKG_DEMO.GET_QTY:10-18] [PKG_DEMO.ADD_QTY#2:25-28]. Why it exists: Unknown: needs human input.
@@ -111,5 +116,5 @@ None found in metadata.
 
 ## Open questions
 
-1. What the status values mean: Unknown: needs human input.
-2. Whether `OLD_ITEMS`, named only in the comment at [PKG_DEMO(spec):2], still exists outside legacy_code/.
+1. Business: What the status values mean: Unknown: needs human input.
+2. Technical: Whether `OLD_ITEMS`, named only in the comment at [PKG_DEMO(spec):2], still exists outside legacy_code/.

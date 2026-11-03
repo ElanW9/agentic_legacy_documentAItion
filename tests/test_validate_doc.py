@@ -90,6 +90,23 @@ def test_uncited_open_question(meta):
     assert_fails(meta, text, "uncited", "open question without citation")
 
 
+def test_open_question_without_audience(meta):
+    assert_fails(meta, broken("1. Business: What the status", "1. What the status"),
+                 "question", "must start with Business: or Technical:")
+
+
+def test_missing_plain_language_section(meta):
+    assert_fails(meta, broken("## In plain language", "## Summary"), "section", "missing section '## In plain language'")
+
+
+def test_code_in_plain_language_is_a_warning(meta):
+    text = broken("Changing an item's status", "Changing `DEMO_ITEMS.STATUS`")
+    findings = validate(text, "doc.md", meta)
+    assert [f.message for f in findings if f.check == "plain"] == [
+        "`code` in the plain-language section; use everyday words"]
+    assert not [f for f in findings if f.severity == "ERROR"]
+
+
 def test_uncited_table_row(meta):
     text = broken(" [PKG_DEMO.SET_STATUS:6] |", " |", count=2)
     assert_fails(meta, text, "uncited", "table row without citation")
@@ -129,6 +146,7 @@ def test_broad_citation_does_not_cover_a_risk_flag(meta, monkeypatch):
     monkeypatch.setattr(validate_doc, "MAX_FLAG_SPAN", 5)  # the fixture body is shorter than the real cap
     text = GOOD_DOC.replace("[PKG_DEMO.SET_STATUS:3-8]", "[PKG_DEMO.SET_STATUS:3]")
     text = text.replace("[PKG_DEMO.SET_STATUS:6-7]", "[PKG_DEMO.SET_STATUS:6]")
+    text = text.replace("[PKG_DEMO.SET_STATUS:5-7]", "[PKG_DEMO.SET_STATUS:5]")
     text = text.replace("open work [PKG_DEMO.SET_STATUS:7]", "open work [PKG_DEMO(body):1-30]")
     warnings = [f.message for f in validate(text, "doc.md", meta) if f.check == "coverage"]
     assert warnings == ["COMMIT at tests/fixtures/validate/legacy/packages/pkg_demo.pkb:7 (PKG_DEMO.SET_STATUS) "
@@ -208,7 +226,7 @@ None found in metadata.
 
 ## Open questions
 
-1. Should a missing order raise an error? Unknown: needs human input.
+1. Business: Should a missing order raise an error? Unknown: needs human input.
 """, encoding="utf-8")
     assert main([str(doc)]) == 0
     assert capsys.readouterr().out.startswith("PASS")
