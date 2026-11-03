@@ -20,7 +20,7 @@
         "legacy_code/packages/inv_api.pkb"
       ],
       "source_hash": "af29cc787e6fe6d3d728cbb3fb2d41fafc8f38fc7868291e09b784baa60cdbbf",
-      "status": "draft",
+      "status": "approved",
       "updated_at": "2026-10-29T16:56:04.988966Z",
       "validation_passed": true
     },
@@ -44,7 +44,7 @@
         "legacy_code/packages/pkg_order.pkb"
       ],
       "source_hash": "f33eac6142f77100f7d8d926f9ee89daef2d7ca9d0c39b64453b72a154b8c615",
-      "status": "draft",
+      "status": "approved",
       "updated_at": "2026-10-29T16:57:59.537151Z",
       "validation_passed": true
     }
