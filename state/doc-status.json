@@ -8,7 +8,7 @@
         "legacy_code/packages/cust_mgmt.pkb"
       ],
       "source_hash": "1157cbb9f7dc25b98a2882f7eca548d971f7a1c97445caf0c33ebe6554cf4776",
-      "status": "draft",
+      "status": "approved",
       "updated_at": "2026-10-29T16:47:41.251770Z",
       "validation_passed": true
     },
@@ -32,7 +32,7 @@
         "legacy_code/packages/util_log.pkb"
       ],
       "source_hash": "d44fc2f3d3ec73c27bbf4349e0f6b47af262ee799294ce2582dc78d57a8a48e6",
-      "status": "draft",
+      "status": "approved",
       "updated_at": "2026-10-29T16:57:22.808172Z",
       "validation_passed": true
     },
